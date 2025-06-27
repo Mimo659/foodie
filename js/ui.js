@@ -54,7 +54,7 @@ const ui = (() => {
         // but kept here for context if someone reviews this part of the code.
         // let imageHtml = `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-card-image">`;
 
-        let tagsHtml = `<div class="tags"><span>~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`;
+        let tagsHtml = `<div class="tags"><span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`; // Added class="price-tag"
         if (recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
         if (recipe.isVegan) tagsHtml += `<span>Vegan</span>`;
         else if (recipe.isVegetarian) tagsHtml += `<span>Vegetarisch</span>`;
