@@ -20,6 +20,27 @@ const ui = (() => {
     const createRecipeCardElement = (recipe, onInfoClick) => {
         const card = document.createElement('div');
         card.className = 'recipe-card';
+        // Placeholder image - replace with actual image URL or logic to get it
+        // Using Pexels as an example for royalty-free images.
+        // Ideally, you'd have specific images for each recipe or a more sophisticated way to search/select them.
+        // For now, a generic food image or a category-based one could be used.
+        // Example: Use recipe name to slightly vary the image for demo purposes if Pexels search was live
+        // const searchTerm = recipe.name.split(" ")[0] || "food";
+        // const imageUrl = `https://source.unsplash.com/400x300/?${encodeURIComponent(searchTerm)}`;
+        // For simplicity, let's use a few rotating placeholder images for now.
+        const placeholderImages = [
+            "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400",
+            "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=400",
+            "https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=400",
+            "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg?auto=compress&cs=tinysrgb&w=400",
+            "https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg?auto=compress&cs=tinysrgb&w=400"
+        ];
+        // Simple rotation based on recipe ID or index if available, otherwise random
+        const imageIndex = recipe.id ? parseInt(recipe.id, 10) % placeholderImages.length : Math.floor(Math.random() * placeholderImages.length);
+        const imageUrl = placeholderImages[imageIndex];
+
+        let imageHtml = `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-card-image">`;
+
         let tagsHtml = `<div class="tags"><span>~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`;
         if (recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
         if (recipe.isVegan) tagsHtml += `<span>Vegan</span>`;
@@ -33,7 +54,14 @@ const ui = (() => {
                 : `<p class="all-ingredients-present"><i class="fa-solid fa-check-double"></i> Alles da!</p>`;
             matchInfoHtml = `<div class="match-info"><div class="match-bar"><div class="match-bar-fill" style="width: ${percentage}%"></div></div><span class="match-text">${percentage}% Übereinstimmung</span>${missingText}</div>`;
         }
-        card.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
+        // Card content container
+        const cardContent = document.createElement('div');
+        cardContent.className = 'recipe-card-content'; // You might want to add specific styling for this
+        cardContent.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
+
+        card.innerHTML = imageHtml; // Add image first
+        card.appendChild(cardContent); // Then append the rest of the content
+
         card.querySelector('.btn-info').addEventListener('click', (e) => { e.stopPropagation(); onInfoClick(recipe); });
         return card;
     };

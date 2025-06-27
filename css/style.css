@@ -30,6 +30,15 @@ main.main-content { flex: 1; }
 .empty-state-banner { background: linear-gradient(135deg, rgba(244, 162, 97, 0.1), rgba(233, 196, 106, 0.1)), url('https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=2070&auto=format&fit=crop') center center/cover; padding: 4rem 2rem; border-radius: 24px; text-align: center; }
 .banner-content { background-color: rgba(255, 255, 255, 0.85); display: inline-block; padding: 2.5rem; border-radius: 16px; backdrop-filter: blur(5px); }
 h2 { font-size: 2rem; font-weight: 700; margin-top: 0; margin-bottom: 1.5rem; }
+
+/* Image specific CSS */
+.recipe-card-image {
+    width: 100%;
+    height: 180px; /* Or your desired height */
+    object-fit: cover; /* Ensures the image covers the area, might crop */
+    border-radius: 8px 8px 0 0; /* Optional: if you want rounded corners at the top */
+    margin-bottom: 1rem; /* Space between image and card content */
+}
 .plan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 .plan-instructions { text-align: center; color: var(--primary-dark); background-color: #e3f2fd; padding: 0.75rem; border-radius: 8px; margin-bottom: 2rem; }
 .card { background-color: var(--card-bg-color); padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 2.5rem; border: 1px solid var(--border-color); }
@@ -102,3 +111,50 @@ footer { text-align: center; padding: 2rem; color: var(--subtle-text-color); mar
 #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; transition: opacity 0.5s ease-out; }
 #loading-screen .logo-container { width: 120px; height: 120px; background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSIjMkE5RDhGIiBkPSJNNTAsMCBDNjAsMjAgODUsMjUgOTUsNTAgQzcwLDYwIDcwLDg1IDUwLDEwMCBDMzAsODUgMzAsNjAgNSw1MCBDMTUsMjUgNDAsMjAgNTAsMCBaIi8+PHBvbHlsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHBvaW50cz0iMzAsNTUgNDUsNzAgNzAsNDAiLz48L3N2Zz4='); background-size: contain; background-repeat: no-repeat; animation: pulse 1.5s infinite ease-in-out; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 992px) {
+    .main-layout { flex-direction: column; }
+    aside.main-nav { position: static; width: 100%; margin-bottom: 2rem; }
+    .main-nav nav { flex-direction: row; justify-content: space-around; flex-wrap: wrap; }
+    .nav-item { flex-grow: 1; text-align: center; }
+    .nav-item span { display: none; } /* Hide text on smaller screens, icons only */
+    .form-group-inline { flex-direction: column; }
+}
+
+@media (max-width: 768px) {
+    .container { padding: 1rem; }
+    h1#logo { font-size: 1.5rem; }
+    h2 { font-size: 1.75rem; }
+    .card { padding: 1.5rem; }
+    .recipe-options { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+    .banner-content { padding: 1.5rem; }
+    .empty-state-banner {
+        background: linear-gradient(135deg, rgba(244, 162, 97, 0.1), rgba(233, 196, 106, 0.1)), url('https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=1080&auto=format&fit=crop') center center/cover; /* Smaller image for tablets */
+    }
+    .nav-item i { margin-right: 0; } /* Remove margin when text is hidden */
+    .plan-header { flex-direction: column; align-items: stretch; }
+    .plan-header h2 { margin-bottom: 1rem; }
+    #delete-plan-btn { width: 100%; }
+    .modal-content { width: 95%; padding: 1.5rem; }
+    .modal-close-btn { font-size: 2rem; top: 0.5rem; right: 1rem;}
+}
+
+@media (max-width: 576px) {
+    body { font-size: 15px; } /* Adjust base font size for small devices */
+    h1#logo { text-align: center; }
+    .main-nav nav { flex-direction: column; }
+    .nav-item { margin-bottom: 0.5rem; } /* Add some space between stacked nav items */
+    .recipe-card { padding: 1rem; }
+    .recipe-card-image { height: 150px; } /* Smaller image height on mobile */
+    .recipe-card h4 { font-size: 1.1rem; }
+    .btn-primary, .btn-secondary, .btn-danger, .btn-confirm, .btn-info { padding: 0.7rem 1.2rem; font-size: 0.9rem; }
+    .btn-confirm { font-size: 1rem; }
+    .empty-state-banner { padding: 2rem 1rem; }
+    .banner-content h2 { font-size: 1.5rem; }
+    .banner-content p { font-size: 0.9rem; }
+    .radio-group-container, .checkbox-group-container { grid-template-columns: 1fr; } /* Stack radio/checkbox groups */
+    .form-group-inline { gap: 1rem; }
+    #weekly-plan-container { /* Add styles for better mobile layout if needed */ }
+    .day-container h3 { font-size: 1.3rem; }
+}
