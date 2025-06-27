@@ -9,13 +9,9 @@ function initializeApp() {
     };
 
     fetch('data/recipes.json')
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
+        .then(response => { if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); return response.json(); })
         .then(recipes => {
             const ALL_RECIPES = recipes;
-            
             let weeklyPlan = store.getItem('weeklyPlan') || null;
             let inventory = store.getItem('inventory') || [];
             let persons = store.getItem('persons') || 1;
@@ -27,17 +23,6 @@ function initializeApp() {
             const confirmPlanBtn = document.getElementById('confirm-plan-btn');
             const inventoryInput = document.getElementById('inventory-input');
             const saveInventoryBtn = document.getElementById('save-inventory-btn');
-            const veganCheckbox = document.getElementById('pref-vegan');
-            const vegetarianCheckbox = document.getElementById('pref-vegetarian');
-
-            veganCheckbox.addEventListener('change', () => {
-                if (veganCheckbox.checked) {
-                    vegetarianCheckbox.checked = true;
-                    vegetarianCheckbox.disabled = true;
-                } else {
-                    vegetarianCheckbox.disabled = false;
-                }
-            });
 
             const handleRecipeSelect = (dayIndex, recipeId) => {
                 if (!weeklyPlan) return;
@@ -46,32 +31,38 @@ function initializeApp() {
                 store.setItem('weeklyPlan', weeklyPlan);
                 ui.updateConfirmButtonState(weeklyPlan);
             };
-
-            const handleInfoClick = (recipe) => {
-                ui.openRecipeModal(recipe);
-            };
+            const handleInfoClick = (recipe) => ui.openRecipeModal(recipe);
 
             generatorForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const submitButton = e.target.querySelector('button[type="submit"]');
                 ui.setButtonLoadingState(submitButton, true);
-                
                 setTimeout(() => {
-                    persons = parseInt(document.getElementById('persons').value, 10);
+                    const dietPreference = document.querySelector('input[name="diet"]:checked').value;
                     const prefs = {
-                        persons,
+                        persons: parseInt(document.getElementById('persons').value, 10),
                         budget: document.getElementById('budget').value,
-                        isSimple: document.getElementById('isSimple').checked,
-                        isVegetarian: vegetarianCheckbox.checked,
-                        isVegan: veganCheckbox.checked
+                        isVegetarian: dietPreference === 'vegetarian',
+                        isVegan: dietPreference === 'vegan',
+                        isQuick: document.getElementById('attr-quick').checked,
+                        isGuestFriendly: document.getElementById('attr-guest-friendly').checked,
+                        isForLeftovers: document.getElementById('attr-leftovers').checked,
+                        cuisine: document.getElementById('cuisine-style').value
                     };
                     weeklyPlan = generateWeeklyPlan(ALL_RECIPES, prefs);
-                    store.setItem('weeklyPlan', weeklyPlan);
-                    store.setItem('persons', persons);
+                    if (weeklyPlan.length === 0) {
+                        alert("Entschuldigung, mit diesen Filtern konnten wir keinen Plan erstellen. Bitte versuche es mit anderen Kriterien.");
+                        ui.setButtonLoadingState(submitButton, false);
+                        return;
+                    }
+                    if (weeklyPlan.length < 7) {
+                        alert(`Hinweis: Wir haben nur genug einzigartige Rezepte für einen Plan von ${weeklyPlan.length} Tagen gefunden. Für mehr Vielfalt kannst du deine Filter anpassen.`);
+                    }
+                    store.setItem('weeklyPlan', weeklyPlan); store.setItem('persons', prefs.persons);
                     ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);
                     ui.updateConfirmButtonState(weeklyPlan);
                     ui.switchView('dashboard-view');
-                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    navLinks.forEach(n => n.classList.remove('active'));
                     document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
                     ui.setButtonLoadingState(submitButton, false);
                 }, 0);
@@ -90,7 +81,7 @@ function initializeApp() {
                 const list = generateShoppingList(weeklyPlan, inventory, persons);
                 ui.renderShoppingList(list);
                 ui.switchView('shopping-list-view');
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                navLinks.forEach(n => n.classList.remove('active'));
                 document.querySelector('.nav-item[data-view="shopping-list"]').classList.add('active');
             });
 
@@ -110,8 +101,7 @@ function initializeApp() {
                     if (viewId === 'inventory-view') {
                         const matchingRecipes = findAlmostCompleteRecipes(ALL_RECIPES, inventory);
                         ui.renderInventoryResults(matchingRecipes, handleInfoClick);
-                    }
-                    if (viewId === 'shopping-list-view') {
+                    } else if (viewId === 'shopping-list-view') {
                         const list = generateShoppingList(weeklyPlan, inventory, persons);
                         ui.renderShoppingList(list);
                     }
@@ -121,7 +111,7 @@ function initializeApp() {
 
             createPlanBtn.addEventListener('click', () => {
                 ui.switchView('generator-view');
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                navLinks.forEach(n => n.classList.remove('active'));
                 document.querySelector('.nav-item[data-view="generator"]').classList.add('active');
             });
 
@@ -134,7 +124,6 @@ function initializeApp() {
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
                 ui.showApp();
             }
-
             initUI();
         })
         .catch(error => {
