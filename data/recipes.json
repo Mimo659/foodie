@@ -1,87 +1,1467 @@
 [
   {
-    "id": "rezept_manual1",
-    "name": "Milchreis mit Zimt & Zucker",
-    "description": "Ein süßer Klassiker.",
+    "id": "rezept-1",
+    "name": "Bunter Salat mit Halloumi",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
     "ingredients": [
       {
-        "name": "Milch",
-        "quantity": 500,
-        "unit": "ml"
-      },
-      {
-        "name": "Milchreis",
-        "quantity": 125,
+        "name": "Halloumi",
+        "quantity": 218,
         "unit": "g"
       },
       {
-        "name": "Zucker",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Zimt",
-        "quantity": 1,
-        "unit": "TL"
-      }
-    ],
-    "instructions": [
-      "Milch kochen, Reis einrühren, quellen lassen."
-    ],
-    "estimatedCostPerServing": 0.9,
-    "isSimple": true,
-    "isVegan": false,
-    "isVegetarian": true,
-    "keywords": [
-      "süß",
-      "milch"
-    ]
-  },
-  {
-    "id": "rezept1",
-    "name": "Tofu mit Kartoffeln und Tomaten",
-    "description": "Ein leckeres und schnelles Gericht. Perfekt für den Alltag.",
-    "ingredients": [
-      {
-        "name": "Tofu",
-        "quantity": 150,
+        "name": "Brot",
+        "quantity": 111,
         "unit": "g"
       },
       {
-        "name": "Kartoffeln",
-        "quantity": 120,
-        "unit": "g"
-      },
-      {
-        "name": "Tomaten",
-        "quantity": 100,
+        "name": "Mais",
+        "quantity": 178,
         "unit": "g"
       },
       {
         "name": "Zwiebel",
-        "quantity": 1,
-        "unit": "Stück"
+        "quantity": 235,
+        "unit": "g"
       },
       {
-        "name": "Olivenöl",
-        "quantity": 2,
-        "unit": "EL"
+        "name": "Frische Kräuter",
+        "quantity": 118,
+        "unit": "g"
       }
     ],
     "instructions": [
-      "Zutaten vorbereiten.",
-      "Tofu und Kartoffeln kochen/braten.",
-      "Tomaten und Zwiebel hinzufügen.",
-      "Abschmecken und servieren."
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit frischen Kräutern garnieren."
     ],
-    "estimatedCostPerServing": 2.87,
+    "estimatedCostPerServing": 4.14,
     "isSimple": true,
-    "isVegan": true,
     "isVegetarian": true,
-    "keywords": [
-      "tofu",
-      "kartoffeln",
-      "klassiker"
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "mediterranean",
+      "defty"
+    ]
+  },
+  {
+    "id": "rezept-2",
+    "name": "Hähnchenbrust-Eintopf mit Rotkohl",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Hähnchenbrust",
+        "quantity": 224,
+        "unit": "g"
+      },
+      {
+        "name": "Aubergine",
+        "quantity": 232,
+        "unit": "g"
+      },
+      {
+        "name": "Rotkohl",
+        "quantity": 147,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 242,
+        "unit": "g"
+      },
+      {
+        "name": "Bulgur",
+        "quantity": 185,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 182,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Hähnchenbrust und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit frischen Kräutern servieren."
+    ],
+    "estimatedCostPerServing": 2.76,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "günstig",
+      "resteverwertung",
+      "light",
+      "asian",
+      "mediterranean",
+      "defty"
+    ]
+  },
+  {
+    "id": "rezept-3",
+    "name": "Gnocchi-Auflauf mit Linsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Auflauf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 231,
+        "unit": "g"
+      },
+      {
+        "name": "Gnocchi",
+        "quantity": 161,
+        "unit": "g"
+      },
+      {
+        "name": "Karotten",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Sahnesauce",
+        "quantity": 186,
+        "unit": "g"
+      },
+      {
+        "name": "geriebenem Käse",
+        "quantity": 128,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Zutaten mischen, in eine Auflaufform geben.",
+      "Mit Sahnesauce übergießen und mit geriebenem Käse bestreuen.",
+      "Bei 180°C ca. 30 Minuten backen."
+    ],
+    "estimatedCostPerServing": 3.65,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "für gäste",
+      "mediterranean",
+      "defty",
+      "light"
+    ]
+  },
+  {
+    "id": "rezept-4",
+    "name": "Großer Salat mit Hähnchenbrust",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Hähnchenbrust",
+        "quantity": 222,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 139,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 133,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 159,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 223,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit frischen Kräutern garnieren."
+    ],
+    "estimatedCostPerServing": 4.1,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "light",
+      "asian",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-5",
+    "name": "Linsen-Eintopf mit Zucchini",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 128,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 175,
+        "unit": "g"
+      },
+      {
+        "name": "Mais",
+        "quantity": 178,
+        "unit": "g"
+      },
+      {
+        "name": "Zucchini",
+        "quantity": 236,
+        "unit": "g"
+      },
+      {
+        "name": "Bulgur",
+        "quantity": 110,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 154,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Linsen und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit frischen Kräutern servieren."
+    ],
+    "estimatedCostPerServing": 2.76,
+    "isSimple": true,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "günstig",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-6",
+    "name": "Kartoffel-Auflauf mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Auflauf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 169,
+        "unit": "g"
+      },
+      {
+        "name": "Kartoffeln",
+        "quantity": 102,
+        "unit": "g"
+      },
+      {
+        "name": "Pilze",
+        "quantity": 223,
+        "unit": "g"
+      },
+      {
+        "name": "Tomatensauce",
+        "quantity": 240,
+        "unit": "g"
+      },
+      {
+        "name": "geriebenem Käse",
+        "quantity": 202,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Zutaten mischen, in eine Auflaufform geben.",
+      "Mit Tomatensauce übergießen und mit geriebenem Käse bestreuen.",
+      "Bei 180°C ca. 30 Minuten backen."
+    ],
+    "estimatedCostPerServing": 3.86,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "für gäste",
+      "defty",
+      "asian",
+      "light",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-7",
+    "name": "Großer Salat mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 140,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 113,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 111,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 139,
+        "unit": "g"
+      },
+      {
+        "name": "Geröstete Kerne",
+        "quantity": 204,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit gerösteten Kernen garnieren."
+    ],
+    "estimatedCostPerServing": 4.54,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "asian",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-8",
+    "name": "Quinoa-Pfanne mit Linsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Pfanne\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Quinoa",
+        "quantity": 215,
+        "unit": "g"
+      },
+      {
+        "name": "Brokkoli",
+        "quantity": 105,
+        "unit": "g"
+      },
+      {
+        "name": "Knoblauch",
+        "quantity": 242,
+        "unit": "g"
+      },
+      {
+        "name": "Sojasauce",
+        "quantity": 136,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Quinoa kochen.",
+      "Linsen mit Brokkoli und Knoblauch anbraten.",
+      "Gekochte Quinoa und Sojasauce zugeben und vermengen."
+    ],
+    "estimatedCostPerServing": 3.73,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "light",
+      "defty",
+      "mediterranean",
+      "asian"
+    ]
+  },
+  {
+    "id": "rezept-9",
+    "name": "Schweinefilet-Eintopf mit Knoblauch",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Schweinefilet",
+        "quantity": 103,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 196,
+        "unit": "g"
+      },
+      {
+        "name": "Aubergine",
+        "quantity": 182,
+        "unit": "g"
+      },
+      {
+        "name": "Knoblauch",
+        "quantity": 232,
+        "unit": "g"
+      },
+      {
+        "name": "Bulgur",
+        "quantity": 139,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 178,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Schweinefilet und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit frischen Kräutern servieren."
+    ],
+    "estimatedCostPerServing": 2.9,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "günstig",
+      "resteverwertung",
+      "defty",
+      "asian",
+      "mediterranean",
+      "light"
+    ]
+  },
+  {
+    "id": "rezept-10",
+    "name": "Nudeln-Auflauf mit Linsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Auflauf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Nudeln",
+        "quantity": 128,
+        "unit": "g"
+      },
+      {
+        "name": "Brokkoli",
+        "quantity": 132,
+        "unit": "g"
+      },
+      {
+        "name": "Tomatensauce",
+        "quantity": 101,
+        "unit": "g"
+      },
+      {
+        "name": "geriebenem Käse",
+        "quantity": 236,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Zutaten mischen, in eine Auflaufform geben.",
+      "Mit Tomatensauce übergießen und mit geriebenem Käse bestreuen.",
+      "Bei 180°C ca. 30 Minuten backen."
+    ],
+    "estimatedCostPerServing": 3.79,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "für gäste",
+      "defty",
+      "mediterranean",
+      "light"
+    ]
+  },
+  {
+    "id": "rezept-11",
+    "name": "Hähnchenbrust-Eintopf mit Pilze",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Hähnchenbrust",
+        "quantity": 135,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 106,
+        "unit": "g"
+      },
+      {
+        "name": "Rotkohl",
+        "quantity": 161,
+        "unit": "g"
+      },
+      {
+        "name": "Pilze",
+        "quantity": 204,
+        "unit": "g"
+      },
+      {
+        "name": "Bulgur",
+        "quantity": 169,
+        "unit": "g"
+      },
+      {
+        "name": "Röstzwiebeln",
+        "quantity": 102,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Hähnchenbrust und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit Röstzwiebeln servieren."
+    ],
+    "estimatedCostPerServing": 3.19,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "light",
+      "asian",
+      "mediterranean",
+      "defty"
+    ]
+  },
+  {
+    "id": "rezept-12",
+    "name": "Nudeln-Auflauf mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Auflauf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 221,
+        "unit": "g"
+      },
+      {
+        "name": "Nudeln",
+        "quantity": 201,
+        "unit": "g"
+      },
+      {
+        "name": "Knoblauch",
+        "quantity": 234,
+        "unit": "g"
+      },
+      {
+        "name": "Sahnesauce",
+        "quantity": 103,
+        "unit": "g"
+      },
+      {
+        "name": "geriebenem Käse",
+        "quantity": 218,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Zutaten mischen, in eine Auflaufform geben.",
+      "Mit Sahnesauce übergießen und mit geriebenem Käse bestreuen.",
+      "Bei 180°C ca. 30 Minuten backen."
+    ],
+    "estimatedCostPerServing": 3.51,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "für gäste",
+      "defty",
+      "asian",
+      "light"
+    ]
+  },
+  {
+    "id": "rezept-13",
+    "name": "Großer Salat mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 159,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 201,
+        "unit": "g"
+      },
+      {
+        "name": "Paprika",
+        "quantity": 214,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 121,
+        "unit": "g"
+      },
+      {
+        "name": "Geröstete Kerne",
+        "quantity": 195,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit gerösteten Kernen garnieren."
+    ],
+    "estimatedCostPerServing": 4.19,
+    "isSimple": true,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "asian",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-14",
+    "name": "Gnocchi-Pfanne mit Schweinefilet",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Pfanne\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Schweinefilet",
+        "quantity": 141,
+        "unit": "g"
+      },
+      {
+        "name": "Gnocchi",
+        "quantity": 110,
+        "unit": "g"
+      },
+      {
+        "name": "Knoblauch",
+        "quantity": 113,
+        "unit": "g"
+      },
+      {
+        "name": "Paprika",
+        "quantity": 242,
+        "unit": "g"
+      },
+      {
+        "name": "Sojasauce",
+        "quantity": 184,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Gnocchi kochen.",
+      "Schweinefilet mit Knoblauch und Paprika anbraten.",
+      "Gekochte Gnocchi und Sojasauce zugeben und vermengen."
+    ],
+    "estimatedCostPerServing": 3.49,
+    "isSimple": false,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "mediterranean",
+      "defty",
+      "asian"
+    ]
+  },
+  {
+    "id": "rezept-15",
+    "name": "Bunter Salat mit Halloumi",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Halloumi",
+        "quantity": 154,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 105,
+        "unit": "g"
+      },
+      {
+        "name": "Gurke",
+        "quantity": 235,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 179,
+        "unit": "g"
+      },
+      {
+        "name": "Geröstete Kerne",
+        "quantity": 157,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit gerösteten Kernen garnieren."
+    ],
+    "estimatedCostPerServing": 4.54,
+    "isSimple": true,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "mediterranean",
+      "defty",
+      "light"
+    ]
+  },
+  {
+    "id": "rezept-16",
+    "name": "Quinoa-Pfanne mit Linsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Pfanne\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 113,
+        "unit": "g"
+      },
+      {
+        "name": "Quinoa",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Karotten",
+        "quantity": 105,
+        "unit": "g"
+      },
+      {
+        "name": "Zucchini",
+        "quantity": 139,
+        "unit": "g"
+      },
+      {
+        "name": "Pesto",
+        "quantity": 216,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Quinoa kochen.",
+      "Linsen mit Karotten und Zucchini anbraten.",
+      "Gekochte Quinoa und Pesto zugeben und vermengen."
+    ],
+    "estimatedCostPerServing": 3.75,
+    "isSimple": true,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "resteverwertung",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-17",
+    "name": "Großer Salat mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 108,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 223,
+        "unit": "g"
+      },
+      {
+        "name": "Mais",
+        "quantity": 182,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 169,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 196,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit frischen Kräutern garnieren."
+    ],
+    "estimatedCostPerServing": 4.13,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "asian",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-18",
+    "name": "Kartoffel-Auflauf mit Schweinefilet",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Auflauf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Schweinefilet",
+        "quantity": 199,
+        "unit": "g"
+      },
+      {
+        "name": "Kartoffeln",
+        "quantity": 212,
+        "unit": "g"
+      },
+      {
+        "name": "Brokkoli",
+        "quantity": 185,
+        "unit": "g"
+      },
+      {
+        "name": "Tomatensauce",
+        "quantity": 199,
+        "unit": "g"
+      },
+      {
+        "name": "geriebenem Käse",
+        "quantity": 139,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Zutaten mischen, in eine Auflaufform geben.",
+      "Mit Tomatensauce übergießen und mit geriebenem Käse bestreuen.",
+      "Bei 180°C ca. 30 Minuten backen."
+    ],
+    "estimatedCostPerServing": 4.34,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "für gäste",
+      "defty",
+      "asian",
+      "light",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-19",
+    "name": "Quinoa-Pfanne mit Eier",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Pfanne\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Eier",
+        "quantity": 111,
+        "unit": "g"
+      },
+      {
+        "name": "Quinoa",
+        "quantity": 105,
+        "unit": "g"
+      },
+      {
+        "name": "Aubergine",
+        "quantity": 106,
+        "unit": "g"
+      },
+      {
+        "name": "Rotkohl",
+        "quantity": 140,
+        "unit": "g"
+      },
+      {
+        "name": "Sojasauce",
+        "quantity": 232,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Quinoa kochen.",
+      "Eier mit Aubergine und Rotkohl anbraten.",
+      "Gekochte Quinoa und Sojasauce zugeben und vermengen."
+    ],
+    "estimatedCostPerServing": 3.12,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "light",
+      "defty",
+      "mediterranean",
+      "asian"
+    ]
+  },
+  {
+    "id": "rezept-20",
+    "name": "Großer Salat mit Hähnchenbrust",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Hähnchenbrust",
+        "quantity": 161,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 164,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 161,
+        "unit": "g"
+      },
+      {
+        "name": "Gurke",
+        "quantity": 166,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 236,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit frischen Kräutern garnieren."
+    ],
+    "estimatedCostPerServing": 4.19,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "resteverwertung",
+      "light",
+      "asian",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-21",
+    "name": "Großer Salat mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 242,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 178,
+        "unit": "g"
+      },
+      {
+        "name": "Oliven",
+        "quantity": 105,
+        "unit": "g"
+      },
+      {
+        "name": "Mais",
+        "quantity": 165,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 234,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit frischen Kräutern garnieren."
+    ],
+    "estimatedCostPerServing": 4.79,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "resteverwertung",
+      "asian",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-22",
+    "name": "Hähnchenbrust-Eintopf mit Karotten",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Hähnchenbrust",
+        "quantity": 170,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Rotkohl",
+        "quantity": 224,
+        "unit": "g"
+      },
+      {
+        "name": "Karotten",
+        "quantity": 115,
+        "unit": "g"
+      },
+      {
+        "name": "Kartoffeln",
+        "quantity": 213,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 176,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Hähnchenbrust und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit frischen Kräutern servieren."
+    ],
+    "estimatedCostPerServing": 2.89,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "günstig",
+      "resteverwertung",
+      "light",
+      "asian",
+      "mediterranean",
+      "defty"
+    ]
+  },
+  {
+    "id": "rezept-23",
+    "name": "Hähnchenbrust-Eintopf mit Zucchini",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Hähnchenbrust",
+        "quantity": 159,
+        "unit": "g"
+      },
+      {
+        "name": "Zucchini",
+        "quantity": 204,
+        "unit": "g"
+      },
+      {
+        "name": "Frühlingszwiebeln",
+        "quantity": 116,
+        "unit": "g"
+      },
+      {
+        "name": "Pilze",
+        "quantity": 182,
+        "unit": "g"
+      },
+      {
+        "name": "Kartoffeln",
+        "quantity": 128,
+        "unit": "g"
+      },
+      {
+        "name": "Geröstete Kerne",
+        "quantity": 203,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Hähnchenbrust und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit gerösteten Kernen servieren."
+    ],
+    "estimatedCostPerServing": 3.42,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "resteverwertung",
+      "light",
+      "asian",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-24",
+    "name": "Großer Salat mit Kichererbsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Kichererbsen",
+        "quantity": 222,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 149,
+        "unit": "g"
+      },
+      {
+        "name": "Oliven",
+        "quantity": 133,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 158,
+        "unit": "g"
+      },
+      {
+        "name": "Geröstete Kerne",
+        "quantity": 117,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit gerösteten Kernen garnieren."
+    ],
+    "estimatedCostPerServing": 4.54,
+    "isSimple": true,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "light",
+      "mediterranean",
+      "defty"
+    ]
+  },
+  {
+    "id": "rezept-25",
+    "name": "Großer Salat mit Kichererbsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Kichererbsen",
+        "quantity": 187,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Gurke",
+        "quantity": 161,
+        "unit": "g"
+      },
+      {
+        "name": "Paprika",
+        "quantity": 184,
+        "unit": "g"
+      },
+      {
+        "name": "Geröstete Kerne",
+        "quantity": 139,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit gerösteten Kernen garnieren."
+    ],
+    "estimatedCostPerServing": 4.25,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "light",
+      "mediterranean",
+      "defty"
+    ]
+  },
+  {
+    "id": "rezept-26",
+    "name": "Nudeln-Auflauf mit Schweinefilet",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Auflauf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Schweinefilet",
+        "quantity": 195,
+        "unit": "g"
+      },
+      {
+        "name": "Nudeln",
+        "quantity": 125,
+        "unit": "g"
+      },
+      {
+        "name": "Zucchini",
+        "quantity": 186,
+        "unit": "g"
+      },
+      {
+        "name": "Tomatensauce",
+        "quantity": 149,
+        "unit": "g"
+      },
+      {
+        "name": "geriebenem Käse",
+        "quantity": 121,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Zutaten mischen, in eine Auflaufform geben.",
+      "Mit Tomatensauce übergießen und mit geriebenem Käse bestreuen.",
+      "Bei 180°C ca. 30 Minuten backen."
+    ],
+    "estimatedCostPerServing": 4.1,
+    "isSimple": false,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "für gäste",
+      "defty",
+      "mediterranean",
+      "asian"
+    ]
+  },
+  {
+    "id": "rezept-27",
+    "name": "Großer Salat mit Tofu",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Salat\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 108,
+        "unit": "g"
+      },
+      {
+        "name": "Brot",
+        "quantity": 129,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 126,
+        "unit": "g"
+      },
+      {
+        "name": "Gurke",
+        "quantity": 236,
+        "unit": "g"
+      },
+      {
+        "name": "Frische Kräuter",
+        "quantity": 139,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Alle Zutaten vorbereiten und in einer Schüssel mischen.",
+      "Mit einem Dressing nach Wahl anmachen.",
+      "Mit frischen Kräutern garnieren."
+    ],
+    "estimatedCostPerServing": 4.79,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "asian",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-28",
+    "name": "Linsen-Eintopf mit Rotkohl",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Eintopf\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 211,
+        "unit": "g"
+      },
+      {
+        "name": "Aubergine",
+        "quantity": 210,
+        "unit": "g"
+      },
+      {
+        "name": "Rotkohl",
+        "quantity": 216,
+        "unit": "g"
+      },
+      {
+        "name": "Bulgur",
+        "quantity": 211,
+        "unit": "g"
+      },
+      {
+        "name": "Einem Klecks Joghurt",
+        "quantity": 124,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Linsen und Gemüse anbraten.",
+      "Mit Wasser oder Brühe aufgießen und köcheln lassen, bis alles weich ist.",
+      "Mit einem Klecks Joghurt servieren."
+    ],
+    "estimatedCostPerServing": 3.48,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": false,
+    "tags": [
+      "resteverwertung",
+      "light",
+      "defty",
+      "mediterranean"
+    ]
+  },
+  {
+    "id": "rezept-29",
+    "name": "Gnocchi-Pfanne mit Linsen",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Pfanne\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Linsen",
+        "quantity": 162,
+        "unit": "g"
+      },
+      {
+        "name": "Gnocchi",
+        "quantity": 126,
+        "unit": "g"
+      },
+      {
+        "name": "Knoblauch",
+        "quantity": 196,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 149,
+        "unit": "g"
+      },
+      {
+        "name": "Pesto",
+        "quantity": 113,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Gnocchi kochen.",
+      "Linsen mit Knoblauch und Tomaten anbraten.",
+      "Gekochte Gnocchi und Pesto zugeben und vermengen."
+    ],
+    "estimatedCostPerServing": 3.86,
+    "isSimple": false,
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": [
+      "schnell",
+      "mediterranean",
+      "defty",
+      "light"
+    ]
+  },
+  {
+    "id": "rezept-30",
+    "name": "Gnocchi-Pfanne mit Schweinefilet",
+    "description": "Ein leckeres Gericht aus der Kategorie \"Pfanne\". Perfekt für jeden Anlass.",
+    "ingredients": [
+      {
+        "name": "Schweinefilet",
+        "quantity": 204,
+        "unit": "g"
+      },
+      {
+        "name": "Gnocchi",
+        "quantity": 160,
+        "unit": "g"
+      },
+      {
+        "name": "Aubergine",
+        "quantity": 126,
+        "unit": "g"
+      },
+      {
+        "name": "Ingwer",
+        "quantity": 218,
+        "unit": "g"
+      },
+      {
+        "name": "Sojasauce",
+        "quantity": 123,
+        "unit": "g"
+      }
+    ],
+    "instructions": [
+      "Gnocchi kochen.",
+      "Schweinefilet mit Aubergine und Ingwer anbraten.",
+      "Gekochte Gnocchi und Sojasauce zugeben und vermengen."
+    ],
+    "estimatedCostPerServing": 3.44,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": [
+      "schnell",
+      "mediterranean",
+      "defty",
+      "asian"
     ]
   }
 ]
