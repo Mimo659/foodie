@@ -23,6 +23,9 @@ function initializeApp() {
             const confirmPlanBtn = document.getElementById('confirm-plan-btn');
             const inventoryInput = document.getElementById('inventory-input');
             const saveInventoryBtn = document.getElementById('save-inventory-btn');
+            const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
+
+            let matchingRecipes = []; // To store inventory based recipe suggestions
 
             const handleRecipeSelect = (dayIndex, recipeId) => {
                 if (!weeklyPlan) return;
@@ -88,8 +91,13 @@ function initializeApp() {
             saveInventoryBtn.addEventListener('click', () => {
                 inventory = inventoryInput.value.split(',').map(item => item.trim()).filter(Boolean);
                 store.setItem('inventory', inventory);
-                const matchingRecipes = findAlmostCompleteRecipes(ALL_RECIPES, inventory);
+                matchingRecipes = findAlmostCompleteRecipes(ALL_RECIPES, inventory); // Store results
                 ui.renderInventoryResults(matchingRecipes, handleInfoClick);
+            });
+
+            deleteInventoryRecipesBtn.addEventListener('click', () => {
+                matchingRecipes = []; // Clear the stored recipes
+                ui.clearInventoryResults();
             });
             
             navLinks.forEach(link => {
@@ -99,7 +107,9 @@ function initializeApp() {
                     navLinks.forEach(navLink => navLink.classList.remove('active'));
                     e.currentTarget.classList.add('active');
                     if (viewId === 'inventory-view') {
-                        const matchingRecipes = findAlmostCompleteRecipes(ALL_RECIPES, inventory);
+                        // When navigating to inventory view, re-render based on current matchingRecipes
+                        // This ensures that if recipes were cleared, they stay cleared,
+                        // or if they were previously loaded, they are shown again.
                         ui.renderInventoryResults(matchingRecipes, handleInfoClick);
                     } else if (viewId === 'shopping-list-view') {
                         const list = generateShoppingList(weeklyPlan, inventory, persons);
