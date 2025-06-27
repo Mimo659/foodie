@@ -2,6 +2,7 @@ const ui = (() => {
     const modal = document.getElementById('recipe-modal');
     const modalBody = document.getElementById('modal-body');
     const modalCloseBtn = document.querySelector('.modal-close-btn');
+    const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
 
     const closeModal = () => modal.classList.add('hidden');
 
@@ -71,11 +72,32 @@ const ui = (() => {
         },
         renderInventoryResults: (recipes, onInfoClick) => {
             const container = document.getElementById('inventory-results-container');
-            container.innerHTML = '<h3><i class="fa-solid fa-lightbulb"></i> Deine besten Optionen</h3>';
+            container.innerHTML = ''; // Clear previous results
+            const resultsHeader = document.createElement('h3');
+            resultsHeader.innerHTML = '<i class="fa-solid fa-lightbulb"></i> Deine besten Optionen';
+            container.appendChild(resultsHeader);
+
             const resultsDiv = document.createElement('div');
-            if (recipes.length === 0) resultsDiv.innerHTML = '<p>Keine Rezepte gefunden, für die du mindestens 80% der Zutaten hast.</p>';
-            else recipes.forEach(recipe => resultsDiv.appendChild(createRecipeCardElement(recipe, onInfoClick)));
+            if (recipes.length === 0) {
+                resultsDiv.innerHTML = '<p>Keine Rezepte gefunden, für die du mindestens 80% der Zutaten hast.</p>';
+                if (deleteInventoryRecipesBtn) deleteInventoryRecipesBtn.classList.add('hidden');
+            } else {
+                recipes.forEach(recipe => resultsDiv.appendChild(createRecipeCardElement(recipe, onInfoClick)));
+                if (deleteInventoryRecipesBtn) deleteInventoryRecipesBtn.classList.remove('hidden');
+            }
             container.appendChild(resultsDiv);
+        },
+        clearInventoryResults: () => {
+            const container = document.getElementById('inventory-results-container');
+            container.innerHTML = ''; // Clear the recipe cards
+            if (deleteInventoryRecipesBtn) deleteInventoryRecipesBtn.classList.add('hidden');
+            // Add a placeholder message if desired
+            const resultsHeader = document.createElement('h3');
+            resultsHeader.innerHTML = '<i class="fa-solid fa-lightbulb"></i> Deine besten Optionen';
+            container.appendChild(resultsHeader);
+            const placeholder = document.createElement('p');
+            placeholder.textContent = 'Gib Zutaten in deinen Vorrat ein, um Rezeptvorschläge zu sehen, oder lösche die aktuelle Ansicht.';
+            container.appendChild(placeholder);
         },
         openRecipeModal: openModalWithRecipe,
         switchView: (viewId) => { document.querySelectorAll('.view').forEach(v => v.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); },
