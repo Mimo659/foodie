@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dein Wochenplaner</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div class="logo-container">
+        </div>
+        <p>Dein Wochenplaner wird geladen...</p>
+    </div>
+
+    <div id="app-content" class="content-hidden">
+        <header>
+            <div class="container">
+                <h1 id="logo">Dein Wochenplaner</h1>
+                <nav>
+                    <a href="#" data-view="dashboard">Dashboard</a>
+                    <a href="#" data-view="inventory">Mein Vorrat</a>
+                    <a href="#" data-view="shopping-list">Einkaufsliste</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <section id="dashboard-view" class="view">
+                <div id="plan-display">
+                    <h2>Mein aktueller Wochenplan</h2>
+                    <div id="weekly-plan-container">
+                    </div>
+                </div>
+                <div id="no-plan-display" class="hidden">
+                    <div class="card text-center">
+                        <p>Du hast noch keinen Wochenplan erstellt.</p>
+                        <button id="create-plan-btn" class="btn-primary">Erstelle meinen Essensplan für eine Woche</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="generator-view" class="view hidden">
+                <div class="card">
+                    <h2>Plane deine Woche</h2>
+                    <form id="generator-form">
+                        <div class="form-group">
+                            <label for="persons">Anzahl der Personen</label>
+                            <input type="number" id="persons" value="1" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Wochenbudget in € (optional)</label>
+                            <input type="number" id="budget" placeholder="z.B. 50">
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="isSimple" checked>
+                            <label for="isSimple">Simpel aber lecker</label>
+                        </div>
+                        <fieldset>
+                            <legend>Ernährungspräferenzen</legend>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="isVegetarian">
+                                <label for="isVegetarian">Vegetarisch</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="isVegan">
+                                <label for="isVegan">Vegan</label>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn-primary">Plan generieren</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="inventory-view" class="view hidden">
+                 <div class="card">
+                    <h2>Was habe ich zu Hause?</h2>
+                    <p>Gib deine vorhandenen Zutaten ein (getrennt durch Kommas) und speichere sie.</p>
+                    <div class="form-group">
+                        <textarea id="inventory-input" placeholder="z.B. Milch, Reis, Eier, Tomaten"></textarea>
+                    </div>
+                    <button id="save-inventory-btn" class="btn-secondary">Meinen Vorrat speichern & Rezepte finden</button>
+                </div>
+                <div id="inventory-results-container">
+                    <h3>Passende Rezepte:</h3>
+                    <div id="inventory-results"></div>
+                </div>
+            </section>
+
+            <section id="shopping-list-view" class="view hidden">
+                <div class="card">
+                    <h2>Deine Einkaufsliste</h2>
+                    <ul id="shopping-list-container"></ul>
+                     <p id="no-shopping-list" class="hidden">Erstelle zuerst einen Wochenplan, um eine Einkaufsliste zu sehen.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="container">
+                Dein Wochenplaner Prototyp (Vanilla JS)
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/logic.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

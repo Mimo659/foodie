@@ -1,0 +1,87 @@
+[
+  {
+    "id": "rezept_manual1",
+    "name": "Milchreis mit Zimt & Zucker",
+    "description": "Ein süßer Klassiker.",
+    "ingredients": [
+      {
+        "name": "Milch",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "Milchreis",
+        "quantity": 125,
+        "unit": "g"
+      },
+      {
+        "name": "Zucker",
+        "quantity": 2,
+        "unit": "EL"
+      },
+      {
+        "name": "Zimt",
+        "quantity": 1,
+        "unit": "TL"
+      }
+    ],
+    "instructions": [
+      "Milch kochen, Reis einrühren, quellen lassen."
+    ],
+    "estimatedCostPerServing": 0.9,
+    "isSimple": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "keywords": [
+      "süß",
+      "milch"
+    ]
+  },
+  {
+    "id": "rezept1",
+    "name": "Tofu mit Kartoffeln und Tomaten",
+    "description": "Ein leckeres und schnelles Gericht. Perfekt für den Alltag.",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Kartoffeln",
+        "quantity": 120,
+        "unit": "g"
+      },
+      {
+        "name": "Tomaten",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "Zwiebel",
+        "quantity": 1,
+        "unit": "Stück"
+      },
+      {
+        "name": "Olivenöl",
+        "quantity": 2,
+        "unit": "EL"
+      }
+    ],
+    "instructions": [
+      "Zutaten vorbereiten.",
+      "Tofu und Kartoffeln kochen/braten.",
+      "Tomaten und Zwiebel hinzufügen.",
+      "Abschmecken und servieren."
+    ],
+    "estimatedCostPerServing": 2.87,
+    "isSimple": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "keywords": [
+      "tofu",
+      "kartoffeln",
+      "klassiker"
+    ]
+  }
+]
