@@ -36,10 +36,23 @@ const ui = (() => {
             "https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg?auto=compress&cs=tinysrgb&w=400"
         ];
         // Simple rotation based on recipe ID or index if available, otherwise random
-        const imageIndex = recipe.id ? parseInt(recipe.id, 10) % placeholderImages.length : Math.floor(Math.random() * placeholderImages.length);
+        let imageIndex;
+        const parsedId = parseInt(recipe.id, 10);
+
+        if (!isNaN(parsedId)) {
+            imageIndex = parsedId % placeholderImages.length;
+        } else {
+            // Fallback if recipe.id is not a number or undefined/null
+            imageIndex = Math.floor(Math.random() * placeholderImages.length);
+        }
+        // Ensure imageIndex is not negative if somehow parsedId was negative
+        imageIndex = Math.abs(imageIndex);
+
         const imageUrl = placeholderImages[imageIndex];
 
-        let imageHtml = `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-card-image">`;
+        // Note: The following line for imageHtml is not used due to previous fix,
+        // but kept here for context if someone reviews this part of the code.
+        // let imageHtml = `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-card-image">`;
 
         let tagsHtml = `<div class="tags"><span>~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`;
         if (recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
