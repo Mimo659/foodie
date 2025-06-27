@@ -54,15 +54,21 @@ const ui = (() => {
                 : `<p class="all-ingredients-present"><i class="fa-solid fa-check-double"></i> Alles da!</p>`;
             matchInfoHtml = `<div class="match-info"><div class="match-bar"><div class="match-bar-fill" style="width: ${percentage}%"></div></div><span class="match-text">${percentage}% Übereinstimmung</span>${missingText}</div>`;
         }
+        // Create image element
+        const imageElement = document.createElement('img');
+        imageElement.src = imageUrl;
+        imageElement.alt = recipe.name;
+        imageElement.className = 'recipe-card-image';
+
         // Card content container
         const cardContent = document.createElement('div');
         cardContent.className = 'recipe-card-content'; // You might want to add specific styling for this
         cardContent.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
 
-        card.innerHTML = imageHtml; // Add image first
+        card.appendChild(imageElement); // Append the created image element
         card.appendChild(cardContent); // Then append the rest of the content
 
-        card.querySelector('.btn-info').addEventListener('click', (e) => { e.stopPropagation(); onInfoClick(recipe); });
+        cardContent.querySelector('.btn-info').addEventListener('click', (e) => { e.stopPropagation(); onInfoClick(recipe); });
         return card;
     };
     
