@@ -44,7 +44,7 @@ const ui = (() => {
             const noPlanDisplay = document.getElementById('no-plan-display');
             const weeklyPlanContainer = document.getElementById('weekly-plan-container');
             if (plan && plan.length > 0) {
-                weeklyPlanContainer.innerHTML = '';
+                weeklyPlanContainer.innerHTML = ''; // Clear previous plan cards
                 plan.forEach((dayObject, dayIndex) => {
                     const dayContainer = document.createElement('div');
                     dayContainer.className = 'day-container';
@@ -65,9 +65,28 @@ const ui = (() => {
                     dayContainer.appendChild(optionsContainer);
                     weeklyPlanContainer.appendChild(dayContainer);
                 });
-                planDisplay.classList.remove('hidden'); noPlanDisplay.classList.add('hidden');
+                // Show plan display, hide no-plan message
+                if (planDisplay) {
+                    planDisplay.classList.remove('hidden');
+                    planDisplay.style.display = ''; // Reset explicit style if any
+                }
+                if (noPlanDisplay) {
+                    noPlanDisplay.classList.add('hidden');
+                    noPlanDisplay.style.display = 'none'; // Explicitly hide
+                }
             } else {
-                planDisplay.classList.add('hidden'); noPlanDisplay.classList.remove('hidden');
+                // No plan or plan is empty/deleted: Hide plan display, show no-plan message
+                if (planDisplay) {
+                    planDisplay.classList.add('hidden');
+                    planDisplay.style.display = 'none'; // More explicit hiding
+                }
+                if (noPlanDisplay) {
+                    noPlanDisplay.classList.remove('hidden');
+                    noPlanDisplay.style.display = 'block'; // Or appropriate display type
+                }
+                if (weeklyPlanContainer) {
+                    weeklyPlanContainer.innerHTML = ''; // Also clear out any old cards
+                }
             }
         },
         renderInventoryResults: (recipes, onInfoClick) => {
