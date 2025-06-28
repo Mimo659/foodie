@@ -50,7 +50,7 @@ function generateShoppingList(plan, inventory, persons = 1) {
     return shoppingList.sort((a, b) => a.haveAtHome - b.haveAtHome);
 }
 
-function findAlmostCompleteRecipes(allRecipes, inventory, threshold = 0.8) {
+function findAlmostCompleteRecipes(allRecipes, inventory, threshold = 0.55) {
     if (!inventory || inventory.length === 0) return [];
     const inventorySet = new Set(inventory.map(i => i.toLowerCase().trim()));
     const matchedRecipes = allRecipes.map(recipe => {

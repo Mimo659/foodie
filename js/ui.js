@@ -152,7 +152,7 @@ const ui = (() => {
 
             const resultsDiv = document.createElement('div');
             if (recipes.length === 0) {
-                resultsDiv.innerHTML = '<p>Keine Rezepte gefunden, für die du mindestens 80% der Zutaten hast.</p>';
+                resultsDiv.innerHTML = '<p>Keine Rezepte gefunden, für die du mindestens 55% der Zutaten hast.</p>';
                 if (deleteInventoryRecipesBtn) deleteInventoryRecipesBtn.classList.add('hidden');
             } else {
                 recipes.forEach(recipe => resultsDiv.appendChild(createRecipeCardElement(recipe, onInfoClick)));
@@ -176,7 +176,7 @@ const ui = (() => {
         switchView: (viewId) => { document.querySelectorAll('.view').forEach(v => v.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); },
         updateConfirmButtonState: (plan) => {
             const btn = document.getElementById('confirm-plan-btn');
-            if (!plan || plan.length < 7) { btn.disabled = true; return; }
+            if (!plan || plan.length === 0) { btn.disabled = true; return; }
             btn.disabled = !plan.every(day => day.selected !== null);
         },
         showApp: () => {
