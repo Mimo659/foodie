@@ -702,1073 +702,158 @@
     "tags": []
   },
   {
-    "id": "rezept-4370751744365727",
-    "name": "Würzige Käse-Lauch-Suppe",
-    "description": "Der schnelle, cremige Klassiker",
+    "id": "rezept-4370761744365737",
+    "name": "Leichter Kartoffelsalat",
+    "description": "Die leichte Beilage für jede Gelegenheit",
     "ingredients": [
       {
-        "name": "Chefkoch x Ostmann Gewürzsalz für Käse-Lauch-Suppe",
+        "name": "Chefkoch x Ostmann Gewürzsalz für Kartoffelsalat",
         "quantity": 1,
         "unit": "Pck."
       },
       {
-        "name": "Hackfleisch, gemischtes",
-        "quantity": 500,
-        "unit": "g"
-      },
-      {
-        "name": "Stange/n Lauch",
-        "quantity": 3,
-        "unit": null
-      },
-      {
-        "name": "Wasser",
-        "quantity": 750,
-        "unit": "ml"
-      },
-      {
-        "name": "Crème fraîche",
-        "quantity": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Schmelzkäse",
-        "quantity": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Öl zum Braten",
-        "quantity": 3,
-        "unit": "EL"
-      }
-    ],
-    "instructions": [
-      "1. Öl in einem großen Topf erhitzen und das Hackfleisch darin anbraten. Lauch putzen, waschen und in Ringe schneiden und zum Hackfleisch geben.",
-      "2. Mit Wasser ablöschen, den Inhalt des fein abgestimmten Gewürzsalzes einrühren und alles 10 Minuten köcheln lassen.",
-      "3. Zunächst den Schmelzkäse zugeben und schmelzen lassen, dann die Crème fraîche einrühren und nochmals aufkochen lassen.",
-      "Tipp: Dazu schmeckt frisches Baguette besonders lecker!",
-      "Guten Appetit!",
-      "Eure Lieblingsgerichte von Chefkoch jetzt einfach gekocht & würzig lecker!"
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": true,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4370791744365774",
-    "name": "Aromatisches Chili con Carne",
-    "description": "Der Klassiker der mexikanischen Küche",
-    "ingredients": [
-      {
-        "name": "Chefkoch x Ostmann Gewürzzubereitung für Chili con Carne",
-        "quantity": 1,
-        "unit": "Pck."
-      },
-      {
-        "name": "Hackfleisch",
-        "quantity": 500,
-        "unit": "g"
-      },
-      {
-        "name": "Tomaten, stückige, aus der Dose",
-        "quantity": 800,
-        "unit": "g"
-      },
-      {
-        "name": "Kidneybohnen, aus der Dose",
-        "quantity": 400,
-        "unit": "g"
-      },
-      {
-        "name": "Mais, aus der Dose",
-        "quantity": 300,
-        "unit": "g"
-      },
-      {
-        "name": "Zwiebel(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Paprikaschote(n)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Tomatenmark",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Wasser",
-        "quantity": 500,
-        "unit": "ml"
-      },
-      {
-        "name": "Öl",
-        "quantity": 2,
-        "unit": "EL"
-      }
-    ],
-    "instructions": [
-      "1. Öl in einem großen Topf erhitzen. Zwiebeln und Paprikaschote in Würfel schneiden und anbraten.",
-      "2. Anschließend das Hackfleisch zugeben und anbraten. Tomatenmark hinzufügen und kurz anrösten.",
-      "3. Tomaten und den Inhalt der fein abgestimmten Gewürzzubereitung einrühren, dann mit Wasser auffüllen. Alles unter Rühren aufkochen und 30 Minuten köcheln lassen.",
-      "4. in der Zwischenzeit Kidneybohnen und Mais abtropfen lassen und einige Minuten mitgaren.",
-      "Tipp: Dazu passt Reis, knuspriges Baguette oder leckere Tortilla Chips.",
-      "Guten Appetit!",
-      "Eure Lieblingsgerichte von Chefkoch jetzt einfach gekocht & würzig lecker!"
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": true,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4253531694686318",
-    "name": "Doppelter Smashed Burger mit Käse",
-    "description": "einfach, schnell, lecker",
-    "ingredients": [
-      {
-        "name": "Rinderhackfleisch mit hohem Fettanteil",
-        "quantity": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Burger Bun (Brioche)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Scheibe/n Cheddar (jung und alt)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Öl",
-        "quantity": 1,
-        "unit": "EL"
-      },
-      {
-        "name": "Butter",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Essiggurke(n)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "½ Zwiebel(n)",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Senf",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Ketchup",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Salz",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Pfeffer",
-        "quantity": null,
-        "unit": null
-      }
-    ],
-    "instructions": [
-      "Essiggurke und Zwiebeln in feine Würfel schneiden. Käsescheiben bereit legen. Burger Buns halbieren.",
-      "Fleisch vorsichtig zu 2 Kugeln je 80- 100 g formen.",
-      "Bei Patties mit wenig Fettanteil, ein wenig Öl in einer Pfanne erhitzen. Am besten eignen sich Gusseisen- oder Edelstahlpfannen.",
-      "Eine Hackkugel in die heiße Pfanne geben, ein Stück Backpapier darauf legen und mit einem kleinen Topf, Grillspachtel oder einem Pfannenwender, das Fleisch fest flach drücken. Die Fleischfläche sollte ein wenig größer sein als das Burgerbun.",
-      "Das gleiche mit dem zweiten Patty wiederholen.",
-      "Fleisch nach dem Andrücken salzen. Patties so lange von einer Seite braten, bis die Unterseite braun und knusprig ist.",
-      "Fleisch vorsichtig vom Pfannenboden lösen und wenden. Nun die andere Seite mit Salz und gemahlenem Pfeffer würzen.",
-      "Patties mit jeweils einer Scheibe Käse belegen. Ca. 1 Min. weiter braten und dann die Patties aufeinandersetzen und von der Hitze nehmen.",
-      "Butter in eine beschichtete Pfanne geben und die Bun-Hälften darin, auf der Schnittseite leicht gold-braun anbraten.",
-      "Die eine Bunhälfte mit Ketchup und die andere mit Senf bestreichen. Zwiebeln und Gurken darüber verteilen. Nun das doppelte Patty mit Käse auf die eine Bunhälfte geben und mit dem anderen Bun bedecken."
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": true,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4045331625120015",
-    "name": "Pilz-Schawarma al Pastor",
-    "description": "Taco-Night",
-    "ingredients": [
-      {
-        "name": "Ananas",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Chilischote(n), rote",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Zwiebel(n), rote",
-        "quantity": 3,
-        "unit": null
-      },
-      {
-        "name": "Pilze, gemischte (z.B. Portobello, Austernpilze, Kräuterseitlinge)",
+        "name": "Kartoffel(n)",
         "quantity": 1,
         "unit": "kg"
       },
       {
-        "name": "Zitronenabrieb",
-        "quantity": 2,
-        "unit": "TL"
-      },
-      {
-        "name": "Kreuzkümmelpulver",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "½ TL Pimentpulver",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Paprikapulver, geräuchertes",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Meersalzflocken",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Zehe/n Knoblauch, junger",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Olivenöl",
-        "quantity": 6,
-        "unit": "EL"
-      }
-    ],
-    "instructions": [
-      "Man benötigt 3 Holzspieße.",
-      "Von der Ananas das untere Ende 3 cm dick abschneiden, den Rest beiseitelegen (aus der restlichen Ananas könnt ihr wunderbar im Ofen geschmorte scharfe Ananas-Spalten machen. Rezept siehe unten). Das untere Ende mit der Schnittfläche nach oben auf ein Backblech legen. 3 Holzspieße mit den Spitzen nach oben hineinstecken. Backofen auf 230 Grad vorheizen.",
-      "Chili in dünne Ringe schneiden. Zwiebeln halbieren und in breite Spalten schneiden. Pilze putzen und mit Zwiebeln, Chili, Zitronenabrieb, Gewürzen und einer großen Prise Salz in eine Schüssel geben. Knoblauch dazupressen, Olivenöl dazugeben und alles gut miteinander mischen.",
-      "Marinierte Pilze und Zwiebeln auf die Spieße stecken, dabei immer gut nach unten drücken, damit der Spieß schön kompakt wird. Den Spieß auf dem Backblech im vorgeheizten Ofen auf unterer Schiene ca. 30 Minuten rösten.",
-      "Tipp: Es hilft, einen kleinen Topf in den Ofen zu stellen, an den der Schawarma-Pilz-Spieß angelehnt werden kann (falls es zu instabil sein sollte).",
-      "Pilz-Schawarma mit einem scharfen Messer von oben nach unten dünn vom Spieß abschneiden. Für einen authentischen veganen Taco al Pastor mit Tortillas, Condiments und Pico de Gallo servieren.",
-      "Die weiteren Rezepte zur Shared Table-Folge \"Taco-Night\" findet ihr hier:",
-      "https://www.chefkoch.de/rezepte/4045031625041058/Kaesedip-fuer-Nachos-vegan.html",
-      "https://www.chefkoch.de/rezepte/4045341625120145/Scharfe-Ofen-Ananas.html"
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": false,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4202941676989755",
-    "name": "Wildschwein-Burger mit Rotkohl-Slaw",
-    "description": "Mit Süßkartoffel-Fritten",
-    "ingredients": [
-      {
-        "name": "Schmand",
-        "quantity": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Milch",
-        "quantity": 200,
-        "unit": "ml"
-      },
-      {
-        "name": "Zitronensaft",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Schmand",
-        "quantity": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Milch",
-        "quantity": 200,
-        "unit": "ml"
-      },
-      {
-        "name": "Zitronensaft",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Salz und Pfeffer (frisch gemahlener)",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Ahornsirup",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "große Möhre(n) (200 g)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "n. B. Staudensellerie (3 - 4 Stangen)",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "kleiner Rotkohl (650 g)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Süßkartoffel(n)",
-        "quantity": 600,
-        "unit": "g"
-      },
-      {
-        "name": "Liter Frittieröl (am besten Erdnussöl)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Speisestärke",
-        "quantity": 1,
-        "unit": "EL"
-      },
-      {
-        "name": "Meersalz",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Wildhackfleisch (beim Wildhändler vorbestellt)",
-        "quantity": 500,
-        "unit": "g"
-      },
-      {
-        "name": "Öl zum Braten",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Burgerbrötchen",
+        "name": "Gewürzgurke(n)",
         "quantity": 4,
         "unit": null
       },
       {
-        "name": "n. B. Mayonnaise (2 - 3 EL; evtl. Trüffelmayonnaise)",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "n. B. BBQ-Sauce (2 - 3 EL)",
-        "quantity": null,
-        "unit": null
-      }
-    ],
-    "instructions": [
-      "Für den Slaw Schmand und Milch verrühren, dann Zitronensaft, Salz, Pfeffer und Ahornsirup unterrühren.",
-      "Möhre putzen, schälen, abspülen. Sellerie putzen, abspülen, eventuell entfädeln, das Grün beiseitelegen. Rotkohl putzen, halbieren und den Mittelstrunk keilförmig herausschneiden. Alle Gemüsesorten in der Küchenmaschine (mit geeigneter Raspelfunktion), mit einem Allesschneider oder auf einem Küchenhobel in feine Streifen und den Sellerie in dünne Scheibchen hobeln.",
-      "Gemüsestreifen leicht salzen und in einer Schüssel mit den Händen 2 - 3 Minuten gut durchkneten, damit sie mürber werden. Gemüsestreifen gut ausdrücken und mit dem Schmand-Dressing mischen.",
-      "Für die Fritten die Süßkartoffeln schälen, abspülen und zuerst in etwa ½ cm dicke Scheiben, dann zu Fritten schneiden.",
-      "Das Frittierfett erhitzen. Die Temperatur ist richtig, wenn sich an einem auf den Topfboden getauchten Holzlöffelstiel kleine Bläschen bilden.",
-      "Die rohen Kartoffeln trocken tupfen, mit der Speisestärke bestäuben und gut mischen. Fritten portionsweise ins heiße Fett geben und etwa 4 - 6 Minuten darin goldbraun frittieren. Mit einer Schaumkelle herausnehmen und auf Küchenkrepp abtropfen lassen. Fritten vor dem Servieren nochmals etwa 4 - 5 Minuten knusprig frittieren und salzen.",
-      "Für die Buletten aus dem Hack 4 flache Paddies (Ø 9 cm) formen, von außen mit Salz und Pfeffer würzen. Auf einem Teller für etwa 10 Minuten in den Kühlschrank stellen.",
-      "Öl in einer Pfanne/Grillpfanne erhitzen, die Buletten darin auf jeder Seite etwa 5 Minuten goldbraun braten.",
-      "Brötchen waagerecht halbieren und toasten. Untere Hälften mit Mayonnaise, obere mit BBQ-Soße bestreichen.",
-      "Die unteren Brötchenhälften mit einigen Sellerieblättern und einem Buletten-Patty belegen. Etwas Slaw draufgeben und mit der oberen Brötchenhälfte belegen.",
-      "Die Burger mit restlichem Slaw und den nochmals frittierten Fritten servieren."
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": false,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4045571625140538",
-    "name": "Salsiccia-Meatballs in Tomatensauce",
-    "description": "Pasta-Party",
-    "ingredients": [
-      {
-        "name": "Salsiccia (grobe italienische Bratwurst)",
-        "quantity": 300,
-        "unit": "g"
-      },
-      {
-        "name": "Olivenöl",
-        "quantity": 2,
-        "unit": "EL"
-      },
-      {
-        "name": "Zwiebel(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Fenchelsamen",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Zehe/n Knoblauch, junger",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Tomaten, stückige (aus der Dose)",
-        "quantity": 600,
-        "unit": "g"
-      },
-      {
-        "name": "Salz und Pfeffer",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "kl. Bund Basilikum",
-        "quantity": 1,
-        "unit": null
-      }
-    ],
-    "instructions": [
-      "Wurstbrät aus der Pelle drücken und mit feuchten Händen zu kleinen Bällchen formen. Olivenöl in einer großen Pfanne erhitzen und die Meatballs darin bei mittlerer Hitze rundum braten.",
-      "Währenddessen Zwiebeln fein würfeln und mit Fenchelsaat in die Pfanne geben. Knoblauch dazupressen und 3 - 4 Minuten unter gelegentlichem Rühren farblos mitbraten.",
-      "Tomatenstücke dazugeben, mit Salz und Pfeffer würzen und ca. 20 Minuten bei nicht zu starker Hitze einkochen.",
-      "Basilikumblätter abzupfen, grob schneiden und über die Sauce streuen.",
-      "Mit gekochter Pasta servieren.",
-      "Die weiteren Rezepte zur Shared Table-Folge \"Pasta-Party\" findest du hier:",
-      "https://www.chefkoch.de/rezepte/4045581625140678/Vegane-Kuerbis-Pastasauce.html",
-      "https://www.chefkoch.de/rezepte/4045591625140811/Erbsensauce-mit-Minze-und-Ricotta.html",
-      "https://www.chefkoch.de/rezepte/4045601625140998/Salbei-Broesel-als-Pasta-Topping.html"
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": true,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4080481638604337",
-    "name": "Schwarzwälder Pilz-Dim Sum mit Sojasauce",
-    "description": "Originalrezept von Viki Fuchs",
-    "ingredients": [
-      {
-        "name": "Mehl",
-        "quantity": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Salz",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Wasser, heißes",
-        "quantity": 130,
-        "unit": "ml"
-      },
-      {
-        "name": "Pilze, gemischte (Steinpilze, Champignons, Pfifferlinge, Kräuterseitlinge, Totentrompeten, Semmelstoppel)",
-        "quantity": 1,
-        "unit": "kg"
-      },
-      {
-        "name": "Schalotte(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Knoblauchzehe(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Stängel Blattpetersilie",
-        "quantity": 8,
-        "unit": null
-      },
-      {
-        "name": "Koriander",
-        "quantity": 1,
-        "unit": "Bund"
-      },
-      {
-        "name": "Sherry",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Misopaste",
-        "quantity": 1,
-        "unit": "EL"
-      },
-      {
-        "name": "Salz und Pfeffer",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Chiliflocken",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Sonnenblumenöl",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Sojasauce",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Sesam, gerösteter",
-        "quantity": null,
-        "unit": null
-      }
-    ],
-    "instructions": [
-      "Für 32 Dim Sum.",
-      "Für den Teig Mehl und Salz vermischen. Heißes Wasser hinzugeben und mit Hilfe zweier Essstäbchen vermengen. Sobald Wasser und Mehl sich verbunden haben mehrere Minuten mit den Händen weiterkneten. Aus dem Teig eine Kugel formen, abdecken und mindestens 60 Minuten ruhen lassen.",
-      "In der Zwischenzeit die Pilze putzen und in grobe Stücke schneiden. Die Schalotten und Knoblauchzehen schälen und fein würfeln. Die Kräuter waschen, trocken schütteln und in feine Streifen schneiden.",
-      "Die Pilze in einer heißen Pfanne mit etwas Sonnenblumenöl kräftig anbraten. Schalotten und Knoblauch hinzugeben und mitbraten. Wenn die Pilze zusammengefallen sind und ihre gesamte Flüssigkeit verkocht ist, mit einem Schuss Sherry ablöschen und einkochen lassen. Misopaste und Kräuter hinzugeben und mit Chiliflocken, Salz und Pfeffer würzen.",
-      "Die gegarte Pilzmasse aus der Pfanne auf ein Brett geben und mit einem Messer mehrmals grob durchhacken, in eine Schüssel füllen und für ca. 30 Minuten in den Kühlschrank stellen. Den Teig aus dem Kühlschrank holen und die Teigkugel in 8 gleichgroße Stücke schneiden. Diese zu jeweils 4 kleinen Kugeln formen und auf einer bemehlten Arbeitsfläche gleichmäßig zu kleinen runden Teigplatten formen. Anschließend mit einem Nudelholz ca. 1 - 2 mm dünn ausrollen.",
-      "Tipp: Wer sich beim runden Ausrollen einzelner Teiglinge schwertut, kann einfach den ganzen Teig ausrollen und mit einem umgedrehten Glas oder Teigausstecher rund ausstechen. Jeweils ca. 1 - 2 Teelöffel der Pilzfüllung in die Mitte jedes Teigkreises geben und den Rand mit Wasser befeuchten. Nun zu Halbmonden zusammenklappen und eine Teighälfte in kleinen Wellenbewegungen, fächerförmig an die andere Teighälfte drücken.",
-      "Die fertigen Dim Sum in einen geölten, oder mit gelöchertem Backpapier ausgelegten Dämpfeinsatz geben und ca. 7 - 9 Minuten dämpfen.",
-      "Als Dip eignet sich Sojasauce mit geröstetem Sesam."
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": false,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4071131635316982",
-    "name": "Hirsch-Tajine mit Kichererbsen und Backpflaumen",
-    "description": null,
-    "ingredients": [
-      {
-        "name": "Hirschfleisch",
-        "quantity": 700,
-        "unit": "g"
-      },
-      {
-        "name": "Knoblauchzehe(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "cm Ingwer, frisch",
-        "quantity": 3,
-        "unit": null
-      },
-      {
-        "name": "Kreuzkümmel",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "½ TL Pfefferkörner, weiße",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Safranfäden",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Olivenöl",
-        "quantity": 6,
-        "unit": "EL"
-      },
-      {
-        "name": "Gemüsezwiebel(n)",
+        "name": "Apfel",
         "quantity": 1,
         "unit": null
       },
       {
-        "name": "Karotte(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Backpflaume(n)",
-        "quantity": 250,
-        "unit": "g"
-      },
-      {
-        "name": "Zitrone(n)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Salz",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Zimtstange(n)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Liter Wildfond",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "½ Dose Kichererbsen",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Minze",
-        "quantity": 1,
-        "unit": "Bund"
-      },
-      {
-        "name": "Blattpetersilie",
-        "quantity": 1,
-        "unit": "Bund"
-      },
-      {
-        "name": "Mandel(n)",
-        "quantity": 250,
-        "unit": "g"
-      }
-    ],
-    "instructions": [
-      "Das Hirschfleisch in ca. 2 - 3 cm große Würfel schneiden.",
-      "Für die Marinade Knoblauch in feine Würfel schneiden und den Ingwer reiben. Zusammen mit den Gewürzen (Kreuzkümmel, Pfefferkörnern, Safran) und Olivenöl in einen Mörser geben und fein zerstoßen. Das Hirschfleisch mit der Marinade verrühren. Die Zwiebel schälen und in grobe Stücke und die Karotten ebenfalls schälen und in Scheiben schneiden.",
-      "Vikis Tipp: Wildfleisch aus eurer Region findet ihr unter www.wild-auf-wild.de",
-      "Das marinierte Fleisch, Karotten, Zwiebeln und Backpflaumen gleichmäßig in der Tajine verteilen. Zitrone heiß waschen und in Scheiben schneiden und kreisförmig auf Fleisch und Gemüse verteilen. Die Zimtstange in die Mitte drücken. Mit dem Wildfond auffüllen, bis alles bedeckt ist. Nun den Deckel auf die Tajine geben, kaltes Wasser in die Mulde füllen und bei mittlerer Hitze ca. 30 Minuten schmoren lassen. Nach 30 Minuten die Kichererbsen hinzugeben und ggf. etwas Flüssigkeit nachfüllen. Minze und Petersilie waschen, trocken tupfen und grob hacken. Mandeln in einer Pfanne ohne Öl oder im Ofen bei 165 °C Ober/- Unterhitze rösten und anschließend grob hacken.",
-      "Nach Ende der Garzeit das Fleisch kontrollieren, wenn es zart ist, den Deckel offenlassen und noch etwas Flüssigkeit einkochen lassen, bis die Sauce sämig ist, dann abschmecken. Die gehackten Kräuter und Mandeln darauf verteilen und servieren.",
-      "Dazu passt Couscous mit Gurkenwürfeln und Granatapfelkernen und ein Petersilie-Minz-Joghurt.",
-      "Viki hat sich von diesem Rezept aus der Community inspirieren lassen:",
-      "https://www.chefkoch.de/rezepte/148341065351491/Rindfleisch-Tajine-mit-Mandeln-und-Backpflaumen.html"
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": false,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4131291655190905",
-    "name": "Vikis Wilde Tacos mit selbstgemachten Mais-Tortillas, Rehrücken & Salsa verde",
-    "description": "Viki Fuchs Originalrezept",
-    "ingredients": [
-      {
-        "name": "Mehl (Masa-Mehl), erhältlich in Asia-Märkten oder online",
-        "quantity": 150,
-        "unit": "g"
-      },
-      {
-        "name": "Wasser, kochendes",
-        "quantity": 300,
-        "unit": "ml"
-      },
-      {
-        "name": "Prise(n) Salz",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Prise(n) Zucker",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Tomate(n), grüne",
-        "quantity": 125,
-        "unit": "g"
-      },
-      {
-        "name": "Zwiebel(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Knoblauchzehe(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Jalapeño(s), grüne",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Sonnenblumenöl",
-        "quantity": 1,
-        "unit": "EL"
-      },
-      {
-        "name": "Koriander",
-        "quantity": 1,
-        "unit": "Bund"
-      },
-      {
-        "name": "Honig",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Meersalz",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Wasser",
-        "quantity": 200,
-        "unit": "ml"
-      },
-      {
-        "name": "Rehkeule(n) aus der Oberschale ohne Knochen",
-        "quantity": 600,
-        "unit": "g"
-      },
-      {
-        "name": "Butter",
-        "quantity": null,
-        "unit": "etwas"
-      },
-      {
-        "name": "Salz und Pfeffer",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Chilischote(n), rote",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Knoblauchzehe(n)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Öl, neutrales, z. B. Sonnenblumenöl",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Limette(n)",
-        "quantity": 4,
-        "unit": null
-      },
-      {
-        "name": "½ Rotkohl",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Prise(n) Zucker",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Avocado(s)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Koriander",
-        "quantity": null,
-        "unit": null
-      }
-    ],
-    "instructions": [
-      "Man braucht eine Tortilla-Presse mit 20 cm Durchmesser und Backpapier. Außerdem für den Rotkohl Einmalhandschuhe.",
-      "1. In einer Schüssel Masa-Mehl, Salz, Zucker und heißes Wasser zunächst mit einem Kochlöffel verrühren. Danach den Teig mit den Händen glatt verkneten und abgedeckt ca. 20 Minuten ruhen lassen.",
-      "2. In der Zwischenzeit die Salsa verde zubereiten. Dafür Tomaten waschen, Stielansätze herausschneiden. Grüne Tomaten und Zwiebeln würfeln. Knoblauch schälen und fein hacken. Jalapeños waschen und halbieren, Kerne und weiße Trennhäute entfernen. Jalapeños fein würfeln.",
-      "3. Einen kleinen Topf stark erhitzen. Zwiebeln, Knoblauch und Jalapeños in etwas Sonnenblumenöl goldbraun anschwitzen. Honig, Tomaten und 200 ml Wasser zugeben und ca. 20 Minuten bei mittlerer Hitze offen garen. Korianderblätter und die oberen Stiele grob hacken, zu den Tomaten geben und alles mit dem Schneidstab fein pürieren. Mit Salz abschmecken und beiseitestellen.",
-      "4. Eine große gusseiserne Pfanne vorheizen. Teig in 8 gleichgroße Stücke schneiden und zu Bällen formen. Die Tortilla-Presse mit Papier auslegen und die Bälle nacheinander zu Tortillas pressen. Die Tortillas nacheinander in der heißen Pfanne ohne Fett ausbacken. Der Tortilla ist bereit zum Wenden, wenn die Ränder leicht durchsichtig werden (ca. 30 Sekunden). Eine weitere Minute weiter backen und erneut wenden. Bis zum Verzehr in ein Tuch einschlagen und warmhalten.",
-      "5. Für die Füllung die Rehkeule in feine Streifen schneiden, sodass ein Geschnetzeltes entsteht. Knoblauch andrücken, Chili fein hacken und mit dem Fleisch in neutralem Öl bei starker Hitze rundum 2-3 Minuten scharf anbraten. Kurz vor dem Ende noch ein kleines Stück Butter unterrühren. Fleisch aus der Pfanne nehmen, mit Salz und Pfeffer würzen.",
-      "6. 2 Limetten auspressen und 2 Limetten in Spalten schneiden. Einmalhandschuhe anziehen. Den Strunk vom Rotkohl entfernen. Rotkohl in feine Streifen schneiden und mit Salz, Zucker und der Hälfte des Limettensafts mit den Händen ca. 3 Minuten weich kneten. Avocado in Spalten schneiden und mit restlichem Limettensaft beträufeln. Tortillas aus dem Tuch nehmen (ggf. nochmal kurz erwärmen), mit ca. 2 TL Salsa bestreichen, mit 2 EL Reh und 2 EL Rotkohlsalat, 2 Avocadospalten und frischem Koriander befüllen. Tortilla einmal umklappen und mit Limettenspalten servieren."
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": false,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4368601743578026",
-    "name": "Nürnberger mit Lauchgemüse",
-    "description": "Mit Petersilie",
-    "ingredients": [
-      {
-        "name": "Kartoffel(n)",
-        "quantity": 300,
-        "unit": "g"
-      },
-      {
-        "name": "Lauch",
-        "quantity": 500,
-        "unit": "g"
-      },
-      {
-        "name": "Öl",
-        "quantity": 5,
-        "unit": "EL"
-      },
-      {
-        "name": "Kartoffel(n)",
-        "quantity": 300,
-        "unit": "g"
-      },
-      {
-        "name": "Lauch",
-        "quantity": 500,
-        "unit": "g"
-      },
-      {
-        "name": "Öl",
-        "quantity": 5,
-        "unit": "EL"
-      },
-      {
-        "name": "Brühe",
-        "quantity": 500,
-        "unit": "ml"
-      },
-      {
-        "name": "Butter",
-        "quantity": 1,
-        "unit": "EL"
-      },
-      {
-        "name": "Mehl",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Schlagsahne",
-        "quantity": 100,
-        "unit": "ml"
-      },
-      {
-        "name": "Nürnberger Rostbratwürstchen",
-        "quantity": 12,
-        "unit": null
-      },
-      {
-        "name": "Salz und Pfeffer",
+        "name": "½ Bund Frühlingszwiebel(n)",
         "quantity": null,
         "unit": null
       },
       {
         "name": "Senf",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Petersilie, gehackte",
-        "quantity": 1,
-        "unit": "EL"
-      }
-    ],
-    "instructions": [
-      "1. Kartoffeln schälen, 1,5 cm groß würfeln. Lauch putzen, in 1,5 cm breite Ringe schneiden, gründlich",
-      "waschen.",
-      "2. 4 EL Öl in einem weiten Topf erhitzen. Kartoffeln und Lauch da­rin andünsten, Brühe zugießen, salzen und pfeffern, aufkochen und zugedeckt bei milder Hitze 10 Min. garen. Gemüse in ein Sieb gießen, Brühe auffangen.",
-      "3. Butter im Topf zerlassen, Mehl darin andünsten. Brühe (von oben) und Schlagsahne einrühren, aufkochen, bei milder Hitze 5 Min. köcheln lassen. Gemüse zugeben, weitere 5 Min. köcheln lassen.",
-      "4. Nürnberger Bratwürste in einer Pfanne mit 1 EL Öl hellbraun braten. Gemüse mit Salz, Pfeffer und Senf würzen. Mit gehackter Petersilie und den Würsten servieren.",
-      "Pro Portion 32 g E, 85 g F, 28 g KH = 1030 kcal (4314 kJ)"
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": false,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4371221744636291",
-    "name": "Grillgemüse-Platte",
-    "description": "Bunt, gesund und schnell zubereitet für den Grillabend",
-    "ingredients": [
-      {
-        "name": "BERTOLLI Grill Olivenöl",
-        "quantity": 8,
-        "unit": "EL"
-      },
-      {
-        "name": "Senf",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Kräuter (klein gehackt)",
-        "quantity": 1,
-        "unit": "TL"
-      },
-      {
-        "name": "Knoblauchzehe(n) (fein gehackt)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Prise(n) Zucker",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Salz und Pfeffer",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Paprikaschote(n)",
-        "quantity": 3,
-        "unit": null
-      },
-      {
-        "name": "Maiskolben",
-        "quantity": 4,
-        "unit": null
-      },
-      {
-        "name": "Champignons",
-        "quantity": 400,
-        "unit": "g"
-      },
-      {
-        "name": "Zwiebel(n), rote",
-        "quantity": 3,
-        "unit": null
-      },
-      {
-        "name": "m.-große Zucchini",
-        "quantity": 3,
-        "unit": null
-      },
-      {
-        "name": "Rispe(n) Kirschtomate(n)",
         "quantity": 2,
-        "unit": null
+        "unit": "TL"
       },
       {
-        "name": "Grillkäse",
-        "quantity": 4,
-        "unit": null
-      },
-      {
-        "name": "BERTOLLI Grill Olivenöl zum Verfeinern",
+        "name": "Zucker (oder nach Belieben)",
         "quantity": 3,
-        "unit": "EL"
-      }
-    ],
-    "instructions": [
-      "1. Für die Marinade BERTOLLI Grill Olivenöl, Senf, Kräuter, Knoblauch, Zucker, Salz und Pfeffer verrühren.",
-      "2. Paprikaschoten achteln, Zwiebeln vierteln, Zucchini der Länge nach in Scheiben schneiden und Champignons halbieren.",
-      "3. Das Gemüse in die Marinade legen und vorsichtig durchmischen. Für etwa 30 Minuten marinieren.",
-      "4. Tomatenrispen und Grillkäse, der in Scheiben geschnitten wurde, mit BERTOLLI Grill Olivenöl bepinseln.",
-      "5. Den Grill auf 180 °C vorheizen und das Gemüse portionsweise für 5 - 8 Minuten grillen. Dabei immer wieder wenden. Das Gemüse und den Grillkäse auf einer großen Platte anrichten. Vor dem Servieren mit BERTOLLI Grill Olivenöl verfeinern."
-    ],
-    "estimatedCostPerServing": null,
-    "isSimple": true,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
-  },
-  {
-    "id": "rezept-4369711744020189",
-    "name": "Crispy Gnocchi aus dem Airfryer",
-    "description": "Außen knusprig, innen weich – Airfryer-Gnocchi in drei unwiderstehlichen Varianten für deinen nächsten Snack-Moment!",
-    "ingredients": [
-      {
-        "name": "HENGLEIN Gnocchi",
-        "quantity": 1,
-        "unit": "Pck."
+        "unit": "TL"
       },
       {
-        "name": "n. B. Öl",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Parmesan, geriebener",
+        "name": "Gurkensud",
         "quantity": 100,
-        "unit": "g"
+        "unit": "ml"
       },
       {
-        "name": "Kräuter der Provence",
-        "quantity": 1,
-        "unit": "EL"
-      },
-      {
-        "name": "Salz und Pfeffer",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Ei(er)",
-        "quantity": 1,
-        "unit": null
-      },
-      {
-        "name": "Semmelbrösel (Dinkel-Semmelbrösel), ca.",
-        "quantity": 150,
-        "unit": "g"
-      },
-      {
-        "name": "Salz und Pfeffer",
-        "quantity": null,
-        "unit": null
-      },
-      {
-        "name": "Ei(er)",
-        "quantity": 2,
-        "unit": null
-      },
-      {
-        "name": "Milch oder fettarme Sahne",
+        "name": "Weißweinessig",
         "quantity": 50,
         "unit": "ml"
       },
       {
-        "name": "Paniermehl, ca.",
+        "name": "Öl",
         "quantity": 100,
+        "unit": "ml"
+      }
+    ],
+    "instructions": [
+      "1. Kartoffeln mit Schale kochen, lauwarm pellen und in Scheiben schneiden. Gewürzgurken und Apfel ebenfalls in Scheiben schneiden und mit den Kartoffeln mischen.",
+      "2. Alle Zutaten für das Dressing sowie den Inhalt des perfekt abgestimmten Gewürzsalzes und nach Belieben Zucker verrühren. Das Dressing über die Kartoffelscheiben gießen und vorsichtig vermischen.",
+      "3. Den Salat für vollen Geschmack 3 - 4 Stunden ziehen lassen. Vor dem Servieren die Frühlingszwiebeln in Ringe schneiden und unter den Salat mischen.",
+      "Guten Appetit!",
+      "Eure Lieblingsgerichte von Chefkoch jetzt einfach gekocht & würzig lecker!"
+    ],
+    "estimatedCostPerServing": null,
+    "isSimple": true,
+    "isVegetarian": false,
+    "isVegan": false,
+    "tags": []
+  },
+  {
+    "id": "rezept-4281971705578210",
+    "name": "Süßkartoffel-Gnocchi-Auflauf",
+    "description": null,
+    "ingredients": [
+      {
+        "name": "BÜRGER Süßkartoffel-Gnocchi",
+        "quantity": 2,
+        "unit": "Pck."
+      },
+      {
+        "name": "Süßkartoffel(n)",
+        "quantity": 2,
+        "unit": null
+      },
+      {
+        "name": "Olivenöl",
+        "quantity": 2,
+        "unit": "EL"
+      },
+      {
+        "name": "Baby-Spinat",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "m.-große Zwiebel(n)",
+        "quantity": 1,
+        "unit": null
+      },
+      {
+        "name": "Knoblauchzehe(n)",
+        "quantity": 1,
+        "unit": null
+      },
+      {
+        "name": "Ei(er)",
+        "quantity": 2,
+        "unit": null
+      },
+      {
+        "name": "Sahne",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Parmesan, geriebener",
+        "quantity": 50,
         "unit": "g"
       },
       {
         "name": "Salz und Pfeffer",
         "quantity": null,
         "unit": null
+      },
+      {
+        "name": "Kresse",
+        "quantity": 2,
+        "unit": "EL"
+      },
+      {
+        "name": "kl. Bund Schnittlauch",
+        "quantity": 1,
+        "unit": null
+      },
+      {
+        "name": "½ Bund Basilikum",
+        "quantity": null,
+        "unit": null
+      },
+      {
+        "name": "Olivenöl zum Braten",
+        "quantity": null,
+        "unit": null
       }
     ],
     "instructions": [
-      "Zubereitung für alle drei Varianten: Alle Zutaten in eine Schüssel geben. Leicht eingeölte Gnocchi dazugeben und alles vermengen. Gnocchi anschließend in den Airfryer/Heißluftfritteuse geben und bei 180 °C 10 - 15 Minuten knusprig backen."
+      "1. Die Süßkartoffeln schälen und in ca. 3 mm dünne Scheiben hobeln. Auf zwei Backbleche legen, mit Olivenöl bepinseln und im Backofen bei 160 °C Umluft 15 Minuten backen.",
+      "2. Gnocchi in Salzwasser 2 Minuten ziehen lassen. Abtropfen lassen.",
+      "3. Zwiebel und Knoblauch in kleine Würfel schneiden. In einer Pfanne etwas Öl erhitzen und beides darin glasig dünsten. Den Spinat dazugeben und so lange dünsten, bis dieser in sich leicht zusammenfällt. Salzen und pfeffern.",
+      "4. Eine Auflaufform einfetten. Die Gnocchi, Süßkartoffelscheiben und Spinat darin nebeneinander schichten.",
+      "5. Die Eier mit der Sahne und dem Parmesan verrühren. Salzen, pfeffern und über den Auflauf gießen.",
+      "6. Im Backofen 20 Minuten bei 180 °C Unter-/Oberhitze oder bei 160 °C Umluft backen.",
+      "7. Die Kräuter klein schneiden und zum Servieren über den Auflauf streuen."
     ],
     "estimatedCostPerServing": null,
     "isSimple": true,
