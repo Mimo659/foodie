@@ -20,42 +20,6 @@ const ui = (() => {
     const createRecipeCardElement = (recipe, onInfoClick) => {
         const card = document.createElement('div');
         card.className = 'recipe-card';
-        // Placeholder image - replace with actual image URL or logic to get it
-        // Using Pexels as an example for royalty-free images.
-        // Ideally, you'd have specific images for each recipe or a more sophisticated way to search/select them.
-        // For now, a generic food image or a category-based one could be used.
-        // Example: Use recipe name to slightly vary the image for demo purposes if Pexels search was live
-        // const searchTerm = recipe.name.split(" ")[0] || "food";
-        // const imageUrl = `https://source.unsplash.com/400x300/?${encodeURIComponent(searchTerm)}`;
-        // For simplicity, let's use a few rotating placeholder images for now.
-        const placeholderImages = [
-            "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400",
-            "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=400",
-            "https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=400",
-            "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg?auto=compress&cs=tinysrgb&w=400",
-            "https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg?auto=compress&cs=tinysrgb&w=400"
-        ];
-        // Simple rotation based on recipe ID or index if available, otherwise random
-        let imageIndex;
-        // Handle different ID formats (numbers, rezept-NUMBER, rezept-api-NUMBER)
-        const idString = String(recipe.id || ''); // Ensure recipe.id is a string
-        const numericIdPart = idString.replace(/rezept-api-|rezept-/i, '');
-        const parsedId = parseInt(numericIdPart, 10);
-
-        if (!isNaN(parsedId)) {
-            imageIndex = parsedId % placeholderImages.length;
-        } else {
-            // Fallback if recipe.id does not yield a number
-            imageIndex = Math.floor(Math.random() * placeholderImages.length);
-        }
-        // Ensure imageIndex is not negative
-        imageIndex = Math.abs(imageIndex);
-
-        const imageUrl = placeholderImages[imageIndex];
-
-        // Note: The following line for imageHtml is not used due to previous fix,
-        // but kept here for context if someone reviews this part of the code.
-        // let imageHtml = `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-card-image">`;
 
         const priceTagHtml = (typeof recipe.estimatedCostPerServing === 'number' && !isNaN(recipe.estimatedCostPerServing))
             ? `<span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`
@@ -74,18 +38,11 @@ const ui = (() => {
                 : `<p class="all-ingredients-present"><i class="fa-solid fa-check-double"></i> Alles da!</p>`;
             matchInfoHtml = `<div class="match-info"><div class="match-bar"><div class="match-bar-fill" style="width: ${percentage}%"></div></div><span class="match-text">${percentage}% Übereinstimmung</span>${missingText}</div>`;
         }
-        // Create image element
-        const imageElement = document.createElement('img');
-        imageElement.src = imageUrl;
-        imageElement.alt = recipe.name;
-        imageElement.className = 'recipe-card-image';
-
         // Card content container
         const cardContent = document.createElement('div');
         cardContent.className = 'recipe-card-content'; // You might want to add specific styling for this
         cardContent.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
 
-        card.appendChild(imageElement); // Append the created image element
         card.appendChild(cardContent); // Then append the rest of the content
 
         cardContent.querySelector('.btn-info').addEventListener('click', (e) => { e.stopPropagation(); onInfoClick(recipe); });
