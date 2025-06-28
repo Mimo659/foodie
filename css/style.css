@@ -223,3 +223,145 @@ footer { text-align: center; padding: 2rem; color: var(--k-text-secondary); marg
     #weekly-plan-container { /* Add styles for better mobile layout if needed */ }
     .day-container h3 { font-size: 1.3rem; }
 }
+
+/* Styles for new inventory (Mein Vorrat) section */
+#add-pantry-item-form {
+    margin-bottom: 2rem;
+    position: relative; /* For suggestions positioning */
+}
+
+#pantry-item-search {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--k-border-light);
+    border-radius: 8px;
+    background-color: var(--k-bg-card);
+    font-family: 'Poppins', sans-serif;
+    color: var(--k-text-primary);
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+}
+#pantry-item-search:focus {
+    outline: none;
+    border-color: var(--k-primary-1);
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+}
+
+.suggestions-list {
+    position: absolute;
+    width: 100%;
+    background-color: var(--k-bg-card);
+    border: 1px solid var(--k-border-light);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.suggestions-list.hidden {
+    display: none;
+}
+.suggestions-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.suggestions-list li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--k-text-secondary);
+}
+.suggestions-list li:hover {
+    background-color: var(--k-primary-1-light);
+    color: var(--k-text-primary);
+}
+
+#pantry-item-details {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: var(--k-bg-light); /* Slightly different background to group them */
+    border-radius: 8px;
+    border: 1px solid var(--k-border-light);
+}
+#pantry-item-details .form-group input {
+     width: 100%; /* Make inputs take full width of their group */
+     padding: 0.5rem 0.8rem; /* Smaller padding for these inputs */
+     font-size: 0.9rem;
+     box-sizing: border-box;
+     border: 1px solid var(--k-border-light);
+     border-radius: 6px;
+}
+#pantry-item-details .form-group input:focus {
+    border-color: var(--k-primary-1);
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.15);
+    outline: none;
+}
+#pantry-item-details .form-group label {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+
+#add-item-to-pantry-btn {
+    margin-top: 1rem;
+    /* Use existing btn-primary styles, specific overrides if needed */
+}
+
+hr.section-divider {
+    border: none;
+    border-top: 1px solid var(--k-border-dark);
+    margin: 2.5rem 0;
+}
+
+#current-pantry-section h3 {
+    margin-bottom: 1rem;
+}
+
+#current-pantry-display ul.current-pantry-list {
+    list-style: none;
+    padding: 0;
+}
+
+#current-pantry-display li.pantry-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--k-bg-light);
+    border-radius: 8px;
+    border-left: 4px solid var(--k-primary-2); /* Green accent */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+#current-pantry-display li.pantry-list-item span {
+    flex-grow: 1;
+    font-size: 0.95rem;
+}
+
+#current-pantry-display .btn-remove-pantry-item {
+    background: none;
+    border: none;
+    color: var(--k-accent-red);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.25rem 0.5rem;
+    margin-left: 1rem;
+}
+#current-pantry-display .btn-remove-pantry-item:hover {
+    color: #C0392B; /* Darker red */
+}
+
+#empty-pantry-message {
+    text-align: center;
+    color: var(--k-text-secondary);
+    padding: 1rem;
+    background-color: var(--k-bg-light);
+    border-radius: 8px;
+}
+#find-recipes-from-pantry-btn {
+    margin-top: 1.5rem; /* Space above this button */
+}

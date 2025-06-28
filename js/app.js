@@ -8,12 +8,19 @@ function initializeApp() {
         setItem: (key, value) => localStorage.setItem(key, JSON.stringify(value))
     };
 
-    fetch('data/recipes.json')
-        .then(response => { if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); return response.json(); })
-        .then(recipes => {
+    // Fetch both recipes and pantry categories
+    Promise.all([
+        fetch('data/recipes.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for recipes.json`); return res.json(); }),
+        fetch('data/pantry_item_categories.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for pantry_item_categories.json`); return res.json(); })
+    ])
+    .then(([recipes, pantryData]) => {
             const ALL_RECIPES = recipes;
+            const PANTRY_CATEGORIES = pantryData.categories;
+            let allPantryItems = PANTRY_CATEGORIES.flatMap(category => category.items.map(item => ({ ...item, categoryName: category.name })));
+
             let weeklyPlan = store.getItem('weeklyPlan') || null;
-            let inventory = store.getItem('inventory') || [];
+            // Use new key for structured pantry inventory
+            let userPantry = store.getItem('userPantry') || [];
             let persons = store.getItem('persons') || 1;
 
             const navLinks = document.querySelectorAll('.nav-item');
@@ -21,11 +28,23 @@ function initializeApp() {
             const generatorForm = document.getElementById('generator-form');
             const deletePlanBtn = document.getElementById('delete-plan-btn');
             const confirmPlanBtn = document.getElementById('confirm-plan-btn');
-            const inventoryInput = document.getElementById('inventory-input');
-            const saveInventoryBtn = document.getElementById('save-inventory-btn');
+
+            // New inventory elements
+            const pantryItemSearchInput = document.getElementById('pantry-item-search');
+            const pantryItemSuggestionsContainer = document.getElementById('pantry-item-suggestions');
+            const pantryItemDetailsDiv = document.getElementById('pantry-item-details');
+            const pantryItemQuantityInput = document.getElementById('pantry-item-quantity');
+            const pantryItemUnitInput = document.getElementById('pantry-item-unit');
+            const pantryItemExpirationInput = document.getElementById('pantry-item-expiration');
+            const addItemToPantryBtn = document.getElementById('add-item-to-pantry-btn');
+            const findRecipesFromPantryBtn = document.getElementById('find-recipes-from-pantry-btn');
+            const currentPantryDisplay = document.getElementById('current-pantry-display');
+            const emptyPantryMessage = document.getElementById('empty-pantry-message');
+
             const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
 
             let matchingRecipes = []; // To store inventory based recipe suggestions
+            let selectedPantryItemForAdding = null; // To store the item selected from suggestions
 
             const handleRecipeSelect = (dayIndex, recipeId) => {
                 if (!weeklyPlan) return;
@@ -81,19 +100,148 @@ function initializeApp() {
             });
 
             confirmPlanBtn.addEventListener('click', () => {
-                const list = generateShoppingList(weeklyPlan, inventory, persons);
+                // Ensure generateShoppingList is updated to use userPantry
+                const list = generateShoppingList(weeklyPlan, userPantry, persons);
                 ui.renderShoppingList(list);
                 ui.switchView('shopping-list-view');
                 navLinks.forEach(n => n.classList.remove('active'));
                 document.querySelector('.nav-item[data-view="shopping-list"]').classList.add('active');
             });
 
-            saveInventoryBtn.addEventListener('click', () => {
-                inventory = inventoryInput.value.split(',').map(item => item.trim()).filter(Boolean);
-                store.setItem('inventory', inventory);
-                matchingRecipes = findAlmostCompleteRecipes(ALL_RECIPES, inventory); // Store results
+            // --- New Inventory Logic ---
+            function renderPantrySuggestions(searchTerm) {
+                pantryItemSuggestionsContainer.innerHTML = '';
+                if (!searchTerm) {
+                    pantryItemSuggestionsContainer.classList.add('hidden');
+                    return;
+                }
+
+                const filteredItems = allPantryItems.filter(item =>
+                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+
+                if (filteredItems.length > 0) {
+                    const ul = document.createElement('ul');
+                    filteredItems.slice(0, 7).forEach(item => { // Show top 7 suggestions
+                        const li = document.createElement('li');
+                        li.textContent = `${item.name} (${item.categoryName})`;
+                        li.addEventListener('click', () => {
+                            selectedPantryItemForAdding = item;
+                            pantryItemSearchInput.value = item.name;
+                            pantryItemSuggestionsContainer.innerHTML = '';
+                            pantryItemSuggestionsContainer.classList.add('hidden');
+                            pantryItemDetailsDiv.classList.remove('hidden');
+                            addItemToPantryBtn.classList.remove('hidden');
+                            pantryItemQuantityInput.focus();
+                        });
+                        ul.appendChild(li);
+                    });
+                    pantryItemSuggestionsContainer.appendChild(ul);
+                    pantryItemSuggestionsContainer.classList.remove('hidden');
+                } else {
+                    pantryItemSuggestionsContainer.classList.add('hidden');
+                }
+            }
+
+            pantryItemSearchInput.addEventListener('input', (e) => {
+                renderPantrySuggestions(e.target.value);
+                // If input is cleared, hide details
+                if (!e.target.value) {
+                    selectedPantryItemForAdding = null;
+                    pantryItemDetailsDiv.classList.add('hidden');
+                    addItemToPantryBtn.classList.add('hidden');
+                }
+            });
+
+            // Hide suggestions if clicked outside
+            document.addEventListener('click', function(event) {
+                if (!pantryItemSearchInput.contains(event.target) && !pantryItemSuggestionsContainer.contains(event.target)) {
+                    pantryItemSuggestionsContainer.classList.add('hidden');
+                }
+            });
+
+            addItemToPantryBtn.addEventListener('click', () => {
+                if (!selectedPantryItemForAdding) {
+                    alert("Bitte wähle zuerst ein Lebensmittel aus der Liste aus.");
+                    return;
+                }
+                const quantity = parseFloat(pantryItemQuantityInput.value);
+                const unit = pantryItemUnitInput.value.trim();
+                const expiration = pantryItemExpirationInput.value;
+
+                if (isNaN(quantity) || quantity <= 0) {
+                    alert("Bitte gib eine gültige Menge ein.");
+                    return;
+                }
+                if (!unit) {
+                    alert("Bitte gib eine Einheit ein (z.B. Stk, g, L).");
+                    return;
+                }
+
+                const newItem = {
+                    itemId: selectedPantryItemForAdding.id,
+                    name: selectedPantryItemForAdding.name,
+                    quantity: quantity,
+                    unit: unit,
+                    expiration: expiration || null
+                };
+
+                // Check if item already exists, if so, ask to update or add as new?
+                // For now, just add as new. Future: offer to increment quantity.
+                userPantry.push(newItem);
+                store.setItem('userPantry', userPantry);
+                renderCurrentPantry();
+
+                // Reset input fields
+                pantryItemSearchInput.value = '';
+                selectedPantryItemForAdding = null;
+                pantryItemDetailsDiv.classList.add('hidden');
+                addItemToPantryBtn.classList.add('hidden');
+                pantryItemQuantityInput.value = '1';
+                pantryItemUnitInput.value = '';
+                pantryItemExpirationInput.value = '';
+                pantryItemSearchInput.focus();
+            });
+
+            function renderCurrentPantry() {
+                currentPantryDisplay.innerHTML = '';
+                if (userPantry.length === 0) {
+                    emptyPantryMessage.classList.remove('hidden');
+                    currentPantryDisplay.classList.add('hidden');
+                } else {
+                    emptyPantryMessage.classList.add('hidden');
+                    currentPantryDisplay.classList.remove('hidden');
+                    const ul = document.createElement('ul');
+                    ul.className = 'current-pantry-list';
+                    userPantry.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'pantry-list-item';
+                        let expText = item.expiration ? ` - Haltbar bis: ${new Date(item.expiration).toLocaleDateString('de-DE')}` : '';
+                        // Basic display, will be improved in ui.js later
+                        li.innerHTML = `<span>${item.name} (${item.quantity} ${item.unit})${expText}</span>
+                                        <button class="btn-remove-pantry-item" data-index="${index}"><i class="fa-solid fa-trash-can"></i></button>`;
+                        ul.appendChild(li);
+                    });
+                    currentPantryDisplay.appendChild(ul);
+
+                    // Add event listeners for remove buttons
+                    document.querySelectorAll('.btn-remove-pantry-item').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const itemIndex = parseInt(e.currentTarget.dataset.index, 10);
+                            userPantry.splice(itemIndex, 1);
+                            store.setItem('userPantry', userPantry);
+                            renderCurrentPantry();
+                        });
+                    });
+                }
+            }
+
+            findRecipesFromPantryBtn.addEventListener('click', () => {
+                // Ensure findAlmostCompleteRecipes is updated to use userPantry
+                matchingRecipes = findAlmostCompleteRecipes(ALL_RECIPES, userPantry);
                 ui.renderInventoryResults(matchingRecipes, handleInfoClick);
             });
+            // --- End New Inventory Logic ---
 
             deleteInventoryRecipesBtn.addEventListener('click', () => {
                 matchingRecipes = []; // Clear the stored recipes
@@ -111,8 +259,9 @@ function initializeApp() {
                         // This ensures that if recipes were cleared, they stay cleared,
                         // or if they were previously loaded, they are shown again.
                         ui.renderInventoryResults(matchingRecipes, handleInfoClick);
+                        renderCurrentPantry(); // Also render the pantry list when switching to this view
                     } else if (viewId === 'shopping-list-view') {
-                        const list = generateShoppingList(weeklyPlan, inventory, persons);
+                        const list = generateShoppingList(weeklyPlan, userPantry, persons); // Use userPantry
                         ui.renderShoppingList(list);
                     }
                     ui.switchView(viewId);
@@ -127,17 +276,18 @@ function initializeApp() {
 
             function initUI() {
                 document.getElementById('persons').value = persons;
-                inventoryInput.value = inventory.join(', ');
+                // inventoryInput.value = inventory.join(', '); // Old inventory input, remove
+                renderCurrentPantry(); // Initialize pantry display
                 ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);
                 ui.updateConfirmButtonState(weeklyPlan);
-                ui.switchView('dashboard-view');
+                ui.switchView('dashboard-view'); // Default view
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
                 ui.showApp();
             }
             initUI();
         })
         .catch(error => {
-            console.error('Fehler beim Laden der Rezepte:', error);
-            document.getElementById('loading-screen').innerHTML = '<p style="color:red;">Fehler: Rezepte konnten nicht geladen werden. Bitte die Seite neu laden.</p>';
+            console.error('Fehler beim Laden der Daten:', error);
+            document.getElementById('loading-screen').innerHTML = `<p style="color:red;">Fehler: Daten konnten nicht geladen werden (${error.message}). Bitte die Seite neu laden.</p>`;
         });
 }

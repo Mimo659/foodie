@@ -1,0 +1,158 @@
+{
+  "categories": [
+    {
+      "name": "Milchprodukte & Alternativen",
+      "id": "milchprodukte_alternativen",
+      "items": [
+        {"name": "Milch", "id": "milch"},
+        {"name": "Käse (Hartkäse)", "id": "kaese_hart"},
+        {"name": "Käse (Weichkäse)", "id": "kaese_weich"},
+        {"name": "Joghurt", "id": "joghurt"},
+        {"name": "Butter", "id": "butter"},
+        {"name": "Sahne", "id": "sahne"},
+        {"name": "Eier", "id": "eier"},
+        {"name": "Pflanzenmilch (Soja)", "id": "pflanzenmilch_soja"},
+        {"name": "Pflanzenmilch (Hafer)", "id": "pflanzenmilch_hafer"},
+        {"name": "Pflanzenmilch (Mandel)", "id": "pflanzenmilch_mandel"}
+      ]
+    },
+    {
+      "name": "Fleisch & Geflügel",
+      "id": "fleisch_gefluegel",
+      "items": [
+        {"name": "Hähnchenbrust", "id": "haehnchenbrust"},
+        {"name": "Hähnchenschenkel", "id": "haehnchenschenkel"},
+        {"name": "Hackfleisch (Rind)", "id": "hackfleisch_rind"},
+        {"name": "Steak", "id": "steak"},
+        {"name": "Schweinekoteletts", "id": "schweinekoteletts"},
+        {"name": "Speck", "id": "speck"},
+        {"name": "Würstchen", "id": "wuerstchen"}
+      ]
+    },
+    {
+      "name": "Fisch & Meeresfrüchte",
+      "id": "fisch_meeresfruechte",
+      "items": [
+        {"name": "Lachsfilet", "id": "lachsfilet"},
+        {"name": "Kabeljaufilet", "id": "kabeljaufilet"},
+        {"name": "Garnelen", "id": "garnelen"},
+        {"name": "Thunfisch (Dose)", "id": "thunfisch_dose"}
+      ]
+    },
+    {
+      "name": "Gemüse",
+      "id": "gemuese",
+      "items": [
+        {"name": "Zwiebel", "id": "zwiebel"},
+        {"name": "Knoblauch", "id": "knoblauch"},
+        {"name": "Karotte", "id": "karotte"},
+        {"name": "Kartoffel", "id": "kartoffel"},
+        {"name": "Süßkartoffel", "id": "suesskartoffel"},
+        {"name": "Brokkoli", "id": "brokkoli"},
+        {"name": "Spinat", "id": "spinat"},
+        {"name": "Salat (Kopfsalat)", "id": "salat_kopf"},
+        {"name": "Paprika (Rot)", "id": "paprika_rot"},
+        {"name": "Paprika (Grün)", "id": "paprika_gruen"},
+        {"name": "Paprika (Gelb)", "id": "paprika_gelb"},
+        {"name": "Tomate", "id": "tomate"},
+        {"name": "Gurke", "id": "gurke"},
+        {"name": "Zucchini", "id": "zucchini"},
+        {"name": "Pilze", "id": "pilze"},
+        {"name": "Mais", "id": "mais"},
+        {"name": "Erbsen", "id": "erbsen"}
+      ]
+    },
+    {
+      "name": "Obst",
+      "id": "obst",
+      "items": [
+        {"name": "Apfel", "id": "apfel"},
+        {"name": "Banane", "id": "banane"},
+        {"name": "Orange", "id": "orange"},
+        {"name": "Zitrone", "id": "zitrone"},
+        {"name": "Limette", "id": "limette"},
+        {"name": "Beeren (gemischt)", "id": "beeren_gemischt"},
+        {"name": "Trauben", "id": "trauben"},
+        {"name": "Avocado", "id": "avocado"}
+      ]
+    },
+    {
+      "name": "Getreide, Nudeln & Hülsenfrüchte",
+      "id": "getreide_nudeln_huelsenfruechte",
+      "items": [
+        {"name": "Reis (Weiß)", "id": "reis_weiss"},
+        {"name": "Reis (Braun)", "id": "reis_braun"},
+        {"name": "Nudeln (Spaghetti)", "id": "nudeln_spaghetti"},
+        {"name": "Nudeln (Penne)", "id": "nudeln_penne"},
+        {"name": "Brot", "id": "brot"},
+        {"name": "Haferflocken", "id": "haferflocken"},
+        {"name": "Mehl", "id": "mehl"},
+        {"name": "Linsen", "id": "linsen"},
+        {"name": "Kichererbsen", "id": "kichererbsen"},
+        {"name": "Kidneybohnen", "id": "kidneybohnen"}
+      ]
+    },
+    {
+      "name": "Vorräte & Basis-Zutaten",
+      "id": "vorraete_basis_zutaten",
+      "items": [
+        {"name": "Olivenöl", "id": "olivenoel"},
+        {"name": "Pflanzenöl", "id": "pflanzenoel"},
+        {"name": "Essig (Balsamico)", "id": "essig_balsamico"},
+        {"name": "Essig (Weißwein)", "id": "essig_weisswein"},
+        {"name": "Sojasauce", "id": "sojasauce"},
+        {"name": "Honig", "id": "honig"},
+        {"name": "Ahornsirup", "id": "ahornsirup"},
+        {"name": "Zucker", "id": "zucker"},
+        {"name": "Salz", "id": "salz"},
+        {"name": "Pfeffer (Schwarz, Körner)", "id": "pfeffer_schwarz_koerner"}
+      ]
+    },
+    {
+      "name": "Kräuter & Gewürze",
+      "id": "kraeuter_gewuerze",
+      "items": [
+        {"name": "Basilikum (Frisch)", "id": "basilikum_frisch"},
+        {"name": "Basilikum (Getrocknet)", "id": "basilikum_getrocknet"},
+        {"name": "Petersilie (Frisch)", "id": "petersilie_frisch"},
+        {"name": "Petersilie (Getrocknet)", "id": "petersilie_getrocknet"},
+        {"name": "Koriander (Frisch)", "id": "koriander_frisch"},
+        {"name": "Oregano (Getrocknet)", "id": "oregano_getrocknet"},
+        {"name": "Thymian (Frisch)", "id": "thymian_frisch"},
+        {"name": "Thymian (Getrocknet)", "id": "thymian_getrocknet"},
+        {"name": "Rosmarin (Frisch)", "id": "rosmarin_frisch"},
+        {"name": "Rosmarin (Getrocknet)", "id": "rosmarin_getrocknet"},
+        {"name": "Paprikapulver", "id": "paprikapulver"},
+        {"name": "Kreuzkümmel", "id": "kreuzkuemmel"},
+        {"name": "Chilipulver", "id": "chilipulver"},
+        {"name": "Currypulver", "id": "currypulver"},
+        {"name": "Kurkuma", "id": "kurkuma"},
+        {"name": "Ingwer (Frisch)", "id": "ingwer_frisch"},
+        {"name": "Ingwer (Gemahlen)", "id": "ingwer_gemahlen"}
+      ]
+    },
+    {
+        "name": "Getränke",
+        "id": "getraenke",
+        "items": [
+            {"name": "Wasser", "id": "wasser"},
+            {"name": "Kaffee", "id": "kaffee"},
+            {"name": "Tee (Schwarz)", "id": "tee_schwarz"},
+            {"name": "Tee (Grün)", "id": "tee_gruen"},
+            {"name": "Saft (Orange)", "id": "saft_orange"},
+            {"name": "Saft (Apfel)", "id": "saft_apfel"}
+        ]
+    },
+    {
+        "name": "Snacks & Süßigkeiten",
+        "id": "snacks_suessigkeiten",
+        "items": [
+            {"name": "Chips", "id": "chips"},
+            {"name": "Cracker", "id": "cracker"},
+            {"name": "Nüsse (gemischt)", "id": "nuesse_gemischt"},
+            {"name": "Schokolade", "id": "schokolade"},
+            {"name": "Kekse", "id": "kekse"}
+        ]
+    }
+  ]
+}

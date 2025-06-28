@@ -30,29 +30,50 @@ function generateWeeklyPlan(allRecipes, prefs) {
     return finalPlan;
 }
 
-function generateShoppingList(plan, inventory, persons = 1) {
+function generateShoppingList(plan, userPantry, persons = 1) {
     if (!plan || plan.length === 0) return [];
     const required = {};
     plan.forEach(day => {
         if (day.selected) {
             day.selected.ingredients.forEach(ing => {
                 const totalQuantity = ing.quantity * persons;
-                if (required[ing.name]) {
-                    required[ing.name].quantity += totalQuantity;
+                // Aggregate by ingredient name, assuming recipe ingredients are {name, quantity, unit}
+                const key = ing.name.toLowerCase();
+                if (required[key]) {
+                    // Note: This simple addition might not be perfect if units differ.
+                    // For now, we assume consistent units or accept this simplification.
+                    required[key].quantity += totalQuantity;
                 } else {
-                    required[ing.name] = { ...ing, quantity: totalQuantity };
+                    required[key] = { ...ing, quantity: totalQuantity };
                 }
             });
         }
     });
-    const inventoryLower = inventory.map(item => item.toLowerCase().trim());
-    const shoppingList = Object.values(required).map(ing => ({...ing, haveAtHome: inventoryLower.includes(ing.name.toLowerCase()) }));
-    return shoppingList.sort((a, b) => a.haveAtHome - b.haveAtHome);
+
+    // Create a set of item names from userPantry for quick lookup
+    // Uses item.name from userPantry for matching with recipe ingredient names.
+    const pantryItemNamesLower = new Set(userPantry.map(item => item.name.toLowerCase().trim()));
+
+    const shoppingList = Object.values(required).map(ing => ({
+        ...ing,
+        haveAtHome: pantryItemNamesLower.has(ing.name.toLowerCase())
+    }));
+
+    return shoppingList.sort((a, b) => {
+        // Sort by haveAtHome (false first), then by name
+        if (a.haveAtHome === b.haveAtHome) {
+            return a.name.localeCompare(b.name);
+        }
+        return a.haveAtHome - b.haveAtHome; // false (0) comes before true (1)
+    });
 }
 
-function findAlmostCompleteRecipes(allRecipes, inventory, threshold = 0.55) {
-    if (!inventory || inventory.length === 0) return [];
-    const inventorySet = new Set(inventory.map(i => i.toLowerCase().trim()));
+function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
+    if (!userPantry || userPantry.length === 0) return [];
+
+    // Uses item.name from userPantry for matching with recipe ingredient names.
+    const pantryItemNamesSet = new Set(userPantry.map(item => item.name.toLowerCase().trim()));
+
     const matchedRecipes = allRecipes.map(recipe => {
         if (!recipe.ingredients || recipe.ingredients.length === 0) return { ...recipe, matchPercentage: 0, missingIngredients: [] };
         let ownedCount = 0;
