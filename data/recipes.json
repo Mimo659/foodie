@@ -80,7 +80,7 @@
     "isSimple": true,
     "isVegetarian": false,
     "isVegan": false,
-    "tags": []
+    "tags": ["one-pot", "spätzle", "hähnchen", "einfach"]
   },
   {
     "id": "rezept-2737891426025016",
@@ -158,7 +158,7 @@
     "isSimple": false,
     "isVegetarian": false,
     "isVegan": false,
-    "tags": []
+    "tags": ["gyros", "nudelauflauf", "auflauf", "metaxa", "pasta", "ofen"]
   },
   {
     "id": "rezept-1298241234947062",
@@ -212,7 +212,7 @@
     "isSimple": false,
     "isVegetarian": false,
     "isVegan": false,
-    "tags": []
+    "tags": ["carbonara", "pasta", "italienisch", "speck", "ei", "parmesan", "pecorino"]
   },
   {
     "id": "rezept-4341701731316675",
@@ -296,7 +296,7 @@
     "isSimple": true,
     "isVegetarian": false,
     "isVegan": false,
-    "tags": []
+    "tags": ["pasta", "rigatoni", "butternut", "kürbis", "salbei", "ricotta", "knoblauch", "einfach"]
   },
   {
     "id": "rezept-4370781744365761",
@@ -354,9 +354,9 @@
     ],
     "estimatedCostPerServing": null,
     "isSimple": true,
-    "isVegetarian": false,
+    "isVegetarian": true,
     "isVegan": false,
-    "tags": []
+    "tags": ["ofengemüse", "gemüse", "kartoffeln", "feta", "vegetarisch", "einfach", "ofen"]
   },
   {
     "id": "rezept-4370741744365716",
@@ -398,9 +398,9 @@
     ],
     "estimatedCostPerServing": null,
     "isSimple": true,
-    "isVegetarian": false,
+    "isVegetarian": true,
     "isVegan": false,
-    "tags": []
+    "tags": ["kartoffelgratin", "gratin", "kartoffeln", "sahne", "parmesan", "vegetarisch", "einfach", "ofen", "beilage"]
   },
   {
     "id": "rezept-1844061298739441",
@@ -475,7 +475,7 @@
     "isSimple": false,
     "isVegetarian": false,
     "isVegan": false,
-    "tags": []
+    "tags": ["hähnchen", "mozzarella", "basilikum", "sahnesauce", "tomaten", "ofen"]
   },
   {
     "id": "rezept-1810471293281955",
@@ -557,9 +557,9 @@
     ],
     "estimatedCostPerServing": null,
     "isSimple": false,
-    "isVegetarian": false,
+    "isVegetarian": true,
     "isVegan": false,
-    "tags": []
+    "tags": ["reispfanne", "paprika", "reis", "joghurt", "vegetarisch", "pfannengericht", "chili"]
   },
   {
     "id": "rezept-1998981323763212",
@@ -699,7 +699,7 @@
     "isSimple": false,
     "isVegetarian": false,
     "isVegan": false,
-    "tags": []
+    "tags": ["königsberger klopse", "klopse", "hackfleisch", "kapern", "deutsche küche", "klassiker"]
   },
   {
     "id": "rezept-4370761744365737",
@@ -766,9 +766,9 @@
     ],
     "estimatedCostPerServing": null,
     "isSimple": true,
-    "isVegetarian": false,
-    "isVegan": false,
-    "tags": []
+    "isVegetarian": true,
+    "isVegan": true,
+    "tags": ["kartoffelsalat", "salat", "kartoffeln", "leicht", "beilage", "vegetarisch", "vegan", "einfach"]
   },
   {
     "id": "rezept-4281971705578210",
@@ -857,8 +857,8 @@
     ],
     "estimatedCostPerServing": null,
     "isSimple": true,
-    "isVegetarian": false,
+    "isVegetarian": true,
     "isVegan": false,
-    "tags": []
+    "tags": ["süßkartoffel", "gnocchi", "auflauf", "spinat", "parmesan", "vegetarisch", "einfach", "ofen"]
   }
 ]
