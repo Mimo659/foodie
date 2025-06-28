@@ -33,21 +33,41 @@ function generateWeeklyPlan(allRecipes, prefs) {
 function generateShoppingList(plan, inventory, persons = 1) {
     if (!plan || plan.length === 0) return [];
     const required = {};
+    const ingredientSources = {}; // Keep track of which recipes use each ingredient
+
     plan.forEach(day => {
         if (day.selected) {
             day.selected.ingredients.forEach(ing => {
                 const totalQuantity = ing.quantity * persons;
                 if (required[ing.name]) {
                     required[ing.name].quantity += totalQuantity;
+                    // Add recipe to the list of sources for this ingredient, if not already present
+                    if (!ingredientSources[ing.name].includes(day.selected.name)) {
+                        ingredientSources[ing.name].push(day.selected.name);
+                    }
                 } else {
                     required[ing.name] = { ...ing, quantity: totalQuantity };
+                    ingredientSources[ing.name] = [day.selected.name]; // Initialize sources list
                 }
             });
         }
     });
+
     const inventoryLower = inventory.map(item => item.toLowerCase().trim());
-    const shoppingList = Object.values(required).map(ing => ({...ing, haveAtHome: inventoryLower.includes(ing.name.toLowerCase()) }));
-    return shoppingList.sort((a, b) => a.haveAtHome - b.haveAtHome);
+    const shoppingList = Object.values(required).map(ing => ({
+        ...ing,
+        haveAtHome: inventoryLower.includes(ing.name.toLowerCase()),
+        // Mark if ingredient is used in more than one recipe
+        usedInMultipleRecipes: ingredientSources[ing.name] ? ingredientSources[ing.name].length > 1 : false
+    }));
+
+    return shoppingList.sort((a, b) => {
+        // Sort by haveAtHome first, then by whether it's used in multiple recipes
+        if (a.haveAtHome !== b.haveAtHome) {
+            return a.haveAtHome - b.haveAtHome;
+        }
+        return (b.usedInMultipleRecipes ? 1 : 0) - (a.usedInMultipleRecipes ? 1 : 0);
+    });
 }
 
 function findAlmostCompleteRecipes(allRecipes, inventory, threshold = 0.55) {

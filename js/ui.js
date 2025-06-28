@@ -151,7 +151,24 @@ const ui = (() => {
             const container = document.getElementById('shopping-list-container');
             const noList = document.getElementById('no-shopping-list');
             if (list.length > 0) {
-                container.innerHTML = list.map(item => `<li class="${item.haveAtHome ? 'have-at-home' : ''}"><span>${item.name}</span><div><span class="unit">${item.quantity} ${item.unit}</span>${item.haveAtHome ? '<span class="status"> (Zuhause)</span>' : ''}</div></li>`).join('');
+                container.innerHTML = list.map(item => {
+                    let itemClass = '';
+                    if (item.haveAtHome) itemClass += 'have-at-home ';
+                    if (item.usedInMultipleRecipes) itemClass += 'used-in-multiple '; // Add class for highlighting
+
+                    // Tooltip to show which recipes use this ingredient
+                    const recipesTooltip = item.usedInMultipleRecipes && ingredientSources[item.name]
+                        ? `title="Benötigt für: ${ingredientSources[item.name].join(', ')}"`
+                        : '';
+
+                    return `<li class="${itemClass.trim()}" ${recipesTooltip}>
+                                <span>${item.name} ${item.usedInMultipleRecipes ? '<i class="fa-solid fa-star highlight-icon"></i>' : ''}</span>
+                                <div>
+                                    <span class="unit">${item.quantity} ${item.unit}</span>
+                                    ${item.haveAtHome ? '<span class="status"> (Zuhause)</span>' : ''}
+                                </div>
+                            </li>`;
+                }).join('');
                 container.classList.remove('hidden'); noList.classList.add('hidden');
             } else {
                 container.classList.add('hidden'); noList.classList.remove('hidden');
