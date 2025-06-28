@@ -37,15 +37,18 @@ const ui = (() => {
         ];
         // Simple rotation based on recipe ID or index if available, otherwise random
         let imageIndex;
-        const parsedId = parseInt(recipe.id, 10);
+        // Handle different ID formats (numbers, rezept-NUMBER, rezept-api-NUMBER)
+        const idString = String(recipe.id || ''); // Ensure recipe.id is a string
+        const numericIdPart = idString.replace(/rezept-api-|rezept-/i, '');
+        const parsedId = parseInt(numericIdPart, 10);
 
         if (!isNaN(parsedId)) {
             imageIndex = parsedId % placeholderImages.length;
         } else {
-            // Fallback if recipe.id is not a number or undefined/null
+            // Fallback if recipe.id does not yield a number
             imageIndex = Math.floor(Math.random() * placeholderImages.length);
         }
-        // Ensure imageIndex is not negative if somehow parsedId was negative
+        // Ensure imageIndex is not negative
         imageIndex = Math.abs(imageIndex);
 
         const imageUrl = placeholderImages[imageIndex];
@@ -54,8 +57,12 @@ const ui = (() => {
         // but kept here for context if someone reviews this part of the code.
         // let imageHtml = `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-card-image">`;
 
-        let tagsHtml = `<div class="tags"><span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`; // Added class="price-tag"
-        if (recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
+        const priceTagHtml = (typeof recipe.estimatedCostPerServing === 'number' && !isNaN(recipe.estimatedCostPerServing))
+            ? `<span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`
+            : '';
+
+        let tagsHtml = `<div class="tags">${priceTagHtml}`;
+        if (recipe.tags && recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
         if (recipe.isVegan) tagsHtml += `<span>Vegan</span>`;
         else if (recipe.isVegetarian) tagsHtml += `<span>Vegetarisch</span>`;
         tagsHtml += `</div>`;
