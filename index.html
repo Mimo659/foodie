@@ -108,18 +108,62 @@
                 </section>
 
                 <section id="inventory-view" class="view hidden">
-                     <div class="card">
+                    <div class="card">
                         <h2><i class="fa-solid fa-kitchen-set"></i> Was habe ich zu Hause?</h2>
-                        <p>Gib deine vorhandenen Zutaten ein. Wir zeigen dir, was du fast vollständig kochen kannst!</p>
-                        <div class="form-group">
-                            <textarea id="inventory-input" placeholder="z.B. Milch, Reis, Eier, Tomaten, Zwiebel, Hähnchenbrust..."></textarea>
+
+                        <!-- New Item Input Area -->
+                        <div id="add-pantry-item-form">
+                            <p>Füge Lebensmittel zu deinem Vorrat hinzu:</p>
+
+                            <div class="form-group">
+                                <label for="pantry-item-search">Lebensmittel suchen</label>
+                                <input type="text" id="pantry-item-search" placeholder="z.B. Milch, Zwiebel, Hähnchenbrust..." autocomplete="off">
+                                <div id="pantry-item-suggestions" class="suggestions-list"></div> <!-- For auto-complete -->
+                            </div>
+
+                            <div class="form-group-inline hidden" id="pantry-item-details">
+                                <div class="form-group">
+                                    <label for="pantry-item-quantity">Menge</label>
+                                    <input type="number" id="pantry-item-quantity" min="0" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pantry-item-unit">Einheit</label>
+                                    <input type="text" id="pantry-item-unit" placeholder="z.B. Stk, g, L">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pantry-item-expiration">Haltbar bis (optional)</label>
+                                    <input type="date" id="pantry-item-expiration">
+                                </div>
+                            </div>
+                            <button id="add-item-to-pantry-btn" class="btn-primary hidden">
+                                <i class="fa-solid fa-plus"></i> Zum Vorrat hinzufügen
+                            </button>
                         </div>
-                        <button id="save-inventory-btn" class="btn-secondary"><i class="fa-solid fa-magnifying-glass"></i> Vorrat speichern & Rezepte finden</button>
+
+                        <!-- Display of Current Pantry -->
+                        <hr class="section-divider">
+                        <div id="current-pantry-section">
+                            <h3><i class="fa-solid fa-clipboard-list"></i> Mein aktueller Vorrat</h3>
+                            <div id="current-pantry-display">
+                                <!-- Items will be listed here -->
+                            </div>
+                            <p id="empty-pantry-message">Dein Vorrat ist leer.</p>
+                        </div>
+
+                        <!-- Action button for finding recipes -->
+                        <button id="find-recipes-from-pantry-btn" class="btn-secondary">
+                            <i class="fa-solid fa-magnifying-glass"></i> Rezepte für meinen Vorrat finden
+                        </button>
+                        <!-- The old save-inventory-btn is replaced by find-recipes-from-pantry-btn -->
+                        <!-- The old textarea inventory-input is removed -->
                     </div>
+
                     <div id="inventory-results-container">
                         <!-- Content dynamically filled by js/ui.js -->
                     </div>
-                    <button id="delete-inventory-recipes-btn" class="btn-danger hidden"><i class="fa-solid fa-trash-can"></i> Vorgeschlagene Rezepte löschen</button>
+                    <button id="delete-inventory-recipes-btn" class="btn-danger hidden">
+                        <i class="fa-solid fa-trash-can"></i> Vorgeschlagene Rezepte löschen
+                    </button>
                 </section>
 
                 <section id="shopping-list-view" class="view hidden">
