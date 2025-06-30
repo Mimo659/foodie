@@ -72,28 +72,32 @@
                                     <div class="radio-group-container" id="portions-radio-group">
                                         <div class="radio-group">
                                             <input type="radio" id="portions-2" name="portions" value="2" checked>
-                                            <label for="portions-2">2 Personen</label>
+                                            <label for="portions-2">2</label>
                                         </div>
                                         <div class="radio-group">
                                             <input type="radio" id="portions-4" name="portions" value="4">
-                                            <label for="portions-4">4 Personen</label>
+                                            <label for="portions-4">4</label>
                                         </div>
                                     </div>
                                 </div>
+                            </div> <!-- Closing the form-group-inline that starts with Portionen -->
 
-                            <fieldset id="tags-filter-container">
-                                <legend><i class="fa-solid fa-tags"></i> Spezielle Eigenschaften</legend>
-                                <div class="checkbox-group-container" id="dynamic-tags-checkboxes">
-                                    <!-- Checkboxes will be dynamically inserted here by JavaScript -->
-                            <fieldset>
-                                <legend><i class="ti ti-tags"></i> Kategorien & Eigenschaften</legend>
-                                <div class="checkbox-group-container">
-                                    <div class="checkbox-group"><input type="checkbox" id="attr-quick"><label for="attr-quick">Schnell (<30 Min)</label></div>
-                                    <div class="checkbox-group"><input type="checkbox" id="attr-guest-friendly"><label for="attr-guest-friendly">Für Gäste</label></div>
-                                    <div class="checkbox-group"><input type="checkbox" id="attr-leftovers"><label for="attr-leftovers">Resteverwertung</label></div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
+                            <div class="generator-filter-grid">
+                                <fieldset id="tags-filter-container">
+                                    <legend><i class="fa-solid fa-tags"></i> Spezielle Eigenschaften</legend>
+                                    <div class="checkbox-group-container" id="dynamic-tags-checkboxes">
+                                        <!-- Checkboxes will be dynamically inserted here by JavaScript -->
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend><i class="ti ti-tags"></i> Kategorien & Eigenschaften</legend>
+                                    <div class="checkbox-group-container">
+                                        <div class="checkbox-group"><input type="checkbox" id="attr-quick"><label for="attr-quick">Schnell (<30 Min)</label></div>
+                                        <div class="checkbox-group"><input type="checkbox" id="attr-guest-friendly"><label for="attr-guest-friendly">Für Gäste</label></div>
+                                        <div class="checkbox-group"><input type="checkbox" id="attr-leftovers"><label for="attr-leftovers">Resteverwertung</label></div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
                                 <legend><i class="ti ti-world"></i> Küchenstil</legend>
                                 <div class="form-group">
                                     <select id="cuisine-style">
