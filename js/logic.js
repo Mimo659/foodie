@@ -49,6 +49,18 @@ function generateWeeklyPlan(allRecipes, prefs) {
 
 // Helper function to parse ingredient strings
 function parseIngredientString(ingString) {
+    const originalInputString = ingString; // Preserve the original input for originalString
+
+    if (typeof ingString !== 'string') {
+        // Handle non-string inputs gracefully
+        return {
+            originalString: "Fehlerhafter Eintrag", // Placeholder for display
+            quantity: 0,
+            unit: "",
+            name: "Unbekannt" // Parsed name for logic
+        };
+    }
+
     ingString = ingString.trim();
     let quantity = 1;
     let unit = 'Stk.'; // Default unit, especially for items like "1 Apfel"
@@ -156,7 +168,7 @@ function parseIngredientString(ingString) {
     // if (!normalizedName) normalizedName = name; // if stripping parentheses removes everything
 
     return {
-        originalString: ingString,
+        originalString: originalInputString, // Return the original, unmodified input string
         quantity: quantity,
         unit: unit,
         name: name // Use the potentially more complex name for matching logic for now
