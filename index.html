@@ -89,27 +89,12 @@
                                         <!-- Checkboxes will be dynamically inserted here by JavaScript -->
                                     </div>
                                 </fieldset>
-                                <fieldset>
-                                    <legend><i class="ti ti-tags"></i> Kategorien & Eigenschaften</legend>
-                                    <div class="checkbox-group-container">
-                                        <div class="checkbox-group"><input type="checkbox" id="attr-quick"><label for="attr-quick">Schnell (<30 Min)</label></div>
-                                        <div class="checkbox-group"><input type="checkbox" id="attr-guest-friendly"><label for="attr-guest-friendly">Für Gäste</label></div>
-                                        <div class="checkbox-group"><input type="checkbox" id="attr-leftovers"><label for="attr-leftovers">Resteverwertung</label></div>
-                                    </div>
-                                </fieldset>
-                                <fieldset>
-                                <legend><i class="ti ti-world"></i> Küchenstil</legend>
-                                <div class="form-group">
-                                    <select id="cuisine-style">
-                                        <option value="all" selected>Alle Stilrichtungen</option>
-                                        <option value="mediterranean">Mediterran</option>
-                                        <option value="asian">Asiatisch</option>
-                                        <option value="defty">Deftig / Hausmannskost</option>
-                                        <option value="light">Leicht & Gesund</option>
-                                    </select>
-                                </div>
-                            </fieldset>
-                            <button type="submit" class="btn-primary"><i class="ti ti-rocket"></i> Plan generieren</button>
+                                <!-- "Kategorien & Eigenschaften" and "Küchenstil" fieldsets are removed.
+                                     The generator-filter-grid div will now only contain the "Spezielle Eigenschaften" fieldset.
+                                     The closing div for generator-filter-grid will be removed later if this is the only child,
+                                     or adjusted if we change to a horizontal layout directly on the form. -->
+                            </div> <!-- This closes generator-filter-grid -->
+                            <button type="submit" class="btn-primary generator-submit-btn"><i class="ti ti-rocket"></i> Plan generieren</button>
                         </form>
                     </div>
                 </section>
