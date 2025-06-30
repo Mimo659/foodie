@@ -125,11 +125,12 @@ a { color: var(--k-primary-pop-1); text-decoration: none; font-weight: 500; tran
 a:hover { color: var(--k-primary-pop-1-darker); }
 
 /* Icon base size and margin */
-i.fa-solid, i.fas { /* Adding .fas for wider compatibility with FontAwesome versions if used */
+i.fa-solid, i.fas, i.ti { /* Adding .fas for wider compatibility with FontAwesome versions if used, and .ti for Tabler Icons */
     margin-right: 0.75rem;
     width: 24px; /* Slightly larger default icon touch target / visual space */
     text-align: center;
     vertical-align: middle; /* Better alignment with text */
+    display: inline-block; /* Ensure width is respected */
 }
 /* Specific icon colors can be set per component or use case */
 .icon-primary { color: var(--k-primary-pop-1); }
@@ -140,7 +141,7 @@ i.fa-solid, i.fas { /* Adding .fas for wider compatibility with FontAwesome vers
 /* HEADER & NAVIGATION */
 header { background: var(--header-bg); color: var(--header-text); padding: 1rem 0; box-shadow: var(--shadow-medium); }
 #logo { font-weight: 700; font-size: 1.85rem; color: var(--header-text); } /* Slightly larger logo */
-#logo i { color: var(--header-text); margin-right: 0.6rem; font-size: 1.7rem; /* Make logo icon larger */ }
+#logo i.ti { color: var(--header-text); margin-right: 0.6rem; font-size: 1.7rem; /* Make logo icon larger */ }
 .main-layout { display: flex; gap: 2.5rem; align-items: flex-start; margin-top: 2.5rem; }
 aside.main-nav {
     flex: 0 0 230px;
@@ -167,7 +168,7 @@ main.main-content { flex: 1; min-width: 0; }
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.2s ease;
     border: 1px solid transparent;
 }
-.nav-item i { /* Using the general icon style now, specific adjustments if needed */
+.nav-item i.ti { /* Using the general icon style now, specific adjustments if needed */
     color: var(--k-text-secondary); /* Default icon color */
     transition: color 0.2s ease-in-out;
     font-size: 1.1em; /* Slightly larger icons in nav */
@@ -178,7 +179,7 @@ main.main-content { flex: 1; min-width: 0; }
     border-color: var(--k-primary-pop-1-lighter);
     transform: translateX(5px); /* Subtle hover effect */
 }
-.nav-item:hover i {
+.nav-item:hover i.ti {
     color: var(--k-primary-pop-1);
 }
 .nav-item.active {
@@ -188,7 +189,7 @@ main.main-content { flex: 1; min-width: 0; }
     box-shadow: var(--shadow-medium); /* Stronger shadow for active item */
     border-color: var(--k-primary-pop-1);
 }
-.nav-item.active i {
+.nav-item.active i.ti {
     color: var(--k-text-on-bright);
 }
 
@@ -234,7 +235,7 @@ main.main-content { flex: 1; min-width: 0; }
     border: 1px solid var(--k-primary-pop-2); /* Pop-2 border */
     font-weight: 500;
 }
-.plan-instructions i { color: var(--k-primary-pop-2); }
+.plan-instructions i.ti { color: var(--k-primary-pop-2); }
 
 .card { /* General card styling for generator, inventory etc. */
     background-color: var(--k-bg-card);
@@ -320,7 +321,7 @@ main.main-content { flex: 1; min-width: 0; }
 }
 .recipe-card .tags span:hover { transform: scale(1.05); }
 
-.tags span i { margin-right: 0.5rem; font-size: 0.8em; }
+.tags span i.ti { margin-right: 0.5rem; font-size: 0.8em; }
 
 .recipe-card .tags span.price-tag {
     background-color: var(--k-primary-pop-2); /* Turquoise for price */
@@ -504,7 +505,7 @@ label {
     font-size: 1rem; /* Larger label font size */
     color: var(--k-text-primary);
 }
-label i { /* Icons in labels */
+label i.ti { /* Icons in labels */
     color: var(--k-primary-pop-2); /* Pop color for label icons */
     margin-right: 0.5rem;
 }
@@ -542,7 +543,7 @@ label i { /* Icons in labels */
     color: var(--k-primary-pop-1-darker); /* Darker pop color for selected label text */
     font-weight: 600;
 }
-.radio-group:has(input:checked) i, .checkbox-group:has(input:checked) i {
+.radio-group:has(input:checked) i.ti, .checkbox-group:has(input:checked) i.ti {
     color: var(--k-primary-pop-1); /* Pop color for icon in selected label */
 }
 
@@ -605,7 +606,7 @@ label i { /* Icons in labels */
     display: flex; /* Align icon and text within label */
     align-items: center;
 }
-.radio-group label i, .checkbox-group label i {
+.radio-group label i.ti, .checkbox-group label i.ti {
     margin-right: 0.5rem;
     color: var(--k-text-secondary); /* Default icon color in label */
     transition: color 0.2s ease-in-out;
@@ -635,7 +636,7 @@ fieldset legend {
     padding: 0 1rem; /* More padding for legend */
     font-size: 1.2rem; /* Larger legend text */
 }
-fieldset legend i {
+fieldset legend i.ti {
     margin-right: 0.6rem;
 }
 /* textarea styles are now part of the general input/textarea block */
@@ -652,7 +653,7 @@ fieldset legend i {
     margin-bottom: 1.5rem;
     font-size: 1.6rem;
 }
-.shopping-list-category h3 i {
+.shopping-list-category h3 i.ti {
     margin-right: 0.8rem;
     color: var(--k-primary-pop-2);
 }
@@ -711,7 +712,7 @@ fieldset legend i {
     align-items: center;
     margin-bottom: 0.75rem;
 }
-.item-card-body .total-quantity i {
+.item-card-body .total-quantity i.ti {
     color: var(--k-primary-pop-1); /* Pop color for quantity icon */
     margin-right: 0.5rem;
 }
@@ -729,7 +730,7 @@ fieldset legend i {
     display: flex;
     align-items: center;
 }
-.shopping-list-item-card .source-list li i {
+.shopping-list-item-card .source-list li i.ti {
     font-size: 0.9em;
     margin-right: 0.4rem;
     color: var(--k-text-secondary);
@@ -743,7 +744,7 @@ fieldset legend i {
 .shopping-list-item-card.have-at-home .item-card-header h4 {
     /* color: var(--k-text-primary); */ /* Keep primary text color or make it slightly darker if needed */
 }
-.shopping-list-item-card.have-at-home .total-quantity i {
+.shopping-list-item-card.have-at-home .total-quantity i.ti {
     color: var(--k-primary-pop-2-darker); /* Darker green for quantity icon */
 }
 
@@ -806,7 +807,7 @@ fieldset legend i {
     font-size: 2rem; /* Larger title */
     text-align: center; /* Center title */
 }
-#modal-body h2 i { color: var(--k-primary-pop-1); } /* Icon matches title color */
+#modal-body h2 i.ti { color: var(--k-primary-pop-1); } /* Icon matches title color */
 
 #modal-body h3 { /* "Zutaten", "Anleitung" */
     color: var(--k-primary-pop-2); /* Secondary pop color */
@@ -816,7 +817,7 @@ fieldset legend i {
     border-left: 4px solid var(--k-primary-pop-2); /* Accent border */
     padding-left: 0.75rem;
 }
-#modal-body h3 i { color: var(--k-primary-pop-2); } /* Icon matches subtitle color */
+#modal-body h3 i.ti { color: var(--k-primary-pop-2); } /* Icon matches subtitle color */
 
 #modal-body .ingredient-list, #modal-body .instructions-list { list-style: none; padding: 0; }
 
@@ -833,7 +834,7 @@ fieldset legend i {
     box-shadow: var(--shadow-soft);
     border-left: 4px solid var(--k-primary-pop-1);
 }
-#modal-body .ingredient-list li i { color: var(--k-primary-pop-1); margin-right: 0.6rem; } /* Optional: icon for each ingredient */
+#modal-body .ingredient-list li i.ti { color: var(--k-primary-pop-1); margin-right: 0.6rem; } /* Optional: icon for each ingredient */
 
 #modal-body .instructions-list li {
     padding: 0.8rem 0.25rem; /* More padding */

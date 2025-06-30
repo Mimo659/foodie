@@ -7,6 +7,8 @@
     <title>Dein Wochenplaner</title>
     <!-- Font Awesome für Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,7 +21,7 @@
     <div id="app-content" class="content-hidden">
         <header>
             <div class="container">
-                <h1 id="logo"><i class="fa-solid fa-utensils"></i> Dein Wochenplaner</h1>
+                <h1 id="logo"><i class="ti ti-tools-kitchen-2"></i> Dein Wochenplaner</h1>
             </div>
         </header>
 
@@ -27,10 +29,10 @@
             
             <aside class="main-nav">
                 <nav>
-                    <a href="#" class="nav-item" data-view="dashboard"><i class="fa-solid fa-table-list"></i> <span>Dashboard</span></a>
-                    <a href="#" class="nav-item" data-view="generator"><i class="fa-solid fa-sliders"></i> <span>Plan erstellen</span></a>
-                    <a href="#" class="nav-item" data-view="inventory"><i class="fa-solid fa-carrot"></i> <span>Mein Vorrat</span></a>
-                    <a href="#" class="nav-item" data-view="shopping-list"><i class="fa-solid fa-cart-shopping"></i> <span>Einkaufsliste</span></a>
+                    <a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-home-smile"></i> <span>Dashboard</span></a>
+                    <a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a>
+                    <a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a>
+                    <a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a>
                 </nav>
             </aside>
 
@@ -38,13 +40,13 @@
                 <section id="dashboard-view" class="view">
                     <div id="plan-display" class="hidden">
                         <div class="plan-header">
-                            <h2><i class="fa-solid fa-calendar-week"></i> Mein aktueller Wochenplan</h2>
-                            <button id="delete-plan-btn" class="btn-danger"><i class="fa-solid fa-trash-can"></i> Plan löschen</button>
+                            <h2><i class="ti ti-calendar-event"></i> Mein aktueller Wochenplan</h2>
+                            <button id="delete-plan-btn" class="btn-danger"><i class="ti ti-trash-x"></i> Plan löschen</button>
                         </div>
                         <p class="plan-instructions">Wähle für jeden Tag ein Gericht aus, um deinen Plan zu finalisieren.</p>
                         <div id="weekly-plan-container"></div>
                         <button id="confirm-plan-btn" class="btn-confirm" disabled>
-                            <i class="fa-solid fa-circle-check"></i> Wochenplan bestätigen & Einkaufsliste erstellen
+                            <i class="ti ti-circle-check-filled"></i> Wochenplan bestätigen & Einkaufsliste erstellen
                         </button>
                     </div>
                     <div id="no-plan-display">
@@ -53,7 +55,7 @@
                                 <h2>Beginne deine kulinarische Woche!</h2>
                                 <p>Spare Geld, iss lecker und plane voraus. Dein perfekter Wochenplan ist nur einen Klick entfernt.</p>
                                 <button id="create-plan-btn" class="btn-primary">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Erstelle meinen Essensplan
+                                    <i class="ti ti-sparkles"></i> Erstelle meinen Essensplan
                                 </button>
                             </div>
                         </div>
@@ -62,11 +64,11 @@
 
                 <section id="generator-view" class="view hidden">
                     <div class="card">
-                        <h2><i class="fa-solid fa-sliders"></i> Plane deine Woche</h2>
+                        <h2><i class="ti ti-settings"></i> Plane deine Woche</h2>
                         <form id="generator-form">
                             <div class="form-group-inline">
                                 <div class="form-group">
-                                    <label><i class="fa-solid fa-users"></i> Portionen</label>
+                                    <label><i class="ti ti-friends"></i> Portionen</label>
                                     <div class="radio-group-container" id="portions-radio-group">
                                         <div class="radio-group">
                                             <input type="radio" id="portions-2" name="portions" value="2" checked>
@@ -79,12 +81,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="budget"><i class="fa-solid fa-piggy-bank"></i> Budget/Portion (€)</label>
+                                    <label for="budget"><i class="ti ti-pig-money"></i> Budget/Portion (€)</label>
                                     <input type="number" id="budget" placeholder="z.B. 4">
                                 </div>
                             </div>
                             <fieldset>
-                                <legend><i class="fa-solid fa-leaf"></i> Ernährungsweise</legend>
+                                <legend><i class="ti ti-plant-2"></i> Ernährungsweise</legend>
                                 <div class="radio-group-container">
                                     <div class="radio-group"><input type="radio" id="diet-all" name="diet" value="all" checked><label for="diet-all">Alles</label></div>
                                     <div class="radio-group"><input type="radio" id="diet-vegetarian" name="diet" value="vegetarian"><label for="diet-vegetarian">Vegetarisch</label></div>
@@ -92,7 +94,7 @@
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend><i class="fa-solid fa-tags"></i> Kategorien & Eigenschaften</legend>
+                                <legend><i class="ti ti-tags"></i> Kategorien & Eigenschaften</legend>
                                 <div class="checkbox-group-container">
                                     <div class="checkbox-group"><input type="checkbox" id="attr-quick"><label for="attr-quick">Schnell (<30 Min)</label></div>
                                     <div class="checkbox-group"><input type="checkbox" id="attr-guest-friendly"><label for="attr-guest-friendly">Für Gäste</label></div>
@@ -100,7 +102,7 @@
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend><i class="fa-solid fa-earth-americas"></i> Küchenstil</legend>
+                                <legend><i class="ti ti-world"></i> Küchenstil</legend>
                                 <div class="form-group">
                                     <select id="cuisine-style">
                                         <option value="all" selected>Alle Stilrichtungen</option>
@@ -111,14 +113,14 @@
                                     </select>
                                 </div>
                             </fieldset>
-                            <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Plan generieren</button>
+                            <button type="submit" class="btn-primary"><i class="ti ti-rocket"></i> Plan generieren</button>
                         </form>
                     </div>
                 </section>
 
                 <section id="inventory-view" class="view hidden">
                     <div class="card">
-                        <h2><i class="fa-solid fa-kitchen-set"></i> Was habe ich zu Hause?</h2>
+                        <h2><i class="ti ti-home-question"></i> Was habe ich zu Hause?</h2>
 
                         <!-- New Item Input Area -->
                         <div id="add-pantry-item-form">
@@ -145,14 +147,14 @@
                                 </div>
                             </div>
                             <button id="add-item-to-pantry-btn" class="btn-primary hidden">
-                                <i class="fa-solid fa-plus"></i> Zum Vorrat hinzufügen
+                                <i class="ti ti-circle-plus"></i> Zum Vorrat hinzufügen
                             </button>
                         </div>
 
                         <!-- Display of Current Pantry -->
                         <hr class="section-divider">
                         <div id="current-pantry-section">
-                            <h3><i class="fa-solid fa-clipboard-list"></i> Mein aktueller Vorrat</h3>
+                            <h3><i class="ti ti-box-multiple"></i> Mein aktueller Vorrat</h3>
                             <div id="current-pantry-display">
                                 <!-- Items will be listed here -->
                             </div>
@@ -161,7 +163,7 @@
 
                         <!-- Action button for finding recipes -->
                         <button id="find-recipes-from-pantry-btn" class="btn-secondary">
-                            <i class="fa-solid fa-magnifying-glass"></i> Rezepte für meinen Vorrat finden
+                            <i class="ti ti-bulb"></i> Rezepte für meinen Vorrat finden
                         </button>
                         <!-- The old save-inventory-btn is replaced by find-recipes-from-pantry-btn -->
                         <!-- The old textarea inventory-input is removed -->
@@ -171,13 +173,13 @@
                         <!-- Content dynamically filled by js/ui.js -->
                     </div>
                     <button id="delete-inventory-recipes-btn" class="btn-danger hidden">
-                        <i class="fa-solid fa-trash-can"></i> Vorgeschlagene Rezepte löschen
+                        <i class="ti ti-trash-x"></i> Vorgeschlagene Rezepte löschen
                     </button>
                 </section>
 
                 <section id="shopping-list-view" class="view hidden">
                     <div class="card">
-                        <h2><i class="fa-solid fa-clipboard-list"></i> Deine Einkaufsliste</h2>
+                        <h2><i class="ti ti-shopping-bag"></i> Deine Einkaufsliste</h2>
                         <ul id="shopping-list-container"></ul>
                          <p id="no-shopping-list" class="hidden">Erstelle und bestätige zuerst einen Wochenplan, um eine Einkaufsliste zu sehen.</p>
                     </div>
