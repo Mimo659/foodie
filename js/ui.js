@@ -169,54 +169,63 @@ const ui = (() => {
             if (isLoading) { button.disabled = true; button.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generiere...`; } 
             else { button.disabled = false; button.innerHTML = originalHtml; }
         },
-        renderShoppingList: (shoppingList) => { // Renamed parameter for clarity
+        renderShoppingList: (shoppingList) => {
             const container = document.getElementById('shopping-list-container');
             const noListMsg = document.getElementById('no-shopping-list');
             container.innerHTML = ''; // Clear previous content
 
             if (shoppingList && shoppingList.length > 0) {
-                let htmlContent = '<div class="shopping-list-main">'; // Main container for all items
+                // Use the new grid container class
+                container.className = 'shopping-list-items-grid';
 
                 shoppingList.forEach(ingredientGroup => {
-                    const haveAtHomeClass = ingredientGroup.haveAtHome ? 'have-at-home-group' : '';
-                    const atHomeIcon = ingredientGroup.haveAtHome ? '<i class="fa-solid fa-house-chimney-user have-at-home-icon" title="Ganz oder teilweise vorhanden"></i>' : '';
-                    // The 'combined' flag on ingredientGroup indicates if the name appeared in multiple source ingredient lines.
-                    // A more detailed 'combined' (e.g. specific unit was combined) could be derived from unitEntry.recipeSources.length > 1
-                    const combinedIcon = ingredientGroup.combined ? ' <i class="fa-solid fa-layer-group combined-icon" title="Zusammengefasst"></i>' : '';
+                    const haveAtHomeClass = ingredientGroup.haveAtHome ? 'have-at-home' : '';
+                    const atHomeIconHtml = ingredientGroup.haveAtHome
+                        ? '<i class="fa-solid fa-house-circle-check have-at-home-icon" title="Ganz oder teilweise vorhanden"></i>'
+                        : '';
+                    const combinedIconHtml = ingredientGroup.combined
+                        ? ' <i class="fa-solid fa-layer-group combined-icon" title="Zusammengefasst aus mehreren Rezepten oder gleichen Zutaten"></i>'
+                        : '';
 
-                    htmlContent += `
-                        <div class="shopping-list-ingredient-group ${haveAtHomeClass}">
-                            <div class="ingredient-group-header">
-                                <h3>${ingredientGroup.displayName}${combinedIcon}</h3>
-                                ${atHomeIcon}
-                            </div>
-                            <ul class="ingredient-unit-entries">`;
-
+                    let unitEntriesHtml = '';
                     ingredientGroup.unitEntries.forEach(unitEntry => {
                         const displayTotalQuantity = Number.isInteger(unitEntry.totalQuantity)
                             ? unitEntry.totalQuantity
                             : parseFloat(unitEntry.totalQuantity).toFixed(unitEntry.totalQuantity < 1 && unitEntry.totalQuantity > 0 ? 2 : (unitEntry.totalQuantity === 0 ? 0 : 1));
 
-                        // Tooltip for recipe sources for this specific unit entry
-                        let sourcesTooltip = "";
+                        let sourcesHtml = '';
                         if (unitEntry.recipeSources && unitEntry.recipeSources.length > 0) {
-                            sourcesTooltip = unitEntry.recipeSources.map(rs => `${rs.recipeName}: ${rs.quantity} ${unitEntry.unit}`).join('\n');
+                            sourcesHtml = '<ul class="source-list">';
+                            unitEntry.recipeSources.forEach(rs => {
+                                sourcesHtml += `<li><i class="fa-solid fa-utensils"></i> ${rs.recipeName}: ${rs.quantity} ${unitEntry.unit}</li>`;
+                            });
+                            sourcesHtml += '</ul>';
                         }
 
-                        htmlContent += `
-                            <li class="unit-entry" title="${sourcesTooltip}">
-                                <span class="quantity-unit"><i class="fa-solid fa-scale-balanced"></i> ${displayTotalQuantity} ${unitEntry.unit}</span>
-                            </li>`;
+                        unitEntriesHtml += `
+                            <div class="unit-entry">
+                                <p class="total-quantity"><i class="fa-solid fa-boxes-stacked"></i> ${displayTotalQuantity} ${unitEntry.unit}</p>
+                                ${sourcesHtml}
+                            </div>`;
                     });
 
-                    htmlContent += `</ul></div>`; // Close shopping-list-ingredient-group
+                    const cardHtml = `
+                        <div class="shopping-list-item-card ${haveAtHomeClass}">
+                            <div class="item-card-header">
+                                <h4>${ingredientGroup.displayName}${combinedIconHtml}</h4>
+                                ${atHomeIconHtml}
+                            </div>
+                            <div class="item-card-body">
+                                ${unitEntriesHtml}
+                            </div>
+                        </div>`;
+                    container.innerHTML += cardHtml;
                 });
 
-                htmlContent += `</div>`; // Close shopping-list-main
-                container.innerHTML = htmlContent;
                 container.classList.remove('hidden');
                 if (noListMsg) noListMsg.classList.add('hidden');
             } else {
+                container.className = ''; // Reset class if empty
                 container.classList.add('hidden');
                 if (noListMsg) noListMsg.classList.remove('hidden');
             }

@@ -1163,3 +1163,135 @@ hr.section-divider {
 #find-recipes-from-pantry-btn {
     margin-top: 1.5rem; /* Space above this button */
 }
+
+/* SHOPPING LIST CARD STYLES */
+.shopping-list-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 1.5rem;
+    padding-top: 1rem; /* Add some padding above the cards */
+}
+
+.shopping-list-item-card {
+    background-color: var(--k-bg-card);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-medium);
+    border-left: 5px solid var(--k-accent-vibrant-blue); /* Default accent border */
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+.shopping-list-item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-strong);
+}
+
+.item-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to top */
+    margin-bottom: 1rem; /* Increased margin */
+    border-bottom: 1px solid var(--k-border-light); /* Separator */
+    padding-bottom: 0.75rem; /* Space for separator */
+}
+.item-card-header h4 {
+    font-size: 1.2rem; /* Slightly larger */
+    font-weight: 700; /* Bolder */
+    color: var(--k-text-primary);
+    margin-right: 0.5rem; /* Space for icons */
+    line-height: 1.3;
+    flex-grow: 1; /* Allow h4 to take available space */
+}
+.item-card-header .combined-icon {
+    color: var(--k-text-secondary);
+    font-size: 0.9em;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+}
+.item-card-header .have-at-home-icon {
+    color: var(--k-primary-pop-2); /* Green for "have at home" */
+    font-size: 1.5em; /* Larger icon */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    margin-left: 0.5rem;
+}
+
+.item-card-body .unit-entry {
+    margin-bottom: 0.75rem;
+}
+.item-card-body .unit-entry:last-child {
+    margin-bottom: 0;
+}
+
+.item-card-body .total-quantity {
+    font-size: 1.05rem; /* Slightly larger */
+    font-weight: 600; /* Bolder */
+    color: var(--k-text-primary); /* Primary text color */
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem; /* Space below quantity */
+}
+.item-card-body .total-quantity i {
+    color: var(--k-primary-pop-1); /* Pop color for quantity icon */
+    margin-right: 0.6rem; /* More space for icon */
+    font-size: 1.1em;
+}
+
+.shopping-list-item-card .source-list {
+    list-style: none;
+    padding: 0.5rem 0 0 0; /* Reduced top padding */
+    margin-top: 0.5rem; /* Reduced top margin */
+    border-top: 1px dashed var(--k-border-medium); /* Dashed separator */
+    font-size: 0.9rem; /* Slightly larger */
+}
+.shopping-list-item-card .source-list li {
+    color: var(--k-text-secondary);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+}
+.shopping-list-item-card .source-list li:last-child {
+    margin-bottom: 0;
+}
+.shopping-list-item-card .source-list li i {
+    font-size: 0.9em;
+    margin-right: 0.5rem; /* More space */
+    color: var(--k-text-secondary);
+    width: 16px; /* Align icons */
+    text-align: center;
+}
+
+/* Styling for "Have at Home" items */
+.shopping-list-item-card.have-at-home {
+    border-left-color: var(--k-primary-pop-2); /* Green accent for "have at home" */
+    background-color: var(--k-primary-pop-2-lighter); /* Light green background */
+}
+.shopping-list-item-card.have-at-home .item-card-header h4 {
+     /* Keep primary text color or adjust if needed */
+}
+.shopping-list-item-card.have-at-home .total-quantity i {
+    color: var(--k-primary-pop-2-darker); /* Darker green for quantity icon */
+}
+.shopping-list-item-card.have-at-home .item-card-header .have-at-home-icon {
+    /* Icon color already set, but can be overridden if needed */
+}
+
+/* Responsive adjustments for shopping list cards if needed */
+@media (max-width: 576px) { /* Mobile phones */
+    .shopping-list-items-grid {
+        grid-template-columns: 1fr; /* Stack cards on smallest screens */
+        gap: 1rem;
+    }
+    .shopping-list-item-card {
+        padding: 1rem;
+    }
+    .item-card-header h4 {
+        font-size: 1.1rem;
+    }
+    .item-card-body .total-quantity {
+        font-size: 1rem;
+    }
+    .shopping-list-item-card .source-list {
+        font-size: 0.85rem;
+    }
+}
