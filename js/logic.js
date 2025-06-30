@@ -163,7 +163,7 @@ function parseIngredientString(ingString) {
 
 function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
     if (!plan || plan.length === 0) return [];
-    const required = {};
+    const shoppingListItems = [];
 
     plan.forEach(day => {
         if (day.selected && day.selected.ingredients) {
@@ -180,38 +180,20 @@ function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
                 if (recipePortions <= 0) recipePortions = 1;
 
                 const quantityPerPerson = parsedIng.quantity / recipePortions;
-                let currentQuantity = quantityPerPerson * persons;
-                let currentUnit = parsedIng.standardizedUnit;
-                let currentName = parsedIng.normalizedName;
-
-                // Attempt to convert to a base unit for aggregation
-                const conversionResult = convertToBaseUnit(currentQuantity, currentUnit, currentName);
-                if (conversionResult.converted) {
-                    currentQuantity = conversionResult.quantity;
-                    currentUnit = conversionResult.unit;
-                }
-                // Ensure currentName is the normalized name after potential conversion lookups
-                currentName = normalizeIngredientName(currentName);
+                const currentQuantity = quantityPerPerson * persons;
+                const currentUnit = parsedIng.standardizedUnit;
+                // Use the original parsed name for display, not the normalized one, to keep original details
+                const currentName = parsedIng.name;
+                const normalizedNameForMatch = parsedIng.normalizedName;
 
 
-                // Key for aggregation: normalized name + standardized (and potentially base) unit
-                const key = currentName.toLowerCase().trim() + "_" + currentUnit.toLowerCase().trim();
-
-                if (required[key]) {
-                    required[key].quantity += currentQuantity;
-                    required[key].combined = true;
-                    // Potentially update originalStrings if a more generic one is needed, or collect all
-                    required[key].originalStrings.add(parsedIng.originalString);
-                } else {
-                    required[key] = {
-                        displayName: currentName, // Default display name to normalized name
-                        quantity: currentQuantity,
-                        unit: currentUnit,
-                        originalStrings: new Set([parsedIng.originalString]), // Store all original strings
-                        combined: false,
-                        normalizedForMatch: currentName // Store the name used for matching pantry items
-                    };
-                }
+                shoppingListItems.push({
+                    displayName: currentName,
+                    quantity: currentQuantity,
+                    unit: currentUnit,
+                    originalString: parsedIng.originalString, // Keep original string for reference if needed
+                    normalizedForMatch: normalizedNameForMatch
+                });
             });
         }
     });
@@ -220,8 +202,8 @@ function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
 
     const categorizedShoppingList = {};
 
-    Object.values(required).forEach(ing => {
-        let categoryName = "Sonstiges";
+    shoppingListItems.forEach(ing => {
+        let categoryName = "Sonstiges"; // Default category
         let longestMatchLength = 0;
 
         if (pantryCategories) {
@@ -229,7 +211,6 @@ function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
                 if (category.items) {
                     for (const pItem of category.items) {
                         const pItemNameLower = normalizeIngredientName(pItem.name).toLowerCase();
-                        // Use ing.normalizedForMatch for comparison
                         if (ing.normalizedForMatch.toLowerCase().includes(pItemNameLower)) {
                             if (pItemNameLower.length > longestMatchLength) {
                                 longestMatchLength = pItemNameLower.length;
@@ -248,21 +229,23 @@ function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
             };
         }
 
-        // The ing.displayName is already the normalized name (e.g., "Zwiebel", "Knoblauch").
-        // This is suitable for display, especially when items are combined.
-        // The ing.unit is the unit after potential conversion to a base unit.
         categorizedShoppingList[categoryName].items.push({
+            // Use displayName which is parsedIng.name (more natural)
             name: ing.displayName,
             quantity: ing.quantity,
             unit: ing.unit,
+            // Check against pantry using the normalized name for better matching
             haveAtHome: pantryItemNamesLower.has(ing.normalizedForMatch.toLowerCase().trim()),
-            combined: ing.combined,
+            combined: false // Explicitly set to false as we are not combining
         });
     });
 
+    // Sort categories and items within categories
     const finalShoppingList = Object.values(categorizedShoppingList);
     finalShoppingList.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+
     finalShoppingList.forEach(category => {
+        // Sort items alphabetically by name, then by those not at home first
         category.items.sort((a, b) => {
             if (a.haveAtHome === b.haveAtHome) {
                 return a.name.localeCompare(b.name);
