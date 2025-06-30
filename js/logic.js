@@ -248,29 +248,15 @@ function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
             };
         }
 
-        // Determine the best display name. If combined from multiple different original strings,
-        // use the normalized name. Otherwise, can use the single original string.
-        let finalDisplayName = ing.displayName;
-        if(ing.combined && ing.originalStrings.size > 1) {
-            // Check if all original strings normalize to the same name. If so, normalized is fine.
-            // Otherwise, it might be better to list them or use a more generic term.
-            // For now, stick with the normalized name if combined from truly different items.
-            // If originalStrings contains items that are just plural/singular or minor variations
-            // of the displayName, then displayName (which is normalized) is good.
-        } else if (ing.originalStrings.size === 1) {
-            finalDisplayName = Array.from(ing.originalStrings)[0];
-        }
-
-
+        // The ing.displayName is already the normalized name (e.g., "Zwiebel", "Knoblauch").
+        // This is suitable for display, especially when items are combined.
+        // The ing.unit is the unit after potential conversion to a base unit.
         categorizedShoppingList[categoryName].items.push({
-            name: finalDisplayName, // Use the determined display name
+            name: ing.displayName,
             quantity: ing.quantity,
             unit: ing.unit,
             haveAtHome: pantryItemNamesLower.has(ing.normalizedForMatch.toLowerCase().trim()),
             combined: ing.combined,
-            // For debugging or more advanced display later:
-            // originalStrings: Array.from(ing.originalStrings),
-            // normalizedNameForLogic: ing.normalizedForMatch
         });
     });
 
