@@ -180,26 +180,37 @@ const ui = (() => {
                     if (category.items && category.items.length > 0) {
                         htmlContent += `<div class="shopping-list-category">`;
                         htmlContent += `<h3>${category.categoryName}</h3>`;
-                        htmlContent += `<ul class="list-unstyled">`; // Use list-unstyled for Bootstrap if available, or style manually
-                        category.items.forEach(item => {
-                            const haveAtHomeClass = item.haveAtHome ? 'have-at-home' : '';
-                            const atHomeStatus = item.haveAtHome ? '<span class="status"> (Zuhause)</span>' : '';
-                            // Use item.originalString for display to keep details like "(Größe M)"
-                            // item.name is the parsed name used for logic.
-                            const combinedIcon = item.combined ? ' <i class="fa-solid fa-layer-group" title="Zusammengefasst aus mehreren Rezepten"></i>' : '';
+                        // Each item here is an aggregated ingredient
+                        category.items.forEach(aggItem => {
+                            const haveAtHomeClass = aggItem.haveAtHome ? 'have-at-home' : '';
+                            const atHomeStatus = aggItem.haveAtHome ? '<span class="status"> (Vorhanden)</span>' : '';
+                            const combinedIcon = aggItem.combined ? ' <i class="fa-solid fa-layer-group" title="Zusammengefasst aus mehreren Rezepten"></i>' : '';
 
-                            // Round quantity to a reasonable number of decimal places if it's a float
-                            const displayQuantity = Number.isInteger(item.quantity) ? item.quantity : parseFloat(item.quantity).toFixed(2);
+                            // Round totalQuantity for display
+                            const displayTotalQuantity = Number.isInteger(aggItem.totalQuantity)
+                                ? aggItem.totalQuantity
+                                : parseFloat(aggItem.totalQuantity).toFixed(2);
 
-                            htmlContent += `<li class="${haveAtHomeClass}">
-                                                <span>${item.name}${combinedIcon}</span>
-                                                <div>
-                                                    <span class="unit">${displayQuantity} ${item.unit}</span>
-                                                    ${atHomeStatus}
-                                                </div>
-                                            </li>`;
+                            htmlContent += `<div class="shopping-list-item ${haveAtHomeClass}">`;
+                            htmlContent += `  <div class="item-header">`;
+                            htmlContent += `    <h4>${aggItem.displayName}${combinedIcon}</h4>`;
+                            htmlContent += `    <span class="total-quantity">${displayTotalQuantity} ${aggItem.unit}${atHomeStatus}</span>`;
+                            htmlContent += `  </div>`;
+
+                            // If the item is combined from multiple sources, show the breakdown
+                            if (aggItem.combined && aggItem.sources && aggItem.sources.length > 0) {
+                                htmlContent += `  <ul class="source-list">`;
+                                aggItem.sources.forEach(source => {
+                                    const displaySourceQuantity = Number.isInteger(source.quantity)
+                                        ? source.quantity
+                                        : parseFloat(source.quantity).toFixed(2);
+                                    htmlContent += `<li title="Rezept: ${source.recipeName}">${displaySourceQuantity} ${aggItem.unit}</li>`;
+                                });
+                                htmlContent += `  </ul>`;
+                            }
+                            htmlContent += `</div>`; // Close shopping-list-item
                         });
-                        htmlContent += `</ul></div>`;
+                        htmlContent += `</div>`; // Close shopping-list-category
                     }
                 });
                 container.innerHTML = htmlContent;
