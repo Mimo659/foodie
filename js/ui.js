@@ -169,72 +169,50 @@ const ui = (() => {
             if (isLoading) { button.disabled = true; button.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generiere...`; } 
             else { button.disabled = false; button.innerHTML = originalHtml; }
         },
-        renderShoppingList: (categorizedList) => {
+        renderShoppingList: (shoppingList) => { // Renamed parameter for clarity
             const container = document.getElementById('shopping-list-container');
-            const noListMsg = document.getElementById('no-shopping-list'); // Corrected variable name
+            const noListMsg = document.getElementById('no-shopping-list');
             container.innerHTML = ''; // Clear previous content
 
-            if (categorizedList && categorizedList.length > 0) {
-                let htmlContent = '';
-                categorizedList.forEach(category => {
-                    if (category.items && category.items.length > 0) {
-                        // Try to get a category icon (simple mapping for now)
-                        let categoryIcon = 'fa-solid fa-tag'; // Default icon
-                        if (category.categoryName.toLowerCase().includes('gemüse') || category.categoryName.toLowerCase().includes('obst')) {
-                            categoryIcon = 'fa-solid fa-carrot';
-                        } else if (category.categoryName.toLowerCase().includes('milch') || category.categoryName.toLowerCase().includes('käse') || category.categoryName.toLowerCase().includes('joghurt')) {
-                            categoryIcon = 'fa-solid fa-cheese';
-                        } else if (category.categoryName.toLowerCase().includes('fleisch') || category.categoryName.toLowerCase().includes('wurst')) {
-                            categoryIcon = 'fa-solid fa-drumstick-bite';
-                        } else if (category.categoryName.toLowerCase().includes('brot') || category.categoryName.toLowerCase().includes('backwaren')) {
-                            categoryIcon = 'fa-solid fa-bread-slice';
-                        } else if (category.categoryName.toLowerCase().includes('getränke')) {
-                            categoryIcon = 'fa-solid fa-martini-glass';
-                        } else if (category.categoryName.toLowerCase().includes('konserven') || category.categoryName.toLowerCase().includes('trocken')) {
-                            categoryIcon = 'fa-solid fa-box-archive';
+            if (shoppingList && shoppingList.length > 0) {
+                let htmlContent = '<div class="shopping-list-main">'; // Main container for all items
+
+                shoppingList.forEach(ingredientGroup => {
+                    const haveAtHomeClass = ingredientGroup.haveAtHome ? 'have-at-home-group' : '';
+                    const atHomeIcon = ingredientGroup.haveAtHome ? '<i class="fa-solid fa-house-chimney-user have-at-home-icon" title="Ganz oder teilweise vorhanden"></i>' : '';
+                    // The 'combined' flag on ingredientGroup indicates if the name appeared in multiple source ingredient lines.
+                    // A more detailed 'combined' (e.g. specific unit was combined) could be derived from unitEntry.recipeSources.length > 1
+                    const combinedIcon = ingredientGroup.combined ? ' <i class="fa-solid fa-layer-group combined-icon" title="Zusammengefasst"></i>' : '';
+
+                    htmlContent += `
+                        <div class="shopping-list-ingredient-group ${haveAtHomeClass}">
+                            <div class="ingredient-group-header">
+                                <h3>${ingredientGroup.displayName}${combinedIcon}</h3>
+                                ${atHomeIcon}
+                            </div>
+                            <ul class="ingredient-unit-entries">`;
+
+                    ingredientGroup.unitEntries.forEach(unitEntry => {
+                        const displayTotalQuantity = Number.isInteger(unitEntry.totalQuantity)
+                            ? unitEntry.totalQuantity
+                            : parseFloat(unitEntry.totalQuantity).toFixed(unitEntry.totalQuantity < 1 && unitEntry.totalQuantity > 0 ? 2 : (unitEntry.totalQuantity === 0 ? 0 : 1));
+
+                        // Tooltip for recipe sources for this specific unit entry
+                        let sourcesTooltip = "";
+                        if (unitEntry.recipeSources && unitEntry.recipeSources.length > 0) {
+                            sourcesTooltip = unitEntry.recipeSources.map(rs => `${rs.recipeName}: ${rs.quantity} ${unitEntry.unit}`).join('\n');
                         }
 
+                        htmlContent += `
+                            <li class="unit-entry" title="${sourcesTooltip}">
+                                <span class="quantity-unit"><i class="fa-solid fa-scale-balanced"></i> ${displayTotalQuantity} ${unitEntry.unit}</span>
+                            </li>`;
+                    });
 
-                        htmlContent += `<div class="shopping-list-category">`;
-                        htmlContent += `<h3><i class="${categoryIcon}"></i> ${category.categoryName}</h3>`;
-                        htmlContent += `<div class="shopping-list-items-grid">`; // Grid container for mini-cards
-
-                        category.items.forEach(aggItem => {
-                            const haveAtHomeClass = aggItem.haveAtHome ? 'have-at-home' : '';
-                            const atHomeIcon = aggItem.haveAtHome ? '<i class="fa-solid fa-house-chimney-user have-at-home-icon" title="Bereits vorhanden"></i>' : '';
-                            const combinedIcon = aggItem.combined ? ' <i class="fa-solid fa-layer-group combined-icon" title="Zusammengefasst aus mehreren Rezepten"></i>' : '';
-
-                            const displayTotalQuantity = Number.isInteger(aggItem.totalQuantity)
-                                ? aggItem.totalQuantity
-                                : parseFloat(aggItem.totalQuantity).toFixed(aggItem.totalQuantity < 1 && aggItem.totalQuantity > 0 ? 2 : (aggItem.totalQuantity === 0 ? 0 : 1) );
-
-
-                            htmlContent += `
-                                <div class="shopping-list-item-card ${haveAtHomeClass}">
-                                    <div class="item-card-header">
-                                        <h4>${aggItem.displayName}${combinedIcon}</h4>
-                                        ${atHomeIcon}
-                                    </div>
-                                    <div class="item-card-body">
-                                        <span class="total-quantity"><i class="fa-solid fa-scale-balanced"></i> ${displayTotalQuantity} ${aggItem.unit}</span>
-                                    </div>`;
-
-                            if (aggItem.combined && aggItem.sources && aggItem.sources.length > 0) {
-                                htmlContent += `<ul class="source-list">`;
-                                aggItem.sources.forEach(source => {
-                                    const displaySourceQuantity = Number.isInteger(source.quantity)
-                                        ? source.quantity
-                                        : parseFloat(source.quantity).toFixed(source.quantity < 1 && source.quantity > 0 ? 2 : 1);
-                                    htmlContent += `<li title="Rezept: ${source.recipeName}"><i class="fa-solid fa-utensils"></i> ${displaySourceQuantity} ${aggItem.unit}</li>`;
-                                });
-                                htmlContent += `</ul>`;
-                            }
-                            htmlContent += `</div>`; // Close shopping-list-item-card
-                        });
-                        htmlContent += `</div>`; // Close shopping-list-items-grid
-                        htmlContent += `</div>`; // Close shopping-list-category
-                    }
+                    htmlContent += `</ul></div>`; // Close shopping-list-ingredient-group
                 });
+
+                htmlContent += `</div>`; // Close shopping-list-main
                 container.innerHTML = htmlContent;
                 container.classList.remove('hidden');
                 if (noListMsg) noListMsg.classList.add('hidden');
