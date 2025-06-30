@@ -4,25 +4,27 @@ function initializeApp() {
         setItem: (key, value) => localStorage.setItem(key, JSON.stringify(value))
     };
 
-    // Fetch both recipes and pantry categories
-    // Add return here so the test can await its completion
-
-    // Determine which recipe file to load based on stored portion size
-    let storedPortionsForFetch = store.getItem('persons') || '2'; // Default to '2' if not set
+    // Fetch recipes, pantry categories, and unique tags
+    let storedPortionsForFetch = store.getItem('persons') || '2';
     if (storedPortionsForFetch !== '2' && storedPortionsForFetch !== '4') {
-        storedPortionsForFetch = '2'; // Fallback to '2' for safety
+        storedPortionsForFetch = '2';
     }
     const recipeFileName = `data/recipes_${storedPortionsForFetch}.json`;
 
+    // extractUniqueTags is an async function, so it needs to be handled correctly in Promise.all
     return Promise.all([
         fetch(recipeFileName).then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for ${recipeFileName}`); return res.json(); }),
-        fetch('data/pantry_item_categories.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for pantry_item_categories.json`); return res.json(); })
+        fetch('data/pantry_item_categories.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for pantry_item_categories.json`); return res.json(); }),
+        extractUniqueTags() // This will resolve to the array of unique tags
     ])
-    .then(([recipes, pantryData]) => {
+    .then(([recipes, pantryData, uniqueTags]) => {
             const ALL_RECIPES = recipes;
             const PANTRY_CATEGORIES = pantryData.categories;
-            let allPantryItems = PANTRY_CATEGORIES.flatMap(category => category.items.map(item => ({ ...item, categoryName: category.name })));
+            const UNIQUE_TAGS = uniqueTags; // Store the fetched unique tags
 
+            ui.populateTagFilters(UNIQUE_TAGS); // Populate the filters in the UI
+
+            let allPantryItems = PANTRY_CATEGORIES.flatMap(category => category.items.map(item => ({ ...item, categoryName: category.name })));
             let weeklyPlan = store.getItem('weeklyPlan') || null;
             // Use new key for structured pantry inventory
             let userPantry = store.getItem('userPantry') || [];
@@ -71,17 +73,17 @@ function initializeApp() {
                 ui.setButtonLoadingState(submitButton, true);
                 setTimeout(() => {
                     const dietPreference = document.querySelector('input[name="diet"]:checked').value;
-                    // Read from the new radio buttons
                     const selectedPortions = document.querySelector('input[name="portions"]:checked').value;
+
+                    // Get selected tags
+                    const selectedTagNodes = document.querySelectorAll('#dynamic-tags-checkboxes input[type="checkbox"]:checked');
+                    const selectedTags = Array.from(selectedTagNodes).map(node => node.value);
+
                     const prefs = {
                         persons: parseInt(selectedPortions, 10),
-                        budget: document.getElementById('budget').value,
                         isVegetarian: dietPreference === 'vegetarian',
                         isVegan: dietPreference === 'vegan',
-                        isQuick: document.getElementById('attr-quick').checked,
-                        isGuestFriendly: document.getElementById('attr-guest-friendly').checked,
-                        isForLeftovers: document.getElementById('attr-leftovers').checked,
-                        cuisine: document.getElementById('cuisine-style').value
+                        selectedTags: selectedTags
                     };
                     weeklyPlan = generateWeeklyPlan(ALL_RECIPES, prefs);
                     if (weeklyPlan.length === 0) {

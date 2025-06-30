@@ -80,19 +80,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="budget"><i class="ti ti-pig-money"></i> Budget/Portion (€)</label>
-                                    <input type="number" id="budget" placeholder="z.B. 4">
-                                </div>
-                            </div>
-                            <fieldset>
-                                <legend><i class="ti ti-plant-2"></i> Ernährungsweise</legend>
-                                <div class="radio-group-container">
-                                    <div class="radio-group"><input type="radio" id="diet-all" name="diet" value="all" checked><label for="diet-all">Alles</label></div>
-                                    <div class="radio-group"><input type="radio" id="diet-vegetarian" name="diet" value="vegetarian"><label for="diet-vegetarian">Vegetarisch</label></div>
-                                    <div class="radio-group"><input type="radio" id="diet-vegan" name="diet" value="vegan"><label for="diet-vegan">Vegan</label></div>
-                                </div>
-                            </fieldset>
+
+                            <fieldset id="tags-filter-container">
+                                <legend><i class="fa-solid fa-tags"></i> Spezielle Eigenschaften</legend>
+                                <div class="checkbox-group-container" id="dynamic-tags-checkboxes">
+                                    <!-- Checkboxes will be dynamically inserted here by JavaScript -->
                             <fieldset>
                                 <legend><i class="ti ti-tags"></i> Kategorien & Eigenschaften</legend>
                                 <div class="checkbox-group-container">

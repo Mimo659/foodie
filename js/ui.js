@@ -3,8 +3,29 @@ const ui = (() => {
     const modalBody = document.getElementById('modal-body');
     const modalCloseBtn = document.querySelector('.modal-close-btn');
     const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
+        const dynamicTagsCheckboxContainer = document.getElementById('dynamic-tags-checkboxes');
 
     const closeModal = () => modal.classList.add('hidden');
+
+        const populateTagFilters = (tags) => {
+            if (!dynamicTagsCheckboxContainer) return;
+            dynamicTagsCheckboxContainer.innerHTML = ''; // Clear any existing
+            tags.forEach(tag => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'checkbox-group';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `tag-${tag.toLowerCase().replace(/\s+/g, '-')}`;
+                checkbox.name = 'dynamic-tag';
+                checkbox.value = tag;
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = tag;
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+                dynamicTagsCheckboxContainer.appendChild(checkboxDiv);
+            });
+        };
 
     const openModalWithRecipe = (recipe) => {
         // Ingredients are now an array of strings
@@ -35,17 +56,19 @@ const ui = (() => {
         // recipe.estimatedCostPerServing is not in data/recipes.json, hide price tag or show placeholder
         const priceTagHtml = (typeof recipe.estimatedCostPerServing === 'number' && !isNaN(recipe.estimatedCostPerServing))
             ? `<span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`
-            : ''; // Or a placeholder like <span class="price-tag">Preis N/A</span>
+            : '';
 
         let tagsHtml = `<div class="tags">${priceTagHtml}`;
-        if (recipe.tags && recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
-
-        // Derive isVegan/isVegetarian from tags
-        const isVegan = recipe.tags && recipe.tags.includes('Vegan');
-        const isVegetarian = recipe.tags && recipe.tags.includes('Vegetarisch');
-
-        if (isVegan) tagsHtml += `<span>Vegan</span>`;
-        else if (isVegetarian) tagsHtml += `<span>Vegetarisch</span>`;
+        if (recipe.tags && Array.isArray(recipe.tags)) {
+            recipe.tags.forEach(tag => {
+                // Special handling for 'schnell' to include an icon, if desired
+                if (tag.toLowerCase() === 'schnell') {
+                    tagsHtml += `<span><i class="fa-solid fa-bolt"></i> ${tag}</span>`;
+                } else {
+                    tagsHtml += `<span>${tag}</span>`;
+                }
+            });
+        }
         tagsHtml += `</div>`;
 
         let matchInfoHtml = '';
@@ -72,6 +95,7 @@ const ui = (() => {
     };
     
     return {
+        populateTagFilters, // Expose the new function
         renderDashboard: (plan, onSelectRecipe, onInfoClick) => {
             const planDisplay = document.getElementById('plan-display');
             const noPlanDisplay = document.getElementById('no-plan-display');
