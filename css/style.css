@@ -140,8 +140,19 @@ i.fa-solid, i.fas, i.ti { /* Adding .fas for wider compatibility with FontAwesom
 
 /* HEADER & NAVIGATION */
 header { background: var(--header-bg); color: var(--header-text); padding: 1rem 0; box-shadow: var(--shadow-medium); }
-#logo { font-weight: 700; font-size: 1.85rem; color: var(--header-text); } /* Slightly larger logo */
-#logo i.ti { color: var(--header-text); margin-right: 0.6rem; font-size: 1.7rem; /* Make logo icon larger */ }
+#logo {
+    font-weight: 700;
+    font-size: 1.85rem;
+    color: var(--header-text);
+    display: flex; /* Use flexbox to align image and text */
+    align-items: center; /* Vertically align items in the center */
+}
+#logo .header-logo {
+    height: 40px; /* Adjust height as needed, width will scale proportionally */
+    margin-right: 0.75rem; /* Space between logo and text */
+    border-radius: 4px; /* Optional: if the logo itself isn't rounded */
+}
+#logo i.ti { color: var(--header-text); margin-right: 0.6rem; font-size: 1.7rem; /* Make logo icon larger */ } /* This might be removed if icon is replaced by image */
 .main-layout { display: flex; gap: 2.5rem; align-items: flex-start; margin-top: 2.5rem; }
 aside.main-nav {
     flex: 0 0 230px;
@@ -972,7 +983,12 @@ footer i.fa-heart { color: var(--k-primary-pop-1); font-size: 1.2em; } /* Ensure
     body { font-size: 16px; /* Keep base font size slightly larger for readability */ }
     .container { padding: 1rem 1rem; } /* More consistent padding */
 
-    h1#logo { text-align: center; width: 100%; font-size: 1.75rem; } /* Larger logo on mobile */
+    h1#logo {
+        text-align: center; /* This will be overridden by flex settings for children but can affect block itself if not display:flex */
+        width: 100%;
+        font-size: 1.75rem;
+        justify-content: center; /* Center flex items (image and text) */
+    }
     header .container { padding: 1.25rem 1rem; }
     h1 { font-size: 2rem; } /* Larger h1 */
     h2 { font-size: 1.65rem; } /* Larger h2 */
