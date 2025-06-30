@@ -1,7 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    initializeApp();
-});
-
 function initializeApp() {
     const store = {
         getItem: (key) => JSON.parse(localStorage.getItem(key)),
@@ -9,7 +5,8 @@ function initializeApp() {
     };
 
     // Fetch both recipes and pantry categories
-    Promise.all([
+    // Add return here so the test can await its completion
+    return Promise.all([
         fetch('data/recipes.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for recipes.json`); return res.json(); }),
         fetch('data/pantry_item_categories.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for pantry_item_categories.json`); return res.json(); })
     ])
@@ -291,3 +288,12 @@ function initializeApp() {
             document.getElementById('loading-screen').innerHTML = `<p style="color:red;">Fehler: Daten konnten nicht geladen werden (${error.message}). Bitte die Seite neu laden.</p>`;
         });
 }
+
+// Expose initializeApp for testing purposes
+if (typeof window !== 'undefined') {
+    window.testableInitializeApp = initializeApp;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp(); // Standard execution path
+});
