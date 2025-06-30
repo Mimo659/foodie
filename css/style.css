@@ -291,91 +291,36 @@ main.main-content { flex: 1; min-width: 0; }
 .view.hidden { display: none; }
 
 
-/* WEEKLY PLAN CALENDAR VIEW STYLES */
-.weekly-plan-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive: 1 column on small, up to 7 on large */
-    gap: 1.5rem;
-    padding: 1rem 0;
-}
-
-@media (min-width: 768px) { /* Tablets and up */
-    .weekly-plan-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjust minmax for more columns */
-    }
-}
-
-@media (min-width: 1200px) { /* Larger desktops, aim for 7 columns if space allows */
-    .weekly-plan-grid {
-         /* Attempt to fit more, but auto-fit handles if not enough recipes for 7 days or viewport too small */
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-     /* If a fixed 7-day week is always shown, even with fewer plan days: */
-    /* .weekly-plan-grid { grid-template-columns: repeat(7, 1fr); } */
-}
-
-
-.calendar-day-cell {
-    background-color: var(--k-bg-card);
-    border: 1px solid var(--k-border-light);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    flex-direction: column;
-}
-
-.calendar-day-title {
-    font-size: 1.5rem; /* Slightly smaller than old day titles */
-    font-weight: 700;
-    color: var(--k-primary-pop-1);
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--k-primary-pop-1-lighter);
-}
-
-.calendar-recipe-options {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; /* Space between recipe cards if multiple options are shown */
-    flex-grow: 1; /* Allow this container to grow and push buttons down */
-}
-
-.calendar-recipe-options .recipe-card {
-    /* Recipe cards in calendar might be slightly more compact */
-    padding: 1rem;
-    box-shadow: var(--shadow-soft); /* Softer shadow for nested cards */
-}
-.calendar-recipe-options .recipe-card h4 {
-    font-size: 1.1rem; /* Slightly smaller titles in calendar view */
-}
-.calendar-recipe-options .recipe-card p,
-.calendar-recipe-options .recipe-card .tags,
-.calendar-recipe-options .recipe-card .recipe-nutrition-info {
-    font-size: 0.8rem; /* Smaller text for details */
-}
-.calendar-recipe-options .recipe-card .btn-info {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-}
-.calendar-recipe-options .single-selected-recipe {
-    /* Styles for when only one selected recipe is shown */
-    /* border-color: var(--k-primary-pop-2); */ /* Example: distinct border */
-}
-.no-options-text {
-    font-style: italic;
-    color: var(--k-text-secondary);
-    text-align: center;
-    padding: 1rem;
-}
-
-
 /* REZEPTKARTEN - VIBRANT STYLING (General, used in generator and potentially calendar) */
-/* .day-container { margin-bottom: 3rem; } */ /* Replaced by calendar grid */
-/* .day-container h3 { ... } */ /* Replaced by .calendar-day-title */
+/* Styles for the original row-based dashboard layout */
+.day-container {
+    margin-bottom: 3rem;
+}
+.day-container h3 { /* For "Montag", "Dienstag" etc. */
+    font-size: 1.8rem; /* Larger day titles */
+    font-weight: 700;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--k-primary-pop-1); /* Pop color border */
+    margin-bottom: 2rem; /* More space below day title */
+    color: var(--k-primary-pop-1); /* Pop color for day title text */
+}
 
-/* .recipe-options { ... } */ /* Replaced by .calendar-recipe-options for dashboard context */
-/* Styles for .recipe-options in generator view might need to be distinct if they exist or are added */
+.recipe-options { /* This is the container for the two recipe cards per day */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Should result in 2 columns on most screens */
+    gap: 2rem;
+}
+/* End of original row-based dashboard layout styles */
+
+
+/* Removed WEEKLY PLAN CALENDAR VIEW STYLES */
+/* .weekly-plan-grid { ... } */
+/* .calendar-day-cell { ... } */
+/* .calendar-day-title { ... } */
+/* .calendar-recipe-options { ... } */
+/* .calendar-recipe-options .recipe-card { ... } */
+/* .no-options-text { ... } */
+
 
 .recipe-card { /* Individual recipe card - general styling */
     background: var(--k-bg-card);
