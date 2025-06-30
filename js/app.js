@@ -101,7 +101,7 @@ function initializeApp() {
 
             confirmPlanBtn.addEventListener('click', () => {
                 // Ensure generateShoppingList is updated to use userPantry
-                const list = generateShoppingList(weeklyPlan, userPantry, persons);
+                const list = generateShoppingList(weeklyPlan, userPantry, persons, PANTRY_CATEGORIES);
                 ui.renderShoppingList(list);
                 ui.switchView('shopping-list-view');
                 navLinks.forEach(n => n.classList.remove('active'));
@@ -261,7 +261,7 @@ function initializeApp() {
                         ui.renderInventoryResults(matchingRecipes, handleInfoClick);
                         renderCurrentPantry(); // Also render the pantry list when switching to this view
                     } else if (viewId === 'shopping-list-view') {
-                        const list = generateShoppingList(weeklyPlan, userPantry, persons); // Use userPantry
+                         const list = generateShoppingList(weeklyPlan, userPantry, persons, PANTRY_CATEGORIES); // Use userPantry and pass PANTRY_CATEGORIES
                         ui.renderShoppingList(list);
                     }
                     ui.switchView(viewId);
