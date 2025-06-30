@@ -105,28 +105,42 @@ function parseIngredientString(ingString) {
     let standardizedUnit = normalizeUnit(parsedUnit);
     let normalizedName = normalizeIngredientName(name);
 
-    if (standardizedUnit === '' || standardizedUnit === name) {
+    // Primary unit determination block
+    if (standardizedUnit === '' || standardizedUnit === name) { // If no unit was parsed, or unit was part of name
         if (normalizedName.toLowerCase() === 'salz' || normalizedName.toLowerCase() === 'pfeffer') {
             standardizedUnit = 'Prise';
-        } else if (UNIT_STANDARDIZATION[normalizedName.toLowerCase()]) {
+        } else if (UNIT_STANDARDIZATION[normalizedName.toLowerCase()]) { // If the name itself is a unit e.g. "gramm"
             standardizedUnit = UNIT_STANDARDIZATION[normalizedName.toLowerCase()];
-        } else if (quantity > 0 && name !== "") {
-             standardizedUnit = 'Stk.';
+        } else if (name !== "" && numPart !== undefined) {
+            // If there's a name AND a number, it's likely "Stk." if no other unit found
+            // e.g., "2 Bananen"
+            standardizedUnit = 'Stk.';
         }
+        // If name is "" but numPart exists (e.g. "123"), this block does not assign Stk. yet.
+        // If name exists but numPart is undefined (e.g. "Zucker"), this block does not assign Stk.
+    }
+
+    // Secondary block: Catch cases like "123" or ensure salt/pepper if missed, or handle items like "Zucker".
+    if (standardizedUnit === '') { // If unit is STILL empty after primary block
+        if (numPart !== undefined) { // If there was a number parsed (e.g., "123" OR "2 Zwiebel" if Zwiebel isn't a unit)
+            standardizedUnit = 'Stk.';
+        } else if (name !== '') { // No number parsed, but there is a name (e.g. "Salz", "Pfeffer", or "Zucker" alone)
+            if (normalizedName.toLowerCase() === 'salz' || normalizedName.toLowerCase() === 'pfeffer') {
+                standardizedUnit = 'Prise';
+                // quantity is already 1 by default, and numPart is undefined here, so the later quantity adjustment will handle it.
+            }
+            // If it's "Zucker" or any other named item without a number, standardizedUnit remains "", which is correct.
+        }
+        // If both numPart is undefined AND name is empty (e.g. empty input string), standardizedUnit remains "".
     }
 
     if (name==="" && quantity > 0 && standardizedUnit !== "" && standardizedUnit !== "Stk.") {
-        // Handled by previous logic or implies original string was just "quantity unit"
+        // This condition seems less relevant now or might need review.
+        // It was intended for cases like "500g" where name becomes empty.
+        // If numPart="500", potentialUnitWord="g", namePartAfterUnit="", then name could be "".
+        // In this case, parsedUnit="g", standardizedUnit="g". So this block is skipped. Seems fine.
     }
-
-    if (standardizedUnit === '' && name !== '') {
-        if (normalizedName.toLowerCase() === 'salz' || normalizedName.toLowerCase() === 'pfeffer') {
-            standardizedUnit = 'Prise';
-            if (quantity === 1 && numPart === undefined) quantity = 1;
-        } else if (quantity > 0 && numPart !== undefined) { // Only default to Stk if a number was explicitly parsed
-            standardizedUnit = 'Stk.';
-        }
-    }
+    // The original second 'if (standardizedUnit === '' && name !== '')' block is now covered by the new 'if (standardizedUnit === '')' block.
     // If no quantity was given (e.g. "Salz"), and unit became 'Prise', quantity should be 1.
     if (numPart === undefined && (standardizedUnit === 'Prise' || (standardizedUnit === 'Stk.' && name !== ''))) {
         quantity = 1;
@@ -284,6 +298,11 @@ function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
 
 // Export functions for testing if in Node.js environment
 if (typeof module !== 'undefined' && module.exports) {
+    const ingredientMatcher = require('./ingredientMatcher.js');
+    UNIT_STANDARDIZATION = ingredientMatcher.UNIT_STANDARDIZATION; // Make it available in this module's scope
+    normalizeUnit = ingredientMatcher.normalizeUnit;
+    normalizeIngredientName = ingredientMatcher.normalizeIngredientName;
+
     module.exports = {
         generateWeeklyPlan,
         parseIngredientString,
