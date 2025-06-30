@@ -49,6 +49,8 @@ const BASE_UNIT_CONVERSIONS = {
     "kg": {"g": 1000, "mg": 1000000},
     "ml": {"l": 0.001, "cl": 0.1},
     "l": {"ml": 1000, "cl": 100},
+    "el": {"ml": 15}, // 1 EL is approx 15 ml
+    "tl": {"ml": 5},  // 1 TL is approx 5 ml
     // Add more as needed
 };
 
@@ -539,27 +541,22 @@ function convertToBaseUnit(quantity, unit, ingredientName) {
         };
     }
 
-    // Attempt general base unit conversion (e.g., kg to g)
+    // Attempt general base unit conversion (e.g., kg to g, EL to ml)
     if (BASE_UNIT_CONVERSIONS[standardUnit]) {
-        // Prefer smaller units as base for aggregation (e.g., g over kg, ml over l)
-        let targetUnit = standardUnit;
-        let finalQuantity = quantity;
-        let converted = false;
+        const preferredConversions = { // Define preferred base units
+            "kg": "g",
+            "l": "ml",
+            "el": "ml",
+            "tl": "ml"
+        };
 
-        if (standardUnit === "kg") {
-            targetUnit = "g";
-            finalQuantity = quantity * BASE_UNIT_CONVERSIONS[standardUnit][targetUnit];
-            converted = true;
-        } else if (standardUnit === "l") {
-            targetUnit = "ml";
-            finalQuantity = quantity * BASE_UNIT_CONVERSIONS[standardUnit][targetUnit];
-            converted = true;
-        }
-        // Add more preferential conversions if needed (e.g., EL/TL to ml, if desired and feasible)
-
-        if (converted) {
+        let targetUnit = preferredConversions[standardUnit];
+        // Check if a preferred conversion exists for the current standardUnit
+        // And if the specific conversion factor is defined in BASE_UNIT_CONVERSIONS
+        if (targetUnit && BASE_UNIT_CONVERSIONS[standardUnit] && BASE_UNIT_CONVERSIONS[standardUnit][targetUnit]) {
+            const factor = BASE_UNIT_CONVERSIONS[standardUnit][targetUnit];
             return {
-                quantity: finalQuantity,
+                quantity: quantity * factor,
                 unit: targetUnit,
                 converted: true
             };
