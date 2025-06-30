@@ -2,8 +2,11 @@ function generateWeeklyPlan(allRecipes, prefs) {
     let filtered = [...allRecipes];
 
     // Adapt to tags for dietary preferences
-    if (prefs.isVegan) filtered = filtered.filter(r => r.tags && r.tags.includes('Vegan'));
-    else if (prefs.isVegetarian) filtered = filtered.filter(r => r.tags && r.tags.includes('Vegetarisch'));
+    if (prefs.isVegan) {
+        filtered = filtered.filter(r => r.tags && r.tags.includes('Vegan'));
+    } else if (prefs.isVegetarian) {
+        filtered = filtered.filter(r => r.tags && (r.tags.includes('Vegetarisch') || r.tags.includes('Vegan')));
+    }
 
     // Budget filtering: recipes.json does not have estimatedCostPerServing.
     // This filter will likely not work as intended without data changes.
@@ -52,82 +55,96 @@ function parseIngredientString(ingString) {
     let name = ingString;
 
     // Pattern: "1 Prise Salz", "500 g Mehl", "1 Dose Tomaten"
-    const qtyUnitNamePattern = /^(?:(\d+(?:[\.,]\d+)?)\s*)?(?:([\wßöäüÖÄÜ\.]+)\s+)?(.+)$/;
-    // Pattern for things like "Salz", "Pfeffer", "1 Apfel", "Eier (Größe M)"
-    // Where the "unit" might be part of the name or implicit.
+    // Changed last group from (.+) to (.*) to allow empty namePart, critical for "123" case.
+    const qtyUnitNamePattern = /^(?:(\d+(?:[\.,]\d+)?)\s*)?(?:([\wßöäüÖÄÜ\.]+)\s+)?(.*)$/;
+
+    const commonUnitsMap = {
+        "g": "g", "gramm": "g",
+        "kg": "kg", "kilogramm": "kg",
+        "ml": "ml", "milliliter": "ml",
+        "l": "L", "liter": "L",
+        "el": "EL", "esslöffel": "EL",
+        "tl": "TL", "teelöffel": "TL",
+        "pck.": "Pck.", "packung": "Pck.", "pck": "Pck.",
+        "bd.": "Bund", "bund": "Bund", "bd": "Bund",
+        "stk.": "Stk.", "stück": "Stk.", "stk": "Stk.",
+        "dose": "Dose", "dosen": "Dose",
+        "glas": "Glas",
+        "prise": "Prise",
+        "knolle": "Knolle",
+        "zehe": "Zehe(n)", "zehen": "Zehe(n)"
+    };
+    const allUnitStrings = Object.keys(commonUnitsMap);
 
     const match = ingString.match(qtyUnitNamePattern);
 
     if (match) {
-        const numPart = match[1]; // e.g., "500"
-        const potentialUnit = match[2]; // e.g., "g", "Prise", "Dose" or first word of name if no number
-        const namePart = match[3]; // e.g., "Mehl", "Salz", "Tomaten"
+        const numPart = match[1];
+        const potentialUnitWord = match[2]; // Word that might be a unit if numPart exists or if it's like "Liter Milch"
+        let namePart = match[3];
 
-        if (numPart) { // If there's a number, potentialUnit is likely a unit.
+        if (numPart) {
             quantity = parseFloat(numPart.replace(',', '.'));
-            if (potentialUnit) {
-                 const unitLower = potentialUnit.toLowerCase();
-                if (["g", "gramm", "kg", "kilogramm", "ml", "milliliter", "l", "liter", "el", "esslöffel", "tl", "teelöffel", "pck.", "packung", "bd.", "bund", "stk.", "stück", "dose", "dosen", "glas", "prise", "knolle", "zehe", "zehen", "pck", "bd", "stk"].includes(unitLower)) {
-                    // Normalize common units
-                    if (unitLower === "g" || unitLower === "gramm") unit = "g";
-                    else if (unitLower === "kg" || unitLower === "kilogramm") unit = "kg";
-                    else if (unitLower === "ml" || unitLower === "milliliter") unit = "ml";
-                    else if (unitLower === "l" || unitLower === "liter") unit = "L";
-                    else if (unitLower === "el" || unitLower === "esslöffel") unit = "EL";
-                    else if (unitLower === "tl" || unitLower === "teelöffel") unit = "TL";
-                    else if (unitLower === "pck." || unitLower === "packung" || unitLower === "pck") unit = "Pck.";
-                    else if (unitLower === "bd." || unitLower === "bund" || unitLower === "bd") unit = "Bund";
-                    else if (unitLower === "stk." || unitLower === "stück" || unitLower === "stk") unit = "Stk.";
-                    else if (unitLower === "dose" || unitLower === "dosen") unit = "Dose";
-                    else if (unitLower === "glas") unit = "Glas";
-                    else if (unitLower === "prise") unit = "Prise";
-                    else if (unitLower === "knolle") unit = "Knolle";
-                    else if (unitLower === "zehe" || unitLower === "zehen") unit = "Zehe(n)";
-                    else unit = potentialUnit;
+            if (potentialUnitWord) {
+                const unitLower = potentialUnitWord.toLowerCase();
+                if (allUnitStrings.includes(unitLower)) {
+                    unit = commonUnitsMap[unitLower];
                     name = namePart.trim();
-                } else { // Number present, but potentialUnit is not a recognized unit -> it's part of the name
-                    unit = 'Stk.'; // Default if number is present but no clear unit
-                    name = (potentialUnit ? potentialUnit + " " : "") + namePart.trim();
+                } else { // Number present, but potentialUnitWord is not a recognized unit -> it's part of the name
+                    unit = 'Stk.';
+                    name = (potentialUnitWord + " " + namePart).trim();
                 }
-            } else { // Number present, but no middle part (potentialUnit)
-                unit = 'Stk.'; // e.g. "2 Äpfel"
+            } else { // Number present, but no middle word (potentialUnitWord)
+                unit = 'Stk.';
                 name = namePart.trim();
             }
-        } else if (potentialUnit) { // No number, potentialUnit and namePart exist
-            // This is for "Prise Salz", "Bd. Petersilie" or "Zwiebel"
-            const unitLower = potentialUnit.toLowerCase();
-             if (["prise", "bund", "bd.", "pck.", "pck", "dose", "glas", "knolle", "zehe", "zehen"].includes(unitLower)) {
-                if (unitLower === "prise") unit = "Prise";
-                else if (unitLower === "bund" || unitLower === "bd.") unit = "Bund";
-                else if (unitLower === "pck." || unitLower === "pck") unit = "Pck.";
-                else if (unitLower === "dose") unit = "Dose";
-                else if (unitLower === "glas") unit = "Glas";
-                else if (unitLower === "knolle") unit = "Knolle";
-                else if (unitLower === "zehe" || unitLower === "zehen") unit = "Zehe(n)";
-                else unit = potentialUnit;
-                name = namePart.trim();
-            } else { // No number, and potentialUnit is not a recognized unit -> whole thing is the name
-                name = (potentialUnit ? potentialUnit + " " : "") + namePart.trim();
-                // Default unit 'Stk' and quantity 1 are already set
+        } else if (potentialUnitWord) { // No number, but a potential unit word followed by the rest of the name. E.g. "Liter Milch"
+            const unitLower = potentialUnitWord.toLowerCase();
+            if (allUnitStrings.includes(unitLower)) {
+                unit = commonUnitsMap[unitLower];
+                name = namePart.trim(); // name is what comes after "Liter"
+            } else { // Word is not a unit, so it's all part of the name. E.g. "Volle Kanne Freude"
+                name = (potentialUnitWord + " " + namePart).trim();
             }
-        } else { // Only namePart exists (e.g. "Salz")
+        } else { // No number, no potential unit word, only namePart. E.g. "Salz" or "g"
             name = namePart.trim();
-            // Default unit 'Stk' and quantity 1 are fine, but could be "Prise" for specific items
-            if (name.toLowerCase() === "salz" || name.toLowerCase() === "pfeffer" || name.toLowerCase().includes("prise")) {
-                unit = 'Prise';
+            const nameLower = name.toLowerCase();
+            if (allUnitStrings.includes(nameLower)) { // Check if the namePart itself is a unit (e.g. "g")
+                unit = commonUnitsMap[nameLower];
+                name = ""; // Name is empty if the whole string was just a unit
+            } else if (nameLower === "salz" || nameLower === "pfeffer" || nameLower.includes("prise")) {
+                unit = 'Prise'; // Keep name as is, e.g. "Salz", "Schwarzer Pfeffer"
             }
+            // If name is not a recognized unit and not Salz/Pfeffer, it remains Stk. with the full name.
         }
-    } else {
-        // Fallback if regex fails, though it's designed to be quite broad
-        name = ingString;
-        if (name.toLowerCase() === "salz" || name.toLowerCase() === "pfeffer" || name.toLowerCase().includes("prise")) {
+    } else { // Regex didn't match (e.g. empty string, or very unusual format)
+        name = ingString; // Keep original string as name
+        // Apply default for Salz/Pfeffer even on non-match, as a fallback
+        const nameLower = name.toLowerCase();
+        if (nameLower === "salz" || nameLower === "pfeffer" || nameLower.includes("prise")) {
             unit = 'Prise';
+        } else if (allUnitStrings.includes(nameLower)) { // Fallback for standalone units like "g" if regex fails
+            unit = commonUnitsMap[nameLower];
+            name = "";
         }
     }
 
-    // Final check for some very common ingredients that might not specify quantity/unit
+    // Final check for common ingredients that might not specify quantity/unit and default to Stk.
     if (quantity === 1 && unit === 'Stk.' && (name.toLowerCase() === "salz" || name.toLowerCase() === "pfeffer")) {
         unit = "Prise";
+    }
+
+    // If after all parsing, name is empty but originalString was not, and unit is still Stk, use original string as name
+    // This can happen if input was "123" -> numPart="123", namePart="", name="" -> quantity=123, unit=Stk, name=""
+    // Or if input was "g" -> numPart=undef, potentialUnit=undef, namePart="g" -> name="g" -> unit="g", name=""
+    // This seems fine. What if input was "Liter" -> namePart="Liter" -> unit="L", name="" -> OK
+    if (name === "" && ingString !== "" && unit === "Stk.") {
+         // If name ended up empty, but we had an input string, and unit is still default 'Stk.'
+         // it implies the input was something like "123" that got parsed as quantity only.
+         // Or it was a word not recognized as a unit. In this case, the word should be the name.
+         if (!match || (!match[1] && !match[2])) { // if no numpart and no potentialunit from regex
+            name = ingString;
+         }
     }
 
 
@@ -302,4 +319,14 @@ function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
         return a.missingIngredients.length - b.missingIngredients.length;
     });
     return matchedRecipes.slice(0, 10);
+}
+
+// Export functions for testing if in Node.js environment
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        generateWeeklyPlan,
+        parseIngredientString,
+        generateShoppingList,
+        findAlmostCompleteRecipes
+    };
 }
