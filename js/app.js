@@ -72,35 +72,55 @@ function initializeApp() {
                 const submitButton = e.target.querySelector('button[type="submit"]');
                 ui.setButtonLoadingState(submitButton, true);
                 setTimeout(() => {
-                    const dietPreference = document.querySelector('input[name="diet"]:checked').value;
-                    const selectedPortions = document.querySelector('input[name="portions"]:checked').value;
+                    try {
+                        const dietPreferenceElement = document.querySelector('input[name="diet"]:checked');
+                        const dietPreference = dietPreferenceElement ? dietPreferenceElement.value : 'all'; // Default if no diet selected
 
-                    // Get selected tags
-                    const selectedTagNodes = document.querySelectorAll('#dynamic-tags-checkboxes input[type="checkbox"]:checked');
-                    const selectedTags = Array.from(selectedTagNodes).map(node => node.value);
+                        const selectedPortionsElement = document.querySelector('input[name="portions"]:checked');
+                        // Default to 2 portions if somehow nothing is selected, though HTML defaults to 2.
+                        const selectedPortions = selectedPortionsElement ? selectedPortionsElement.value : '2';
 
-                    const prefs = {
-                        persons: parseInt(selectedPortions, 10),
-                        isVegetarian: dietPreference === 'vegetarian',
-                        isVegan: dietPreference === 'vegan',
-                        selectedTags: selectedTags
-                    };
-                    weeklyPlan = generateWeeklyPlan(ALL_RECIPES, prefs);
-                    if (weeklyPlan.length === 0) {
-                        alert("Entschuldigung, mit diesen Filtern konnten wir keinen Plan erstellen. Bitte versuche es mit anderen Kriterien.");
+
+                        // Get selected tags
+                        const selectedTagNodes = document.querySelectorAll('#dynamic-tags-checkboxes input[type="checkbox"]:checked');
+                        const selectedTags = Array.from(selectedTagNodes).map(node => node.value);
+
+                        const prefs = {
+                            persons: parseInt(selectedPortions, 10),
+                            isVegetarian: dietPreference === 'vegetarian',
+                            isVegan: dietPreference === 'vegan',
+                            selectedTags: selectedTags
+                            // Consider adding other filters like isQuick, cuisine if they are still in HTML and intended to be used.
+                        };
+
+                        weeklyPlan = generateWeeklyPlan(ALL_RECIPES, prefs);
+
+                        if (!weeklyPlan || weeklyPlan.length === 0) {
+                            alert("Entschuldigung, mit diesen Filtern konnten wir keinen Plan erstellen. Bitte versuche es mit anderen Kriterien oder weniger Filtern.");
+                            // ui.setButtonLoadingState is handled in finally
+                            return;
+                        }
+                        if (weeklyPlan.length < 7) {
+                            alert(`Hinweis: Wir haben nur genug einzigartige Rezepte für einen Plan von ${weeklyPlan.length} Tagen gefunden. Für mehr Vielfalt kannst du deine Filter anpassen oder die Filter löschen.`);
+                        }
+
+                        store.setItem('weeklyPlan', weeklyPlan);
+                        store.setItem('persons', prefs.persons.toString()); // Ensure 'persons' is stored as string
+
+                        ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);
+                        ui.updateConfirmButtonState(weeklyPlan);
+                        ui.switchView('dashboard-view');
+                        navLinks.forEach(n => n.classList.remove('active'));
+                        const dashboardNav = document.querySelector('.nav-item[data-view="dashboard"]');
+                        if (dashboardNav) dashboardNav.classList.add('active');
+
+                    } catch (error) {
+                        console.error("Fehler bei der Plangenerierung:", error);
+                        alert("Ein unerwarteter Fehler ist bei der Plangenerierung aufgetreten. Bitte versuche es erneut.");
+                        // ui.setButtonLoadingState is handled in finally
+                    } finally {
                         ui.setButtonLoadingState(submitButton, false);
-                        return;
                     }
-                    if (weeklyPlan.length < 7) {
-                        alert(`Hinweis: Wir haben nur genug einzigartige Rezepte für einen Plan von ${weeklyPlan.length} Tagen gefunden. Für mehr Vielfalt kannst du deine Filter anpassen.`);
-                    }
-                    store.setItem('weeklyPlan', weeklyPlan); store.setItem('persons', prefs.persons);
-                    ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);
-                    ui.updateConfirmButtonState(weeklyPlan);
-                    ui.switchView('dashboard-view');
-                    navLinks.forEach(n => n.classList.remove('active'));
-                    document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
-                    ui.setButtonLoadingState(submitButton, false);
                 }, 0);
             });
 

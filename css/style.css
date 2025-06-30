@@ -131,6 +131,12 @@ a:hover { color: var(--k-primary-pop-1-darker); }
 
 /* Icon base size and margin */
 i.fa-solid, i.fas, i.ti { /* Adding .fas for wider compatibility with FontAwesome versions if used, and .ti for Tabler Icons */
+    /* Ensure font-family is inherited or explicitly set if necessary, though Tabler CSS should handle this */
+    /* font-family: 'tabler-icons', sans-serif; */ /* This should be handled by Tabler's own CSS */
+    display: inline-block; /* Crucial for visibility */
+    width: 24px; /* Slightly larger default icon touch target / visual space */
+    text-align: center;
+    vertical-align: middle; /* Better alignment with text */
     margin-right: 0.75rem;
     width: 24px; /* Slightly larger default icon touch target / visual space */
     text-align: center;
@@ -209,6 +215,22 @@ main.main-content { flex: 1; min-width: 0; }
 }
 .nav-item.active i.ti {
     color: var(--k-text-on-bright);
+}
+
+/* Specific override for dashboard icon if it's still not showing */
+.nav-item[data-view="dashboard"] i.ti-home-smile {
+    display: inline-block !important; /* Force display */
+    font-style: normal !important; /* Ensure it's not italicized away */
+    speak: none; /* Accessibility */
+    font-variant: normal !important;
+    text-transform: none !important;
+    line-height: 1 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: inherit !important; /* Inherit from .nav-item i.ti or set explicitly */
+    color: inherit !important; /* Inherit from .nav-item i.ti */
+    opacity: 1 !important; /* Ensure not transparent */
+    visibility: visible !important; /* Ensure not hidden */
 }
 
 
@@ -759,16 +781,58 @@ fieldset {
     box-shadow: var(--shadow-soft);
 }
 
-/* New Grid for Generator Filters */
+/* Styling for the Generator Form for better horizontal layout */
+#generator-form {
+    display: flex;
+    flex-direction: column; /* Main direction is column */
+    gap: 2rem; /* Overall gap between main sections of the form */
+}
+
+#generator-form .form-group-inline, /* Portionen */
+#generator-form .generator-filter-grid { /* Container for Spezielle Eigenschaften */
+    width: 100%; /* Take full width within the column flow */
+}
+
+/* Adjusting the generator-filter-grid for potentially single fieldset */
 .generator-filter-grid {
+    display: block; /* Change from grid to block if only one fieldset (Spezielle Eigenschaften) */
+    /* If it was intended to make the *contents* of Spezielle Eigenschaften horizontal, that's different.
+       The current structure has fieldset > div.checkbox-group-container.
+       Let's make the checkbox-group-container itself more row-oriented. */
+    margin-bottom: 1.5rem; /* Adjusted margin */
+}
+
+/* Ensure Spezielle Eigenschaften (dynamic tags) flows horizontally if many tags */
+#dynamic-tags-checkboxes.checkbox-group-container {
+    display: flex; /* Make checkboxes flow in a row */
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 1rem; /* Gap between individual checkbox groups */
+    justify-content: flex-start; /* Align items to the start */
+}
+
+#dynamic-tags-checkboxes .checkbox-group {
+    padding: 0.75rem 1rem; /* Slightly less padding for individual tag checkboxes if horizontal */
+    /* min-width: 150px; */ /* Remove min-width if we want them to be more compact horizontally */
+}
+
+
+/* Original .generator-filter-grid - can be removed or adapted if it's no longer a grid of fieldsets */
+/* .generator-filter-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Creates 2-3 columns depending on width */
-    gap: 2rem; /* Spacing between fieldsets */
-    margin-bottom: 2.5rem; /* Space before the submit button */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+} */
+.generator-filter-grid fieldset { /* This still applies to the fieldset within it */
+    margin-bottom: 0;
 }
-.generator-filter-grid fieldset {
-    margin-bottom: 0; /* Remove individual bottom margin as gap handles it */
+
+/* Ensure the button has some top margin */
+.generator-submit-btn {
+    margin-top: 1.5rem;
+    align-self: flex-start; /* Align button to the left in the flex column */
 }
+
 
 fieldset legend {
     color: var(--k-primary-pop-2); /* Pop color for legend */

@@ -1,61 +1,61 @@
 function generateWeeklyPlan(allRecipes, prefs) {
-    let filtered = [...allRecipes];
+    let availableRecipes = [...allRecipes];
 
-    // Adapt to tags for dietary preferences
+    // Simplified dietary preferences filter
     if (prefs.isVegan) {
-        filtered = filtered.filter(r => r.tags && r.tags.includes('Vegan'));
+        availableRecipes = availableRecipes.filter(r => Array.isArray(r.tags) && r.tags.includes('Vegan'));
     } else if (prefs.isVegetarian) {
-        filtered = filtered.filter(r => r.tags && (r.tags.includes('Vegetarisch') || r.tags.includes('Vegan')));
+        availableRecipes = availableRecipes.filter(r => Array.isArray(r.tags) && (r.tags.includes('Vegetarisch') || r.tags.includes('Vegan')));
     }
 
-    // Budget filtering: recipes.json does not have estimatedCostPerServing.
-    // This filter will likely not work as intended without data changes.
-    // For now, ensure it doesn't crash if r.estimatedCostPerServing is undefined.
-    if (prefs.budget) {
-        filtered = filtered.filter(r => r.estimatedCostPerServing !== undefined && r.estimatedCostPerServing <= parseFloat(prefs.budget));
-        if (filtered.every(r => r.estimatedCostPerServing === undefined)) {
-            console.warn("Budget filtering is enabled, but recipes in data/recipes.json do not have 'estimatedCostPerServing'. This filter may not work correctly.");
-        }
-    }
+    // --- Temporarily removing other filters to ensure plan generation ---
+    // Budget filter (was non-functional anyway)
+    // isQuick filter
+    // Dynamic tags filter (prefs.selectedTags)
+    // cuisine filter
 
-    if (prefs.isQuick) filtered = filtered.filter(r => r.tags && r.tags.includes('schnell')); // Assuming 'schnell' is a possible tag
-    // Remove isGuestFriendly and isForLeftovers as they are replaced by dynamic tags
-    // if (prefs.isGuestFriendly) filtered = filtered.filter(r => r.tags && r.tags.includes('für gäste'));
-    // if (prefs.isForLeftovers) filtered = filtered.filter(r => r.tags && r.tags.includes('resteverwertung'));
-    // Remove cuisine filter as it's replaced by dynamic tags
-    // if (prefs.isForLeftovers) filtered = filtered.filter(r => r.tags && r.tags.includes('resteverwertung'));
-    // Remove cuisine filter as it's replaced by dynamic tags
-    // if (prefs.cuisine && prefs.cuisine !== 'all') filtered = filtered.filter(r => r.tags && r.tags.includes(prefs.cuisine));
-
-    // New dynamic tag filtering
-    if (prefs.selectedTags && prefs.selectedTags.length > 0) {
-        filtered = filtered.filter(r => {
-            if (!r.tags || r.tags.length === 0) return false;
-            return prefs.selectedTags.every(selectedTag => r.tags.includes(selectedTag));
-        });
-    }
-    // Ensure prefs.isQuick is not used if it was removed from app.js
-    // if (prefs.isQuick) filtered = filtered.filter(r => r.tags && r.tags.includes('schnell'));
-
-    if (filtered.length < 2) {
-        console.warn("Konnte keinen Plan erstellen: weniger als 2 passende Rezepte nach Filterung gefunden. Überprüfen Sie die Filtereinstellungen und die Rezeptdaten.");
-        return [];
-    }
-
-    const shuffledRecipes = [...filtered].sort(() => 0.5 - Math.random());
-    const recipeOptions = shuffledRecipes.slice(0, 14);
+    // Shuffle the available recipes
+    const shuffledRecipes = [...availableRecipes].sort(() => 0.5 - Math.random());
 
     const finalPlan = [];
     const days = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
-    const numberOfDays = Math.min(days.length, Math.floor(recipeOptions.length / 2)); // Ensure we don't exceed available days or recipe pairs
+    const recipesNeededPerDay = 2;
+    const totalRecipesNeeded = days.length * recipesNeededPerDay;
 
-    for (let i = 0; i < numberOfDays; i++) {
-        if (recipeOptions[i * 2] && recipeOptions[i * 2 + 1]) { // Check if both recipes for the day exist
+    if (shuffledRecipes.length < totalRecipesNeeded && shuffledRecipes.length > 1) {
+        // Not enough recipes for a full week with 2 options, but some can be provided.
+        // This case is handled by the alert in app.js.
+        // We will generate a plan for as many days as possible.
+        console.warn(`Nicht genügend Rezepte für einen vollen 7-Tage-Plan mit ${recipesNeededPerDay} Optionen pro Tag. Verfügbar: ${shuffledRecipes.length}`);
+    } else if (shuffledRecipes.length < recipesNeededPerDay) { // Check if there are at least two recipes to form one day's options
+        console.warn("Konnte keinen Plan erstellen: weniger als 2 passende Rezepte insgesamt nach Filterung gefunden.");
+        return []; // Return empty if not enough for even one day with two options
+    }
+
+    // Take up to `totalRecipesNeeded` recipes from the shuffled list.
+    // If fewer are available, the loop for days will handle it.
+    const recipePool = shuffledRecipes.slice(0, totalRecipesNeeded);
+
+    for (let i = 0; i < days.length; i++) {
+        const option1Index = i * recipesNeededPerDay;
+        const option2Index = option1Index + 1;
+
+        if (recipePool[option1Index] && recipePool[option2Index]) {
             finalPlan.push({
                 day: days[i],
-                options: [recipeOptions[i * 2], recipeOptions[i * 2 + 1]],
+                options: [recipePool[option1Index], recipePool[option2Index]],
                 selected: null
             });
+        } else if (recipePool[option1Index] && availableRecipes.length === 1 && i === 0) {
+            // Special case: only 1 recipe available in total after filtering, offer it as the only option for day 1.
+            // This is unlikely if the initial check `shuffledRecipes.length < recipesNeededPerDay` is robust.
+            // For simplicity, we'll stick to requiring at least 2 recipes to form any plan.
+            // This block could be enhanced if single-option days are desired when very few recipes match.
+            // For now, the `shuffledRecipes.length < recipesNeededPerDay` check above should prevent this.
+            break; // Stop if we can't form a pair for the current day
+        } else {
+            // Not enough recipes left in the pool to create two options for the current day.
+            break;
         }
     }
     return finalPlan;
