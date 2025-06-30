@@ -6,8 +6,16 @@ function initializeApp() {
 
     // Fetch both recipes and pantry categories
     // Add return here so the test can await its completion
+
+    // Determine which recipe file to load based on stored portion size
+    let storedPortionsForFetch = store.getItem('persons') || '2'; // Default to '2' if not set
+    if (storedPortionsForFetch !== '2' && storedPortionsForFetch !== '4') {
+        storedPortionsForFetch = '2'; // Fallback to '2' for safety
+    }
+    const recipeFileName = `data/recipes_${storedPortionsForFetch}.json`;
+
     return Promise.all([
-        fetch('data/recipes.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for recipes.json`); return res.json(); }),
+        fetch(recipeFileName).then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for ${recipeFileName}`); return res.json(); }),
         fetch('data/pantry_item_categories.json').then(res => { if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for pantry_item_categories.json`); return res.json(); })
     ])
     .then(([recipes, pantryData]) => {
@@ -18,7 +26,12 @@ function initializeApp() {
             let weeklyPlan = store.getItem('weeklyPlan') || null;
             // Use new key for structured pantry inventory
             let userPantry = store.getItem('userPantry') || [];
-            let persons = store.getItem('persons') || 1;
+            // Default to 2 portions if nothing is stored, or if stored value is not 2 or 4
+            // This 'persons' variable is now primarily for UI and shopping list scaling,
+            // the recipe data itself is pre-selected for 2 or 4.
+            let storedPortions = store.getItem('persons');
+            let persons = (storedPortions === '2' || storedPortions === '4') ? parseInt(storedPortions, 10) : 2;
+            // No need to store.setItem('persons', persons.toString()); here again as it's done before fetch or during initUI
 
             const navLinks = document.querySelectorAll('.nav-item');
             const createPlanBtn = document.getElementById('create-plan-btn');
@@ -58,8 +71,10 @@ function initializeApp() {
                 ui.setButtonLoadingState(submitButton, true);
                 setTimeout(() => {
                     const dietPreference = document.querySelector('input[name="diet"]:checked').value;
+                    // Read from the new radio buttons
+                    const selectedPortions = document.querySelector('input[name="portions"]:checked').value;
                     const prefs = {
-                        persons: parseInt(document.getElementById('persons').value, 10),
+                        persons: parseInt(selectedPortions, 10),
                         budget: document.getElementById('budget').value,
                         isVegetarian: dietPreference === 'vegetarian',
                         isVegan: dietPreference === 'vegan',
@@ -272,7 +287,14 @@ function initializeApp() {
             });
 
             function initUI() {
-                document.getElementById('persons').value = persons;
+                // Set the correct radio button based on the 'persons' value from localStorage
+                const currentPortions = store.getItem('persons') || '2'; // Default to '2' if not set
+                if (document.getElementById('portions-' + currentPortions)) {
+                    document.getElementById('portions-' + currentPortions).checked = true;
+                } else { // Fallback if stored value is invalid, default to 2
+                    document.getElementById('portions-2').checked = true;
+                }
+
                 // inventoryInput.value = inventory.join(', '); // Old inventory input, remove
                 renderCurrentPantry(); // Initialize pantry display
                 ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);

@@ -66,8 +66,17 @@
                         <form id="generator-form">
                             <div class="form-group-inline">
                                 <div class="form-group">
-                                    <label for="persons"><i class="fa-solid fa-users"></i> Personen</label>
-                                    <input type="number" id="persons" value="1" min="1" required>
+                                    <label><i class="fa-solid fa-users"></i> Portionen</label>
+                                    <div class="radio-group-container" id="portions-radio-group">
+                                        <div class="radio-group">
+                                            <input type="radio" id="portions-2" name="portions" value="2" checked>
+                                            <label for="portions-2">2 Personen</label>
+                                        </div>
+                                        <div class="radio-group">
+                                            <input type="radio" id="portions-4" name="portions" value="4">
+                                            <label for="portions-4">4 Personen</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="budget"><i class="fa-solid fa-piggy-bank"></i> Budget/Portion (€)</label>
