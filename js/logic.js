@@ -19,9 +19,23 @@ function generateWeeklyPlan(allRecipes, prefs) {
     }
 
     if (prefs.isQuick) filtered = filtered.filter(r => r.tags && r.tags.includes('schnell')); // Assuming 'schnell' is a possible tag
-    if (prefs.isGuestFriendly) filtered = filtered.filter(r => r.tags && r.tags.includes('für gäste')); // Assuming 'für gäste' is a possible tag
-    if (prefs.isForLeftovers) filtered = filtered.filter(r => r.tags && r.tags.includes('resteverwertung')); // Assuming 'resteverwertung' is a possible tag
-    if (prefs.cuisine && prefs.cuisine !== 'all') filtered = filtered.filter(r => r.tags && r.tags.includes(prefs.cuisine));
+    // Remove isGuestFriendly and isForLeftovers as they are replaced by dynamic tags
+    // if (prefs.isGuestFriendly) filtered = filtered.filter(r => r.tags && r.tags.includes('für gäste'));
+    // if (prefs.isForLeftovers) filtered = filtered.filter(r => r.tags && r.tags.includes('resteverwertung'));
+    // Remove cuisine filter as it's replaced by dynamic tags
+    // if (prefs.isForLeftovers) filtered = filtered.filter(r => r.tags && r.tags.includes('resteverwertung'));
+    // Remove cuisine filter as it's replaced by dynamic tags
+    // if (prefs.cuisine && prefs.cuisine !== 'all') filtered = filtered.filter(r => r.tags && r.tags.includes(prefs.cuisine));
+
+    // New dynamic tag filtering
+    if (prefs.selectedTags && prefs.selectedTags.length > 0) {
+        filtered = filtered.filter(r => {
+            if (!r.tags || r.tags.length === 0) return false;
+            return prefs.selectedTags.every(selectedTag => r.tags.includes(selectedTag));
+        });
+    }
+    // Ensure prefs.isQuick is not used if it was removed from app.js
+    // if (prefs.isQuick) filtered = filtered.filter(r => r.tags && r.tags.includes('schnell'));
 
     if (filtered.length < 2) {
         console.warn("Konnte keinen Plan erstellen: weniger als 2 passende Rezepte nach Filterung gefunden. Überprüfen Sie die Filtereinstellungen und die Rezeptdaten.");
@@ -296,6 +310,38 @@ function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
     return matchedRecipes.slice(0, 10);
 }
 
+async function extractUniqueTags() {
+    const recipeFiles = ['data/recipes.json', 'data/recipes_2.json', 'data/recipes_4.json'];
+    const allTags = new Set();
+
+    try {
+        const responses = await Promise.all(recipeFiles.map(file => fetch(file)));
+        const jsonDataPromises = responses.map((response, index) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} for ${recipeFiles[index]}`);
+            }
+            return response.json();
+        });
+        const allRecipeData = await Promise.all(jsonDataPromises);
+
+        allRecipeData.forEach(recipes => {
+            if (Array.isArray(recipes)) {
+                recipes.forEach(recipe => {
+                    if (recipe.tags && Array.isArray(recipe.tags)) {
+                        recipe.tags.forEach(tag => allTags.add(tag));
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching or parsing recipe data for tag extraction:", error);
+        // Return a default set of tags or an empty set in case of error to prevent UI breakage
+        return new Set(['Vegetarisch', 'Vegan', 'Glutenfrei', 'Laktosefrei']); // Example fallback
+    }
+    return Array.from(allTags).sort();
+}
+
+
 // Export functions for testing if in Node.js environment
 if (typeof module !== 'undefined' && module.exports) {
     const ingredientMatcher = require('./ingredientMatcher.js');
@@ -307,6 +353,7 @@ if (typeof module !== 'undefined' && module.exports) {
         generateWeeklyPlan,
         parseIngredientString,
         generateShoppingList,
-        findAlmostCompleteRecipes
+        findAlmostCompleteRecipes,
+        extractUniqueTags
     };
 }
