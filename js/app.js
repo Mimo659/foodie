@@ -54,9 +54,42 @@ function initializeApp() {
             const emptyPantryMessage = document.getElementById('empty-pantry-message');
 
             const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const themeIconMoon = document.getElementById('theme-icon-moon');
+            const themeIconSun = document.getElementById('theme-icon-sun');
 
             let matchingRecipes = []; // To store inventory based recipe suggestions
             let selectedPantryItemForAdding = null; // To store the item selected from suggestions
+
+            // Dark Mode Logic
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeIconMoon.classList.add('hidden');
+                    themeIconSun.classList.remove('hidden');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    themeIconMoon.classList.remove('hidden');
+                    themeIconSun.classList.add('hidden');
+                }
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+                applyTheme(currentTheme);
+                store.setItem('theme', currentTheme);
+            };
+
+            darkModeToggle.addEventListener('click', toggleTheme);
+
+            // Load saved theme
+            const savedTheme = store.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else { // Default to light theme if no preference saved
+                applyTheme('light');
+            }
+
 
             const handleRecipeSelect = (dayIndex, recipeId) => {
                 if (!weeklyPlan) return;
