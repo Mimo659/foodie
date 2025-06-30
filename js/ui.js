@@ -171,54 +171,76 @@ const ui = (() => {
         },
         renderShoppingList: (categorizedList) => {
             const container = document.getElementById('shopping-list-container');
-            const noList = document.getElementById('no-shopping-list');
+            const noListMsg = document.getElementById('no-shopping-list'); // Corrected variable name
             container.innerHTML = ''; // Clear previous content
 
             if (categorizedList && categorizedList.length > 0) {
                 let htmlContent = '';
                 categorizedList.forEach(category => {
                     if (category.items && category.items.length > 0) {
+                        // Try to get a category icon (simple mapping for now)
+                        let categoryIcon = 'fa-solid fa-tag'; // Default icon
+                        if (category.categoryName.toLowerCase().includes('gemüse') || category.categoryName.toLowerCase().includes('obst')) {
+                            categoryIcon = 'fa-solid fa-carrot';
+                        } else if (category.categoryName.toLowerCase().includes('milch') || category.categoryName.toLowerCase().includes('käse') || category.categoryName.toLowerCase().includes('joghurt')) {
+                            categoryIcon = 'fa-solid fa-cheese';
+                        } else if (category.categoryName.toLowerCase().includes('fleisch') || category.categoryName.toLowerCase().includes('wurst')) {
+                            categoryIcon = 'fa-solid fa-drumstick-bite';
+                        } else if (category.categoryName.toLowerCase().includes('brot') || category.categoryName.toLowerCase().includes('backwaren')) {
+                            categoryIcon = 'fa-solid fa-bread-slice';
+                        } else if (category.categoryName.toLowerCase().includes('getränke')) {
+                            categoryIcon = 'fa-solid fa-martini-glass';
+                        } else if (category.categoryName.toLowerCase().includes('konserven') || category.categoryName.toLowerCase().includes('trocken')) {
+                            categoryIcon = 'fa-solid fa-box-archive';
+                        }
+
+
                         htmlContent += `<div class="shopping-list-category">`;
-                        htmlContent += `<h3>${category.categoryName}</h3>`;
-                        // Each item here is an aggregated ingredient
+                        htmlContent += `<h3><i class="${categoryIcon}"></i> ${category.categoryName}</h3>`;
+                        htmlContent += `<div class="shopping-list-items-grid">`; // Grid container for mini-cards
+
                         category.items.forEach(aggItem => {
                             const haveAtHomeClass = aggItem.haveAtHome ? 'have-at-home' : '';
-                            const atHomeStatus = aggItem.haveAtHome ? '<span class="status"> (Vorhanden)</span>' : '';
-                            const combinedIcon = aggItem.combined ? ' <i class="fa-solid fa-layer-group" title="Zusammengefasst aus mehreren Rezepten"></i>' : '';
+                            const atHomeIcon = aggItem.haveAtHome ? '<i class="fa-solid fa-house-chimney-user have-at-home-icon" title="Bereits vorhanden"></i>' : '';
+                            const combinedIcon = aggItem.combined ? ' <i class="fa-solid fa-layer-group combined-icon" title="Zusammengefasst aus mehreren Rezepten"></i>' : '';
 
-                            // Round totalQuantity for display
                             const displayTotalQuantity = Number.isInteger(aggItem.totalQuantity)
                                 ? aggItem.totalQuantity
-                                : parseFloat(aggItem.totalQuantity).toFixed(2);
+                                : parseFloat(aggItem.totalQuantity).toFixed(aggItem.totalQuantity < 1 && aggItem.totalQuantity > 0 ? 2 : (aggItem.totalQuantity === 0 ? 0 : 1) );
 
-                            htmlContent += `<div class="shopping-list-item ${haveAtHomeClass}">`;
-                            htmlContent += `  <div class="item-header">`;
-                            htmlContent += `    <h4>${aggItem.displayName}${combinedIcon}</h4>`;
-                            htmlContent += `    <span class="total-quantity">${displayTotalQuantity} ${aggItem.unit}${atHomeStatus}</span>`;
-                            htmlContent += `  </div>`;
 
-                            // If the item is combined from multiple sources, show the breakdown
+                            htmlContent += `
+                                <div class="shopping-list-item-card ${haveAtHomeClass}">
+                                    <div class="item-card-header">
+                                        <h4>${aggItem.displayName}${combinedIcon}</h4>
+                                        ${atHomeIcon}
+                                    </div>
+                                    <div class="item-card-body">
+                                        <span class="total-quantity"><i class="fa-solid fa-scale-balanced"></i> ${displayTotalQuantity} ${aggItem.unit}</span>
+                                    </div>`;
+
                             if (aggItem.combined && aggItem.sources && aggItem.sources.length > 0) {
-                                htmlContent += `  <ul class="source-list">`;
+                                htmlContent += `<ul class="source-list">`;
                                 aggItem.sources.forEach(source => {
                                     const displaySourceQuantity = Number.isInteger(source.quantity)
                                         ? source.quantity
-                                        : parseFloat(source.quantity).toFixed(2);
-                                    htmlContent += `<li title="Rezept: ${source.recipeName}">${displaySourceQuantity} ${aggItem.unit}</li>`;
+                                        : parseFloat(source.quantity).toFixed(source.quantity < 1 && source.quantity > 0 ? 2 : 1);
+                                    htmlContent += `<li title="Rezept: ${source.recipeName}"><i class="fa-solid fa-utensils"></i> ${displaySourceQuantity} ${aggItem.unit}</li>`;
                                 });
-                                htmlContent += `  </ul>`;
+                                htmlContent += `</ul>`;
                             }
-                            htmlContent += `</div>`; // Close shopping-list-item
+                            htmlContent += `</div>`; // Close shopping-list-item-card
                         });
+                        htmlContent += `</div>`; // Close shopping-list-items-grid
                         htmlContent += `</div>`; // Close shopping-list-category
                     }
                 });
                 container.innerHTML = htmlContent;
                 container.classList.remove('hidden');
-                noList.classList.add('hidden');
+                if (noListMsg) noListMsg.classList.add('hidden');
             } else {
                 container.classList.add('hidden');
-                noList.classList.remove('hidden');
+                if (noListMsg) noListMsg.classList.remove('hidden');
             }
         }
     };
