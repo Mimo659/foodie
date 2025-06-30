@@ -39,34 +39,45 @@ function generateShoppingList(plan, inventory, persons = 1) {
         if (day.selected) {
             day.selected.ingredients.forEach(ing => {
                 const totalQuantity = ing.quantity * persons;
-                if (required[ing.name]) {
-                    required[ing.name].quantity += totalQuantity;
+                // Aggregate by ingredient name, assuming recipe ingredients are {name, quantity, unit}
+                const key = ing.name.toLowerCase(); // Use lowercase key
+                if (required[key]) {
+                    required[key].quantity += totalQuantity;
                     // Add recipe to the list of sources for this ingredient, if not already present
-                    if (!ingredientSources[ing.name].includes(day.selected.name)) {
-                        ingredientSources[ing.name].push(day.selected.name);
+                    if (ingredientSources[key] && !ingredientSources[key].includes(day.selected.name)) {
+                        ingredientSources[key].push(day.selected.name);
                     }
                 } else {
-                    required[ing.name] = { ...ing, quantity: totalQuantity };
-                    ingredientSources[ing.name] = [day.selected.name]; // Initialize sources list
+                    // Store the ingredient with its original name for display, but use lowercase key
+                    required[key] = { ...ing, name: ing.name, quantity: totalQuantity };
+                    ingredientSources[key] = [day.selected.name]; // Initialize sources list
                 }
             });
         }
     });
 
-    const inventoryLower = inventory.map(item => item.toLowerCase().trim());
+    // Create a set of item names from userPantry for quick lookup
+    const pantryItemNamesLower = new Set(userPantry.map(item => item.name.toLowerCase().trim()));
+
     const shoppingList = Object.values(required).map(ing => ({
         ...ing,
-        haveAtHome: inventoryLower.includes(ing.name.toLowerCase()),
+        haveAtHome: pantryItemNamesLower.has(ing.name.toLowerCase()),
         // Mark if ingredient is used in more than one recipe
-        usedInMultipleRecipes: ingredientSources[ing.name] ? ingredientSources[ing.name].length > 1 : false
+        // Check using the lowercase name to match the key in ingredientSources
+        usedInMultipleRecipes: ingredientSources[ing.name.toLowerCase()] ? ingredientSources[ing.name.toLowerCase()].length > 1 : false
     }));
 
     return shoppingList.sort((a, b) => {
-        // Sort by haveAtHome first, then by whether it's used in multiple recipes
+        // Sort by haveAtHome (false first)
         if (a.haveAtHome !== b.haveAtHome) {
-            return a.haveAtHome - b.haveAtHome;
+            return a.haveAtHome - b.haveAtHome; // false (0) comes before true (1)
         }
-        return (b.usedInMultipleRecipes ? 1 : 0) - (a.usedInMultipleRecipes ? 1 : 0);
+        // Then by usedInMultipleRecipes (true first - more important)
+        if (a.usedInMultipleRecipes !== b.usedInMultipleRecipes) {
+            return (b.usedInMultipleRecipes ? 1 : 0) - (a.usedInMultipleRecipes ? 1 : 0); // true (1) comes before false (0)
+        }
+        // Then by name
+        return a.name.localeCompare(b.name);
     });
 }
 
@@ -78,7 +89,8 @@ function findAlmostCompleteRecipes(allRecipes, inventory, threshold = 0.55) {
         let ownedCount = 0;
         const missing = [];
         recipe.ingredients.forEach(ing => {
-            if (inventorySet.has(ing.name.toLowerCase())) ownedCount++;
+            // Use pantryItemNamesSet from main's logic
+            if (pantryItemNamesSet.has(ing.name.toLowerCase())) ownedCount++;
             else missing.push(ing);
         });
         return { ...recipe, matchPercentage: ownedCount / recipe.ingredients.length, missingIngredients: missing };
