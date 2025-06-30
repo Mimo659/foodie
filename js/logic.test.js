@@ -3,66 +3,71 @@ const { parseIngredientString, generateWeeklyPlan, generateShoppingList, findAlm
 
 describe('parseIngredientString', () => {
     const testCases = [
-        { input: "1 Prise Salz", expected: { originalString: "1 Prise Salz", quantity: 1, unit: "Prise", name: "Salz" } },
-        { input: "1 prise Salz", expected: { originalString: "1 prise Salz", quantity: 1, unit: "Prise", name: "Salz" } },
-        { input: "500 g Mehl", expected: { originalString: "500 g Mehl", quantity: 500, unit: "g", name: "Mehl" } },
-        { input: "500g Mehl", expected: { originalString: "500g Mehl", quantity: 500, unit: "g", name: "Mehl" } },
-        { input: "1 Dose Tomaten", expected: { originalString: "1 Dose Tomaten", quantity: 1, unit: "Dose", name: "Tomaten" } },
-        { input: "Salz", expected: { originalString: "Salz", quantity: 1, unit: "Prise", name: "Salz" } }, // Default for Salz
-        { input: "Pfeffer", expected: { originalString: "Pfeffer", quantity: 1, unit: "Prise", name: "Pfeffer" } }, // Default for Pfeffer
-        { input: "1 Apfel", expected: { originalString: "1 Apfel", quantity: 1, unit: "Stk.", name: "Apfel" } },
-        { input: "2 Äpfel", expected: { originalString: "2 Äpfel", quantity: 2, unit: "Stk.", name: "Äpfel" } },
-        { input: "Eier (Größe M)", expected: { originalString: "Eier (Größe M)", quantity: 1, unit: "Stk.", name: "Eier (Größe M)" } },
-        { input: "1 EL Öl", expected: { originalString: "1 EL Öl", quantity: 1, unit: "EL", name: "Öl" } },
-        { input: "2 TL Honig", expected: { originalString: "2 TL Honig", quantity: 2, unit: "TL", name: "Honig" } },
-        { input: "1 Pck. Vanillezucker", expected: { originalString: "1 Pck. Vanillezucker", quantity: 1, unit: "Pck.", name: "Vanillezucker" } },
-        { input: "1 Bund Petersilie", expected: { originalString: "1 Bund Petersilie", quantity: 1, unit: "Bund", name: "Petersilie" } },
-        { input: "1kg Kartoffeln", expected: { originalString: "1kg Kartoffeln", quantity: 1, unit: "kg", name: "Kartoffeln" } },
-        { input: "0.5 L Milch", expected: { originalString: "0.5 L Milch", quantity: 0.5, unit: "L", name: "Milch" } },
-        { input: "0,5 L Milch", expected: { originalString: "0,5 L Milch", quantity: 0.5, unit: "L", name: "Milch" } }, // Comma as decimal
-        { input: "1 Zehe Knoblauch", expected: { originalString: "1 Zehe Knoblauch", quantity: 1, unit: "Zehe(n)", name: "Knoblauch" } },
-        { input: "2 Zehen Knoblauch", expected: { originalString: "2 Zehen Knoblauch", quantity: 2, unit: "Zehe(n)", name: "Knoblauch" } },
-        { input: "1 Knolle Ingwer", expected: { originalString: "1 Knolle Ingwer", quantity: 1, unit: "Knolle", name: "Ingwer" } },
-        { input: "Mehl", expected: { originalString: "Mehl", quantity: 1, unit: "Stk.", name: "Mehl" } }, // Default for generic items
-        { input: " Prise Salz ", expected: { originalString: "Prise Salz", quantity: 1, unit: "Prise", name: "Salz" } }, // Trim spaces
-        { input: "1Stück Kuchen", expected: { originalString: "1Stück Kuchen", quantity: 1, unit: "Stk.", name: "Kuchen" } },
-        { input: "1 Packung Milch", expected: { originalString: "1 Packung Milch", quantity: 1, unit: "Pck.", name: "Milch" } },
-        { input: "1 Glas Oliven", expected: { originalString: "1 Glas Oliven", quantity: 1, unit: "Glas", name: "Oliven" } },
-        { input: "Bd. Schnittlauch", expected: { originalString: "Bd. Schnittlauch", quantity: 1, unit: "Bund", name: "Schnittlauch" } },
-        { input: "Pck Hefe", expected: { originalString: "Pck Hefe", quantity: 1, unit: "Pck.", name: "Hefe" } },
-        { input: "  1   EL   Zucker  ", expected: { originalString: "1   EL   Zucker", quantity: 1, unit: "EL", name: "Zucker" } }, // Extra spaces
-        { input: "1 ml Wasser", expected: { originalString: "1 ml Wasser", quantity: 1, unit: "ml", name: "Wasser" } },
-        { input: "liter milch", expected: { originalString: "liter milch", quantity: 1, unit: "L", name: "milch" } }, // Unit before name, no quantity
-        { input: "prise zucker", expected: { originalString: "prise zucker", quantity: 1, unit: "Prise", name: "zucker" } },
-
+        { input: "1 Prise Salz", expected: { originalString: "1 Prise Salz", quantity: 1, unit: "Prise", name: "Salz", normalizedName: "Salz", standardizedUnit: "Prise" } },
+        { input: "1 prise Salz", expected: { originalString: "1 prise Salz", quantity: 1, unit: "Prise", name: "Salz", normalizedName: "Salz", standardizedUnit: "Prise" } },
+        { input: "500 g Mehl", expected: { originalString: "500 g Mehl", quantity: 500, unit: "g", name: "Mehl", normalizedName: "Mehl", standardizedUnit: "g" } },
+        { input: "500g Mehl", expected: { originalString: "500g Mehl", quantity: 500, unit: "g", name: "Mehl", normalizedName: "Mehl", standardizedUnit: "g" } },
+        { input: "1 Dose Tomaten", expected: { originalString: "1 Dose Tomaten", quantity: 1, unit: "Dose", name: "Tomaten", normalizedName: "Tomate", standardizedUnit: "Dose" } },
+        { input: "Salz", expected: { originalString: "Salz", quantity: 1, unit: "Prise", name: "Salz", normalizedName: "Salz", standardizedUnit: "Prise" } },
+        { input: "Pfeffer", expected: { originalString: "Pfeffer", quantity: 1, unit: "Prise", name: "Pfeffer", normalizedName: "Pfeffer", standardizedUnit: "Prise" } },
+        { input: "1 Apfel", expected: { originalString: "1 Apfel", quantity: 1, unit: "Stk.", name: "Apfel", normalizedName: "Apfel", standardizedUnit: "Stk." } },
+        { input: "2 Äpfel", expected: { originalString: "2 Äpfel", quantity: 2, unit: "Stk.", name: "Äpfel", normalizedName: "Äpfel", standardizedUnit: "Stk." } },
+        { input: "Eier (Größe M)", expected: { originalString: "Eier (Größe M)", quantity: 1, unit: "", name: "Eier (Größe M)", normalizedName: "Ei", standardizedUnit: "" } }, // No numPart, unit is empty. Name includes details.
+        { input: "1 EL Öl", expected: { originalString: "1 EL Öl", quantity: 1, unit: "EL", name: "Öl", normalizedName: "Öl", standardizedUnit: "EL" } },
+        { input: "2 TL Honig", expected: { originalString: "2 TL Honig", quantity: 2, unit: "TL", name: "Honig", normalizedName: "Honig", standardizedUnit: "TL" } },
+        { input: "1 Pck. Vanillezucker", expected: { originalString: "1 Pck. Vanillezucker", quantity: 1, unit: "Pck.", name: "Vanillezucker", normalizedName: "Vanillezucker", standardizedUnit: "Pck." } },
+        { input: "1 Bund Petersilie", expected: { originalString: "1 Bund Petersilie", quantity: 1, unit: "Bund", name: "Petersilie", normalizedName: "Petersilie", standardizedUnit: "Bund" } },
+        { input: "1kg Kartoffeln", expected: { originalString: "1kg Kartoffeln", quantity: 1, unit: "kg", name: "Kartoffeln", normalizedName: "Kartoffel", standardizedUnit: "kg" } },
+        { input: "0.5 L Milch", expected: { originalString: "0.5 L Milch", quantity: 0.5, unit: "l", name: "Milch", normalizedName: "Milch", standardizedUnit: "l" } }, // Standardized to lowercase 'l'
+        { input: "0,5 L Milch", expected: { originalString: "0,5 L Milch", quantity: 0.5, unit: "l", name: "Milch", normalizedName: "Milch", standardizedUnit: "l" } }, // Comma as decimal, standardized to lowercase 'l'
+        { input: "1 Zehe Knoblauch", expected: { originalString: "1 Zehe Knoblauch", quantity: 1, unit: "Zehe", name: "Knoblauch", normalizedName: "Knoblauch", standardizedUnit: "Zehe" } }, // Standardized to singular "Zehe"
+        { input: "2 Zehen Knoblauch", expected: { originalString: "2 Zehen Knoblauch", quantity: 2, unit: "Zehe", name: "Knoblauch", normalizedName: "Knoblauch", standardizedUnit: "Zehe" } }, // Standardized to singular "Zehe"
+        { input: "1 Knolle Ingwer", expected: { originalString: "1 Knolle Ingwer", quantity: 1, unit: "Knolle", name: "Ingwer", normalizedName: "Ingwer", standardizedUnit: "Knolle" } },
+        { input: "Mehl", expected: { originalString: "Mehl", quantity: 1, unit: "", name: "Mehl", normalizedName: "Mehl", standardizedUnit: "" } }, // MODIFIED: No longer Stk.
+        { input: "Zucker", expected: { originalString: "Zucker", quantity: 1, unit: "", name: "Zucker", normalizedName: "Zucker", standardizedUnit: "" } }, // ADDED: Test for Zucker specifically
+        { input: " Prise Salz ", expected: { originalString: " Prise Salz ", quantity: 1, unit: "Prise", name: "Salz", normalizedName: "Salz", standardizedUnit: "Prise" } }, // originalString keeps spaces
+        { input: "1Stück Kuchen", expected: { originalString: "1Stück Kuchen", quantity: 1, unit: "Stk.", name: "Kuchen", normalizedName: "Kuchen", standardizedUnit: "Stk." } },
+        { input: "1 Packung Milch", expected: { originalString: "1 Packung Milch", quantity: 1, unit: "Pck.", name: "Milch", normalizedName: "Milch", standardizedUnit: "Pck." } },
+        { input: "1 Glas Oliven", expected: { originalString: "1 Glas Oliven", quantity: 1, unit: "Glas", name: "Oliven", normalizedName: "Oliven", standardizedUnit: "Glas" } },
+        { input: "Bd. Schnittlauch", expected: { originalString: "Bd. Schnittlauch", quantity: 1, unit: "Bund", name: "Schnittlauch", normalizedName: "Schnittlauch", standardizedUnit: "Bund" } },
+        { input: "Pck Hefe", expected: { originalString: "Pck Hefe", quantity: 1, unit: "Pck.", name: "Hefe", normalizedName: "Hefe", standardizedUnit: "Pck." } },
+        { input: "  1   EL   Zucker  ", expected: { originalString: "  1   EL   Zucker  ", quantity: 1, unit: "EL", name: "Zucker", normalizedName: "Zucker", standardizedUnit: "EL" } },
+        { input: "1 ml Wasser", expected: { originalString: "1 ml Wasser", quantity: 1, unit: "ml", name: "Wasser", normalizedName: "Wasser", standardizedUnit: "ml" } },
+        { input: "liter milch", expected: { originalString: "liter milch", quantity: 1, unit: "l", name: "milch", normalizedName: "Milch", standardizedUnit: "l" } },
+        { input: "prise zucker", expected: { originalString: "prise zucker", quantity: 1, unit: "Prise", name: "zucker", normalizedName: "Zucker", standardizedUnit: "Prise" } },
 
         // Edge cases
-        { input: "", expected: { originalString: "", quantity: 1, unit: "Stk.", name: "" } }, // Empty string
-        { input: "  ", expected: { originalString: "", quantity: 1, unit: "Stk.", name: "" } }, // Only spaces
-        { input: "123", expected: { originalString: "123", quantity: 123, unit: "Stk.", name: "" } }, // Only number (name becomes empty) - current behavior
-        { input: "g", expected: { originalString: "g", quantity: 1, unit: "g", name: "" } }, // Only unit (name becomes empty) - current behavior
+        { input: "", expected: { originalString: "", quantity: 1, unit: "", name: "", normalizedName: "", standardizedUnit: "" } }, // MODIFIED: No longer Stk.
+        { input: "  ", expected: { originalString: "  ", quantity: 1, unit: "", name: "", normalizedName: "", standardizedUnit: "" } }, // MODIFIED: No longer Stk., originalString keeps spaces
+        { input: "123", expected: { originalString: "123", quantity: 123, unit: "Stk.", name: "", normalizedName: "", standardizedUnit: "Stk." } }, // Corrected: Should be Stk.
+        { input: "g", expected: { originalString: "g", quantity: 1, unit: "g", name: "g", normalizedName: "G", standardizedUnit: "g" } }, // Only unit, name becomes the unit itself
 
         // More complex names
-        { input: "1 rote Zwiebel", expected: { originalString: "1 rote Zwiebel", quantity: 1, unit: "Stk.", name: "rote Zwiebel" } },
-        { input: "2 EL gehackte Mandeln", expected: { originalString: "2 EL gehackte Mandeln", quantity: 2, unit: "EL", name: "gehackte Mandeln" } },
-        { input: "1 Dose gehackte Tomaten (400g)", expected: { originalString: "1 Dose gehackte Tomaten (400g)", quantity: 1, unit: "Dose", name: "gehackte Tomaten (400g)" } },
-        { input: "Frische Hefe", expected: { originalString: "Frische Hefe", quantity: 1, unit: "Stk.", name: "Frische Hefe" } },
-        { input: "Salz und Pfeffer", expected: { originalString: "Salz und Pfeffer", quantity: 1, unit: "Stk.", name: "Salz und Pfeffer" } }, // Should it be Prise? The logic defaults to Stk. if not explicitly "Salz" or "Pfeffer" alone.
+        { input: "1 rote Zwiebel", expected: { originalString: "1 rote Zwiebel", quantity: 1, unit: "Stk.", name: "rote Zwiebel", normalizedName: "Zwiebel", standardizedUnit: "Stk." } },
+        { input: "2 EL gehackte Mandeln", expected: { originalString: "2 EL gehackte Mandeln", quantity: 2, unit: "EL", name: "gehackte Mandeln", normalizedName: "Gehackte mandeln", standardizedUnit: "EL" } }, // Normalized name might be "Mandeln" depending on synonym logic
+        { input: "1 Dose gehackte Tomaten (400g)", expected: { originalString: "1 Dose gehackte Tomaten (400g)", quantity: 1, unit: "Dose", name: "gehackte Tomaten (400g)", normalizedName: "Tomaten (Dose)", standardizedUnit: "Dose" } },
+        { input: "Frische Hefe", expected: { originalString: "Frische Hefe", quantity: 1, unit: "", name: "Frische Hefe", normalizedName: "Frische hefe", standardizedUnit: "" } }, // MODIFIED: No longer Stk.
+        { input: "Salz und Pfeffer", expected: { originalString: "Salz und Pfeffer", quantity: 1, unit: "Prise", name: "Salz und Pfeffer", normalizedName: "Salz", standardizedUnit: "Prise" } }, // Normalized to first known "Salz", gets Prise
     ];
 
     testCases.forEach(tc => {
         test(`should correctly parse "${tc.input}" to ${JSON.stringify(tc.expected)}`, () => {
-            expect(parseIngredientString(tc.input)).toEqual(tc.expected);
+            const result = parseIngredientString(tc.input);
+            // Match only the properties defined in tc.expected to avoid issues with extra properties
+            // However, for this fix, we *want* to ensure all properties are as expected.
+            expect(result).toEqual(tc.expected);
         });
     });
 
     // Specific test for "Salz und Pfeffer" which might be tricky
-    test('should parse "Salz und Pfeffer" as Stk. by default due to multiple words', () => {
+    test('should parse "Salz und Pfeffer" and prioritize "Salz" for Prise', () => {
         expect(parseIngredientString("Salz und Pfeffer")).toEqual({
             originalString: "Salz und Pfeffer",
             quantity: 1,
-            unit: "Stk.", // Current logic makes this Stk. because "Salz und Pfeffer" is not just "Salz" or "Pfeffer"
-            name: "Salz und Pfeffer"
+            unit: "Prise",
+            name: "Salz und Pfeffer",
+            normalizedName: "Salz", // Normalized to the first recognized component "Salz"
+            standardizedUnit: "Prise" // "Salz" gets "Prise"
         });
     });
 
@@ -70,8 +75,10 @@ describe('parseIngredientString', () => {
         expect(parseIngredientString("1 Liter Wasser")).toEqual({
             originalString: "1 Liter Wasser",
             quantity: 1,
-            unit: "L",
-            name: "Wasser"
+            unit: "l", // Standardized from "Liter"
+            name: "Wasser",
+            normalizedName: "Wasser",
+            standardizedUnit: "l"
         });
     });
 
@@ -79,8 +86,10 @@ describe('parseIngredientString', () => {
         expect(parseIngredientString("1 Gramm Zucker")).toEqual({
             originalString: "1 Gramm Zucker",
             quantity: 1,
-            unit: "g",
-            name: "Zucker"
+            unit: "g", // Standardized from "Gramm"
+            name: "Zucker",
+            normalizedName: "Zucker",
+            standardizedUnit: "g"
         });
     });
 });
