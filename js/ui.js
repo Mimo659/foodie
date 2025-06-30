@@ -84,9 +84,19 @@ const ui = (() => {
         const recipeName = recipe.title || "Unbenanntes Rezept";
         const recipeDescription = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Keine Beschreibung verfügbar.");
 
+        let nutritionHtml = '';
+        if (recipe.nutritionalInfo) {
+            nutritionHtml += '<div class="recipe-nutrition-info">';
+            nutritionHtml += '<h5>Nährwerte (pro Portion)</h5><ul>'; // Corrected: pro Portion, not pro 100g unless specified
+            for (const [key, value] of Object.entries(recipe.nutritionalInfo)) {
+                nutritionHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+            }
+            nutritionHtml += '</ul></div>';
+        }
+
         const cardContent = document.createElement('div');
         cardContent.className = 'recipe-card-content';
-        cardContent.innerHTML = `<h4>${recipeName}</h4><p>${recipeDescription}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
+        cardContent.innerHTML = `<h4>${recipeName}</h4><p>${recipeDescription}</p>${tagsHtml}${nutritionHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
 
         card.appendChild(cardContent);
 
@@ -101,48 +111,98 @@ const ui = (() => {
             const noPlanDisplay = document.getElementById('no-plan-display');
             const weeklyPlanContainer = document.getElementById('weekly-plan-container');
             if (plan && plan.length > 0) {
-                weeklyPlanContainer.innerHTML = ''; // Clear previous plan cards
+                weeklyPlanContainer.innerHTML = ''; // Clear previous plan
+                weeklyPlanContainer.className = 'weekly-plan-grid'; // Add class for grid styling
+
+                // Create headers for days of the week - optional, if we want a true calendar header row
+                // const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+                // daysOfWeek.forEach(dayName => {
+                //     const dayHeader = document.createElement('div');
+                //     dayHeader.className = 'calendar-day-header';
+                //     dayHeader.textContent = dayName;
+                //     weeklyPlanContainer.appendChild(dayHeader);
+                // });
+
                 plan.forEach((dayObject, dayIndex) => {
-                    const dayContainer = document.createElement('div');
-                    dayContainer.className = 'day-container';
-                    dayContainer.innerHTML = `<h3>${dayObject.day}</h3>`;
-                    const optionsContainer = document.createElement('div');
-                    optionsContainer.className = 'recipe-options';
-                    dayObject.options.forEach(recipe => {
-                        const card = createRecipeCardElement(recipe, onInfoClick);
-                        card.dataset.dayIndex = dayIndex; card.dataset.recipeId = recipe.id;
-                        if (dayObject.selected && dayObject.selected.id === recipe.id) card.classList.add('selected');
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'calendar-day-cell';
+
+                    const dayTitle = document.createElement('h4');
+                    dayTitle.className = 'calendar-day-title';
+                    dayTitle.textContent = dayObject.day;
+                    dayCell.appendChild(dayTitle);
+
+                    const recipesContainer = document.createElement('div');
+                    recipesContainer.className = 'calendar-recipe-options';
+
+                    if (dayObject.selected) {
+                        // If a recipe is selected, show only that one, perhaps larger or more prominently
+                        const card = createRecipeCardElement(dayObject.selected, onInfoClick);
+                        card.classList.add('selected', 'single-selected-recipe');
+                        // No click event to change selection here, this is display only for the "calendar"
+                        // To change, user would go back to a "plan editing" mode or regenerate.
+                        // For simplicity, we'll keep the card interactive as before.
+                        card.dataset.dayIndex = dayIndex;
+                        card.dataset.recipeId = dayObject.selected.id;
                         card.addEventListener('click', (e) => {
-                            dayContainer.querySelectorAll('.recipe-card').forEach(c => c.classList.remove('selected'));
-                            e.currentTarget.classList.add('selected');
-                            onSelectRecipe(e.currentTarget.dataset.dayIndex, e.currentTarget.dataset.recipeId);
+                             // Allow re-selection / de-selection or opening modal
+                            // To truly make it "calendar like" this interaction might change
+                            // For now, retain selection ability.
+                            const currentSelected = dayCell.querySelector('.recipe-card.selected');
+                            if (currentSelected && currentSelected !== e.currentTarget) {
+                                currentSelected.classList.remove('selected');
+                            }
+                            e.currentTarget.classList.toggle('selected');
+                            if (e.currentTarget.classList.contains('selected')) {
+                                onSelectRecipe(e.currentTarget.dataset.dayIndex, e.currentTarget.dataset.recipeId);
+                            } else {
+                                // Logic for deselecting:
+                                // onSelectRecipe(e.currentTarget.dataset.dayIndex, null); // Assuming onSelectRecipe handles null
+                            }
                         });
-                        optionsContainer.appendChild(card);
-                    });
-                    dayContainer.appendChild(optionsContainer);
-                    weeklyPlanContainer.appendChild(dayContainer);
+                        recipesContainer.appendChild(card);
+                    } else if (dayObject.options && dayObject.options.length > 0) {
+                        // If no recipe is selected, show options (could be one or two, or more)
+                        dayObject.options.forEach(recipe => {
+                            const card = createRecipeCardElement(recipe, onInfoClick);
+                            card.dataset.dayIndex = dayIndex;
+                            card.dataset.recipeId = recipe.id;
+                            // Card is not pre-selected here
+                            card.addEventListener('click', (e) => {
+                                // Clear selection from other cards in the same day cell
+                                recipesContainer.querySelectorAll('.recipe-card.selected').forEach(c => c.classList.remove('selected'));
+                                e.currentTarget.classList.add('selected'); // Select current card
+                                onSelectRecipe(e.currentTarget.dataset.dayIndex, e.currentTarget.dataset.recipeId);
+                            });
+                            recipesContainer.appendChild(card);
+                        });
+                    } else {
+                        recipesContainer.innerHTML = '<p class="no-options-text">Keine Optionen für diesen Tag.</p>';
+                    }
+                    dayCell.appendChild(recipesContainer);
+                    weeklyPlanContainer.appendChild(dayCell);
                 });
-                // Show plan display, hide no-plan message
+
                 if (planDisplay) {
                     planDisplay.classList.remove('hidden');
-                    planDisplay.style.display = ''; // Reset explicit style if any
+                    planDisplay.style.display = '';
                 }
                 if (noPlanDisplay) {
                     noPlanDisplay.classList.add('hidden');
-                    noPlanDisplay.style.display = 'none'; // Explicitly hide
+                    noPlanDisplay.style.display = 'none';
                 }
             } else {
-                // No plan or plan is empty/deleted: Hide plan display, show no-plan message
                 if (planDisplay) {
                     planDisplay.classList.add('hidden');
-                    planDisplay.style.display = 'none'; // More explicit hiding
+                    planDisplay.style.display = 'none';
                 }
                 if (noPlanDisplay) {
                     noPlanDisplay.classList.remove('hidden');
-                    noPlanDisplay.style.display = 'block'; // Or appropriate display type
+                    noPlanDisplay.style.display = 'block';
                 }
                 if (weeklyPlanContainer) {
-                    weeklyPlanContainer.innerHTML = ''; // Also clear out any old cards
+                    weeklyPlanContainer.innerHTML = '';
+                    weeklyPlanContainer.className = ''; // Reset class if no plan
                 }
             }
         },
