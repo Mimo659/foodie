@@ -7,9 +7,20 @@ const ui = (() => {
     const closeModal = () => modal.classList.add('hidden');
 
     const openModalWithRecipe = (recipe) => {
-        let ingredientsHtml = recipe.ingredients.map(ing => `<li><span>${ing.name}</span><span class="quantity">${ing.quantity} ${ing.unit}</span></li>`).join('');
-        let instructionsHtml = recipe.instructions.map((step, index) => `<li><strong>Schritt ${index + 1}:</strong> ${step}</li>`).join('');
-        modalBody.innerHTML = `<h2>${recipe.name}</h2><p>${recipe.description}</p><h3><i class="fa-solid fa-list-check"></i> Zutaten</h3><ul class="ingredient-list">${ingredientsHtml}</ul><h3><i class="fa-solid fa-person-chalkboard"></i> Anleitung</h3><ol class="instructions-list">${instructionsHtml}</ol>`;
+        // Ingredients are now an array of strings
+        let ingredientsHtml = recipe.ingredients && Array.isArray(recipe.ingredients)
+            ? recipe.ingredients.map(ingString => `<li>${ingString}</li>`).join('')
+            : '<li>Zutaten nicht verfügbar</li>';
+
+        let instructionsHtml = recipe.instructions && Array.isArray(recipe.instructions)
+            ? recipe.instructions.map((step, index) => `<li><strong>Schritt ${index + 1}:</strong> ${step}</li>`).join('')
+            : '<li>Anleitung nicht verfügbar</li>';
+
+        // Use recipe.title, and recipe.difficulty for description if recipe.description is missing
+        const recipeName = recipe.title || "Unbenanntes Rezept";
+        const recipeDescription = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Keine Beschreibung verfügbar.");
+
+        modalBody.innerHTML = `<h2>${recipeName}</h2><p>${recipeDescription}</p><h3><i class="fa-solid fa-list-check"></i> Zutaten</h3><ul class="ingredient-list">${ingredientsHtml}</ul><h3><i class="fa-solid fa-person-chalkboard"></i> Anleitung</h3><ol class="instructions-list">${instructionsHtml}</ol>`;
         modal.classList.remove('hidden');
     };
     
@@ -21,29 +32,40 @@ const ui = (() => {
         const card = document.createElement('div');
         card.className = 'recipe-card';
 
+        // recipe.estimatedCostPerServing is not in data/recipes.json, hide price tag or show placeholder
         const priceTagHtml = (typeof recipe.estimatedCostPerServing === 'number' && !isNaN(recipe.estimatedCostPerServing))
             ? `<span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`
-            : '';
+            : ''; // Or a placeholder like <span class="price-tag">Preis N/A</span>
 
         let tagsHtml = `<div class="tags">${priceTagHtml}`;
         if (recipe.tags && recipe.tags.includes('schnell')) tagsHtml += `<span><i class="fa-solid fa-bolt"></i> Schnell</span>`;
-        if (recipe.isVegan) tagsHtml += `<span>Vegan</span>`;
-        else if (recipe.isVegetarian) tagsHtml += `<span>Vegetarisch</span>`;
+
+        // Derive isVegan/isVegetarian from tags
+        const isVegan = recipe.tags && recipe.tags.includes('Vegan');
+        const isVegetarian = recipe.tags && recipe.tags.includes('Vegetarisch');
+
+        if (isVegan) tagsHtml += `<span>Vegan</span>`;
+        else if (isVegetarian) tagsHtml += `<span>Vegetarisch</span>`;
         tagsHtml += `</div>`;
+
         let matchInfoHtml = '';
         if (recipe.matchPercentage !== undefined) {
             const percentage = Math.round(recipe.matchPercentage * 100);
-            const missingText = recipe.missingIngredients.length > 0
-                ? `<p class="missing-ingredients"><strong>Fehlt noch:</strong> ${recipe.missingIngredients.map(ing => ing.name).join(', ')}</p>`
+            // recipe.missingIngredients is now an array of strings
+            const missingText = recipe.missingIngredients && recipe.missingIngredients.length > 0
+                ? `<p class="missing-ingredients"><strong>Fehlt noch:</strong> ${recipe.missingIngredients.join(', ')}</p>`
                 : `<p class="all-ingredients-present"><i class="fa-solid fa-check-double"></i> Alles da!</p>`;
             matchInfoHtml = `<div class="match-info"><div class="match-bar"><div class="match-bar-fill" style="width: ${percentage}%"></div></div><span class="match-text">${percentage}% Übereinstimmung</span>${missingText}</div>`;
         }
-        // Card content container
-        const cardContent = document.createElement('div');
-        cardContent.className = 'recipe-card-content'; // You might want to add specific styling for this
-        cardContent.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
 
-        card.appendChild(cardContent); // Then append the rest of the content
+        const recipeName = recipe.title || "Unbenanntes Rezept";
+        const recipeDescription = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Keine Beschreibung verfügbar.");
+
+        const cardContent = document.createElement('div');
+        cardContent.className = 'recipe-card-content';
+        cardContent.innerHTML = `<h4>${recipeName}</h4><p>${recipeDescription}</p>${tagsHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
+
+        card.appendChild(cardContent);
 
         cardContent.querySelector('.btn-info').addEventListener('click', (e) => { e.stopPropagation(); onInfoClick(recipe); });
         return card;
