@@ -67,18 +67,15 @@ function parseIngredientString(ingString) {
     let unit = '';    // Default unit (will be standardized)
     let name = tempIngString; // Default name
 
-    // Regex to capture quantity, unit, and name
-    // Allows for quantities like "1", "1.5", "1,5"
-    // Allows for units like "g", "EL", "Bund"
-    // Name is the remainder
     const qtyUnitNamePattern = /^(?:(\d+(?:[\.,]\d+)?)\s*)?(?:([\wßöäüÖÄÜ\.\(\)]+)\s+)?(.*)$/;
     const match = tempIngString.match(qtyUnitNamePattern);
 
     let parsedUnit = '';
     let parsedNamePart = tempIngString;
+    let numPart; // Keep numPart in wider scope
 
     if (match) {
-        const numPart = match[1]; // e.g., "500"
+        numPart = match[1]; // e.g., "500"
         const potentialUnitWord = match[2]; // e.g., "g", "EL", "Stück"
         const namePartAfterUnit = match[3]; // e.g., "Mehl", "Zucker"
 
@@ -87,134 +84,132 @@ function parseIngredientString(ingString) {
         }
 
         if (potentialUnitWord) {
-            // Is potentialUnitWord a recognized unit?
             const standardizedPotentialUnit = normalizeUnit(potentialUnitWord);
             if (UNIT_STANDARDIZATION[potentialUnitWord.toLowerCase().replace(/[()]/g, '')] || standardizedPotentialUnit !== potentialUnitWord) {
-                // It's a unit
                 parsedUnit = standardizedPotentialUnit;
                 parsedNamePart = namePartAfterUnit.trim();
             } else {
-                // It's part of the name
-                parsedUnit = ''; // No unit found here, default or derive later
+                parsedUnit = '';
                 parsedNamePart = (potentialUnitWord + " " + namePartAfterUnit).trim();
             }
         } else {
-             // No middle word, numPart might exist or not. namePartAfterUnit is the rest.
             parsedNamePart = namePartAfterUnit.trim();
         }
         name = parsedNamePart;
     }
-    // If after regex, name is empty but there was a numpart, it means the name was probably the potentialUnitWord
+
     if (name === "" && match && match[1] && match[2]) {
-        name = match[2]; // e.g. "2 Zwiebeln" -> numPart="2", potentialUnitWord="Zwiebeln", namePartAfterUnit=""
-                        // initial name becomes "", so set it to "Zwiebeln"
+        name = match[2];
     }
 
-
-    // Standardize the parsed unit
     let standardizedUnit = normalizeUnit(parsedUnit);
     let normalizedName = normalizeIngredientName(name);
 
-
-    // If no unit was parsed explicitly, but the name itself is a unit (e.g. "Salz", "Pfeffer" often imply "Prise")
-    // or if the name is a unit like "g" and quantity was given e.g. "500 g" parsed as qty:500, name:"g"
     if (standardizedUnit === '' || standardizedUnit === name) {
         if (normalizedName.toLowerCase() === 'salz' || normalizedName.toLowerCase() === 'pfeffer') {
             standardizedUnit = 'Prise';
-        } else if (UNIT_STANDARDIZATION[normalizedName.toLowerCase()]) { // if the name itself is a unit like "g"
+        } else if (UNIT_STANDARDIZATION[normalizedName.toLowerCase()]) {
             standardizedUnit = UNIT_STANDARDIZATION[normalizedName.toLowerCase()];
-            // normalizedName = ""; // Name is empty if the whole string was just a unit and quantity
-        } else if (quantity > 0 && name !== "") { // If there's a quantity and a name, but no unit found yet
-             standardizedUnit = 'Stk.'; // Default to "Stk." if a quantity and name exist but no unit
+        } else if (quantity > 0 && name !== "") {
+             standardizedUnit = 'Stk.';
         }
     }
-     if (name==="" && quantity > 0 && standardizedUnit !== "" && standardizedUnit !== "Stk.") {
-        // if name is empty but we have quantity and a specific unit (e.g. "500 g" parsed as qty:500, unit:g, name:"")
-        // then the original name was likely just the unit.
-        // We don't want an empty name. We can try to set a generic name or leave it as is.
-        // For now, let's allow empty name if unit is specific. Shopping list might need to handle this.
+
+    if (name==="" && quantity > 0 && standardizedUnit !== "" && standardizedUnit !== "Stk.") {
+        // Handled by previous logic or implies original string was just "quantity unit"
     }
 
-
-    // Special handling for ingredients that are often unitless but imply "Stk."
-    // or where the "name" parsed might actually be a unit for that quantity.
-    // Example: "2 Zwiebeln" -> quantity=2, name="Zwiebeln". Unit should be "Stk."
-    // Example: "Salz" -> quantity=1, name="Salz". Unit should be "Prise".
     if (standardizedUnit === '' && name !== '') {
         if (normalizedName.toLowerCase() === 'salz' || normalizedName.toLowerCase() === 'pfeffer') {
             standardizedUnit = 'Prise';
-            if (quantity === 1 && numPart === undefined) quantity = 1; // ensure quantity if it was "Salz"
-        } else if (quantity > 0) { // If there's a quantity, assume "Stk."
+            if (quantity === 1 && numPart === undefined) quantity = 1;
+        } else if (quantity > 0 && numPart !== undefined) { // Only default to Stk if a number was explicitly parsed
             standardizedUnit = 'Stk.';
         }
+    }
+    // If no quantity was given (e.g. "Salz"), and unit became 'Prise', quantity should be 1.
+    if (numPart === undefined && (standardizedUnit === 'Prise' || (standardizedUnit === 'Stk.' && name !== ''))) {
+        quantity = 1;
     }
 
 
     return {
         originalString: originalInputString,
         quantity: quantity,
-        unit: parsedUnit || standardizedUnit, // The initially parsed or derived unit before full standardization for display
-        name: name, // The initially parsed name before full normalization for display context
+        unit: parsedUnit || standardizedUnit,
+        name: name,
         normalizedName: normalizedName,
-        standardizedUnit: standardizedUnit // Fully standardized unit for logic
+        standardizedUnit: standardizedUnit
     };
 }
 
 
-function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
+function generateShoppingList(plan, userPantry, persons_unused = 1, pantryCategories) {
     if (!plan || plan.length === 0) return [];
-    const shoppingListItems = [];
+
+    const allIngredientsFromPlan = [];
 
     plan.forEach(day => {
         if (day.selected && day.selected.ingredients) {
+            const recipeName = day.selected.title || "Unbekanntes Rezept";
             day.selected.ingredients.forEach(ingString => {
                 const parsedIng = parseIngredientString(ingString);
 
-                let recipePortions = 1;
-                if (day.selected.portions) {
-                    const portionMatch = day.selected.portions.match(/für (\d+)/);
-                    if (portionMatch && portionMatch[1]) {
-                        recipePortions = parseInt(portionMatch[1], 10);
-                    }
-                }
-                if (recipePortions <= 0) recipePortions = 1;
-
-                const quantityPerPerson = parsedIng.quantity / recipePortions;
-                const currentQuantity = quantityPerPerson * persons;
-                const currentUnit = parsedIng.standardizedUnit;
-                // Use the original parsed name for display, not the normalized one, to keep original details
-                const currentName = parsedIng.name;
-                const normalizedNameForMatch = parsedIng.normalizedName;
-
-
-                shoppingListItems.push({
-                    displayName: currentName,
-                    quantity: currentQuantity,
-                    unit: currentUnit,
-                    originalString: parsedIng.originalString, // Keep original string for reference if needed
-                    normalizedForMatch: normalizedNameForMatch
+                // Quantity is already scaled in the recipe JSON (recipes_2.json or recipes_4.json)
+                // No further scaling by `persons` or `recipePortions` is needed.
+                allIngredientsFromPlan.push({
+                    recipeName: recipeName,
+                    displayName: parsedIng.name, // Use for display
+                    quantity: parsedIng.quantity, // Already scaled quantity
+                    unit: parsedIng.standardizedUnit, // Use standardized unit for aggregation
+                    normalizedForMatch: parsedIng.normalizedName, // Use for aggregation and pantry matching
+                    originalString: parsedIng.originalString
                 });
             });
         }
     });
 
+    // Aggregate ingredients
+    const aggregatedIngredients = {};
+    allIngredientsFromPlan.forEach(ing => {
+        const key = `${ing.normalizedForMatch.toLowerCase()}_${ing.unit.toLowerCase()}`;
+        if (!aggregatedIngredients[key]) {
+            aggregatedIngredients[key] = {
+                displayName: ing.displayName, // Take the first display name encountered
+                unit: ing.unit,
+                totalQuantity: 0,
+                sources: [],
+                normalizedForMatch: ing.normalizedForMatch,
+                categoryName: "Sonstiges", // Default, will be refined
+                haveAtHome: false, // Default, will be checked
+                combined: false
+            };
+        }
+        aggregatedIngredients[key].totalQuantity += ing.quantity;
+        aggregatedIngredients[key].sources.push({
+            recipeName: ing.recipeName,
+            quantity: ing.quantity // Store the quantity from this specific recipe
+        });
+    });
+
     const pantryItemNamesLower = new Set(userPantry.map(item => normalizeIngredientName(item.name).toLowerCase().trim()));
+    const finalCategorizedList = {};
 
-    const categorizedShoppingList = {};
+    Object.values(aggregatedIngredients).forEach(aggIng => {
+        aggIng.combined = aggIng.sources.length > 1;
+        aggIng.haveAtHome = pantryItemNamesLower.has(aggIng.normalizedForMatch.toLowerCase().trim());
 
-    shoppingListItems.forEach(ing => {
-        let categoryName = "Sonstiges"; // Default category
+        // Determine category (similar to before, but on aggregated item)
         let longestMatchLength = 0;
-
         if (pantryCategories) {
             for (const category of pantryCategories) {
                 if (category.items) {
                     for (const pItem of category.items) {
                         const pItemNameLower = normalizeIngredientName(pItem.name).toLowerCase();
-                        if (ing.normalizedForMatch.toLowerCase().includes(pItemNameLower)) {
+                        if (aggIng.normalizedForMatch.toLowerCase().includes(pItemNameLower)) {
                             if (pItemNameLower.length > longestMatchLength) {
                                 longestMatchLength = pItemNameLower.length;
-                                categoryName = category.name;
+                                aggIng.categoryName = category.name;
                             }
                         }
                     }
@@ -222,39 +217,29 @@ function generateShoppingList(plan, userPantry, persons = 1, pantryCategories) {
             }
         }
 
-        if (!categorizedShoppingList[categoryName]) {
-            categorizedShoppingList[categoryName] = {
-                categoryName: categoryName,
+        if (!finalCategorizedList[aggIng.categoryName]) {
+            finalCategorizedList[aggIng.categoryName] = {
+                categoryName: aggIng.categoryName,
                 items: []
             };
         }
-
-        categorizedShoppingList[categoryName].items.push({
-            // Use displayName which is parsedIng.name (more natural)
-            name: ing.displayName,
-            quantity: ing.quantity,
-            unit: ing.unit,
-            // Check against pantry using the normalized name for better matching
-            haveAtHome: pantryItemNamesLower.has(ing.normalizedForMatch.toLowerCase().trim()),
-            combined: false // Explicitly set to false as we are not combining
-        });
+        // Push the whole aggregated ingredient object. UI will use 'sources' for breakdown.
+        finalCategorizedList[aggIng.categoryName].items.push(aggIng);
     });
 
-    // Sort categories and items within categories
-    const finalShoppingList = Object.values(categorizedShoppingList);
-    finalShoppingList.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+    const finalShoppingListArray = Object.values(finalCategorizedList);
+    finalShoppingListArray.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
 
-    finalShoppingList.forEach(category => {
-        // Sort items alphabetically by name, then by those not at home first
+    finalShoppingListArray.forEach(category => {
         category.items.sort((a, b) => {
             if (a.haveAtHome === b.haveAtHome) {
-                return a.name.localeCompare(b.name);
+                return a.displayName.localeCompare(b.displayName);
             }
-            return a.haveAtHome ? 1 : -1; // Items not at home first
+            return a.haveAtHome ? 1 : -1;
         });
     });
 
-    return finalShoppingList;
+    return finalShoppingListArray;
 }
 
 function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
