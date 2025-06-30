@@ -169,77 +169,72 @@ function generateShoppingList(plan, userPantry, persons_unused = 1, pantryCatego
         }
     });
 
-    // Aggregate ingredients
-    const aggregatedIngredients = {};
+    // New aggregation logic: Group by name, then by unit.
+    const aggregatedIngredientsByName = {};
     allIngredientsFromPlan.forEach(ing => {
-        const key = `${ing.normalizedForMatch.toLowerCase()}_${ing.unit.toLowerCase()}`;
-        if (!aggregatedIngredients[key]) {
-            aggregatedIngredients[key] = {
-                displayName: ing.displayName, // Take the first display name encountered
-                unit: ing.unit,
-                totalQuantity: 0,
-                sources: [],
+        const nameKey = ing.normalizedForMatch.toLowerCase();
+        if (!aggregatedIngredientsByName[nameKey]) {
+            aggregatedIngredientsByName[nameKey] = {
+                displayName: ing.displayName, // Use first display name encountered for the group
                 normalizedForMatch: ing.normalizedForMatch,
-                categoryName: "Sonstiges", // Default, will be refined
-                haveAtHome: false, // Default, will be checked
-                combined: false
+                units: {}, // Stores unit-specific aggregations
+                haveAtHome: false, // Will be set later
+                sources: [] // Keep track of all recipe sources for this ingredient name
             };
         }
-        aggregatedIngredients[key].totalQuantity += ing.quantity;
-        aggregatedIngredients[key].sources.push({
+
+        // Add to sources for the main ingredient name
+        aggregatedIngredientsByName[nameKey].sources.push({
+             recipeName: ing.recipeName,
+             originalString: ing.originalString // Good for traceability if needed
+        });
+
+
+        const unitKey = ing.unit.toLowerCase();
+        if (!aggregatedIngredientsByName[nameKey].units[unitKey]) {
+            aggregatedIngredientsByName[nameKey].units[unitKey] = {
+                unit: ing.unit, // Store the original unit string for display
+                totalQuantity: 0,
+                recipeSources: [] // Store which recipes contributed to this specific unit
+            };
+        }
+        aggregatedIngredientsByName[nameKey].units[unitKey].totalQuantity += ing.quantity;
+        aggregatedIngredientsByName[nameKey].units[unitKey].recipeSources.push({
             recipeName: ing.recipeName,
-            quantity: ing.quantity // Store the quantity from this specific recipe
+            quantity: ing.quantity
         });
     });
 
     const pantryItemNamesLower = new Set(userPantry.map(item => normalizeIngredientName(item.name).toLowerCase().trim()));
-    const finalCategorizedList = {};
+    const finalShoppingList = [];
 
-    Object.values(aggregatedIngredients).forEach(aggIng => {
-        aggIng.combined = aggIng.sources.length > 1;
-        aggIng.haveAtHome = pantryItemNamesLower.has(aggIng.normalizedForMatch.toLowerCase().trim());
+    Object.values(aggregatedIngredientsByName).forEach(ingGroup => {
+        // Determine if this ingredient group is considered "at home"
+        // An ingredient group is "at home" if its normalized name matches any item in the pantry.
+        ingGroup.haveAtHome = pantryItemNamesLower.has(ingGroup.normalizedForMatch.toLowerCase().trim());
 
-        // Determine category (similar to before, but on aggregated item)
-        let longestMatchLength = 0;
-        if (pantryCategories) {
-            for (const category of pantryCategories) {
-                if (category.items) {
-                    for (const pItem of category.items) {
-                        const pItemNameLower = normalizeIngredientName(pItem.name).toLowerCase();
-                        if (aggIng.normalizedForMatch.toLowerCase().includes(pItemNameLower)) {
-                            if (pItemNameLower.length > longestMatchLength) {
-                                longestMatchLength = pItemNameLower.length;
-                                aggIng.categoryName = category.name;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        const unitEntries = Object.values(ingGroup.units);
+        // Sort unit entries alphabetically by unit name
+        unitEntries.sort((a, b) => a.unit.localeCompare(b.unit));
 
-        if (!finalCategorizedList[aggIng.categoryName]) {
-            finalCategorizedList[aggIng.categoryName] = {
-                categoryName: aggIng.categoryName,
-                items: []
-            };
-        }
-        // Push the whole aggregated ingredient object. UI will use 'sources' for breakdown.
-        finalCategorizedList[aggIng.categoryName].items.push(aggIng);
-    });
-
-    const finalShoppingListArray = Object.values(finalCategorizedList);
-    finalShoppingListArray.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
-
-    finalShoppingListArray.forEach(category => {
-        category.items.sort((a, b) => {
-            if (a.haveAtHome === b.haveAtHome) {
-                return a.displayName.localeCompare(b.displayName);
-            }
-            return a.haveAtHome ? 1 : -1;
+        finalShoppingList.push({
+            displayName: ingGroup.displayName,
+            normalizedForMatch: ingGroup.normalizedForMatch,
+            haveAtHome: ingGroup.haveAtHome,
+            unitEntries: unitEntries, // This is an array of {unit, totalQuantity, recipeSources}
+            // We can determine if it's 'combined' based on the recipeSources within unitEntries or total sources for the name
+            combined: ingGroup.sources.length > 1 // Simple check: if sources from more than one processed ingredient line
         });
     });
 
-    return finalShoppingListArray;
+    // Sort the final list alphabetically by ingredient display name
+    finalShoppingList.sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+    // The `pantryCategories` argument is no longer used for categorization here.
+    // It might still be useful if we wanted to assign a primary category to an ingredient group,
+    // but the current request focuses on alphabetical sorting without categories.
+
+    return finalShoppingList;
 }
 
 function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
