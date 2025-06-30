@@ -192,7 +192,7 @@ const ui = (() => {
                             const displayQuantity = Number.isInteger(item.quantity) ? item.quantity : parseFloat(item.quantity).toFixed(2);
 
                             htmlContent += `<li class="${haveAtHomeClass}">
-                                                <span>${item.originalString}${combinedIcon}</span>
+                                                <span>${item.name}${combinedIcon}</span>
                                                 <div>
                                                     <span class="unit">${displayQuantity} ${item.unit}</span>
                                                     ${atHomeStatus}
