@@ -82,9 +82,9 @@
     /* --k-border-dark: #B0A5A1; */ /* DEPRECATED - old warm border */
     /* --k-border-vibrant-accent: To be defined by use case */
 
-    /* Header specific - Option 2 (Dark Contrast) chosen */
-    --header-bg: #2C3E50; /* Midnight Blue */
-    --header-text: #FFFFFF; /* White */
+    /* Header specific - Option 2 (Dark Contrast) chosen - NOW CHANGED TO LIGHT HEADER */
+    --header-bg: #FFFFFF; /* White */
+    --header-text: var(--k-text-primary); /* Midnight Blue - same as primary text */
 
     /* Deprecating old palette names for clarity if they were missed */
     --k-primary-1: var(--k-primary-pop-1); /* Alias old name to new for smoother transition if some styles missed */
@@ -148,9 +148,11 @@ header { background: var(--header-bg); color: var(--header-text); padding: 1rem 
     align-items: center; /* Vertically align items in the center */
 }
 #logo .header-logo {
-    height: 40px; /* Adjust height as needed, width will scale proportionally */
+    height: 30px; /* Reduced height for the logo */
+    width: auto; /* Ensure width scales proportionally */
     margin-right: 0.75rem; /* Space between logo and text */
-    border-radius: 4px; /* Optional: if the logo itself isn't rounded */
+    /* border, background-color, padding, box-sizing removed as header is now white */
+    border-radius: 4px; /* Optional: if the logo itself isn't rounded, keep original radius if desired */
 }
 #logo i.ti { color: var(--header-text); margin-right: 0.6rem; font-size: 1.7rem; /* Make logo icon larger */ } /* This might be removed if icon is replaced by image */
 .main-layout { display: flex; gap: 2.5rem; align-items: flex-start; margin-top: 2.5rem; }
