@@ -86,6 +86,35 @@
     --header-bg: #FFFFFF; /* White */
     --header-text: var(--k-text-primary); /* Midnight Blue - same as primary text */
 
+    /* Dark Mode Palette - NEW */
+    --dark-bg-light: #1A1A1A; /* Very dark gray, almost black */
+    --dark-bg-card: #2C2C2C; /* Dark gray for cards */
+    --dark-bg-overlay: rgba(0, 0, 0, 0.7); /* Darker overlay */
+
+    --dark-text-primary: #E0E0E0; /* Light gray for primary text */
+    --dark-text-secondary: #B0B0B0; /* Medium gray for secondary text */
+    --dark-text-on-bright: #121212; /* Dark text for on dark-mode pop color backgrounds if needed */
+    --dark-text-on-light-accent: #E0E0E0; /* Light text for lighter accent backgrounds in dark mode */
+
+    /* Dark mode pop colors can be the same or slightly desaturated/adjusted if needed */
+    --dark-primary-pop-1: var(--k-primary-pop-1);
+    --dark-primary-pop-1-darker: var(--k-primary-pop-1-darker);
+    --dark-primary-pop-1-lighter: #4A2A2A; /* Darker base for lighter shade in dark mode */
+
+    --dark-primary-pop-2: var(--k-primary-pop-2);
+    --dark-primary-pop-2-darker: var(--k-primary-pop-2-darker);
+    --dark-primary-pop-2-lighter: #2A4A4A; /* Darker base for lighter shade in dark mode */
+
+    --dark-accent-red: var(--k-accent-red);
+    --dark-accent-red-darker: var(--k-accent-red-darker);
+
+    --dark-border-light: #404040; /* Darker light border */
+    --dark-border-medium: #555555; /* Darker medium border */
+
+    --dark-header-bg: #232323; /* Slightly different dark for header */
+    --dark-header-text: var(--dark-text-primary);
+
+
     /* Deprecating old palette names for clarity if they were missed */
     --k-primary-1: var(--k-primary-pop-1); /* Alias old name to new for smoother transition if some styles missed */
     --k-primary-1-darker: var(--k-primary-pop-1-darker);
@@ -106,102 +135,127 @@
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
-    background-color: var(--k-bg-light); /* Now white */
-    color: var(--k-text-primary); /* Now Midnight Blue */
+    background-color: var(--k-bg-light);
+    color: var(--k-text-primary);
     line-height: 1.6;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
-.container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem; }
+body.dark-mode {
+    --k-bg-light: var(--dark-bg-light);
+    --k-bg-card: var(--dark-bg-card);
+    --k-bg-overlay: var(--dark-bg-overlay);
+    --k-text-primary: var(--dark-text-primary);
+    --k-text-secondary: var(--dark-text-secondary);
+    --k-text-on-bright: var(--dark-text-on-bright); /* Might need adjustment based on pop color usage */
+    --k-text-on-light-accent: var(--dark-text-on-light-accent);
+
+    --k-primary-pop-1-lighter: var(--dark-primary-pop-1-lighter);
+    --k-primary-pop-2-lighter: var(--dark-primary-pop-2-lighter);
+
+    --k-border-light: var(--dark-border-light);
+    --k-border-medium: var(--dark-border-medium);
+
+    --header-bg: var(--dark-header-bg);
+    --header-text: var(--dark-header-text);
+    /* Pop colors and their darker variants remain the same unless explicitly changed for dark mode */
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; } /* Reduced padding */
 
 h1, h2, h3, h4, h5, h6 {
     color: var(--k-text-primary);
-    font-weight: 700; /* Bolder headings for more pop */
+    font-weight: 700;
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem; /* Reduced bottom margin for headings */
 }
-h1 { font-size: 2.75rem; line-height: 1.15; letter-spacing: -0.5px;} /* Slightly larger, tighter */
-h2 { font-size: 2.25rem; line-height: 1.2; }
-h3 { font-size: 1.75rem; line-height: 1.25; } /* Larger H3 for section titles */
-h4 { font-size: 1.25rem; line-height: 1.35; font-weight: 600; } /* H4 still prominent */
-p { margin-top: 0; margin-bottom: 1rem; color: var(--k-text-secondary); } /* Paragraphs use secondary text */
+h1 { font-size: 2.5rem; line-height: 1.15; letter-spacing: -0.5px;} /* Slightly smaller h1 */
+h2 { font-size: 2rem; line-height: 1.2; } /* Smaller h2 */
+h3 { font-size: 1.5rem; line-height: 1.25; } /* Smaller h3 */
+h4 { font-size: 1.15rem; line-height: 1.35; font-weight: 600; } /* Smaller h4 */
+p { margin-top: 0; margin-bottom: 0.75rem; color: var(--k-text-secondary); } /* Reduced bottom margin for paragraphs */
 a { color: var(--k-primary-pop-1); text-decoration: none; font-weight: 500; transition: color 0.2s ease-in-out; }
 a:hover { color: var(--k-primary-pop-1-darker); }
 
 /* Icon base size and margin */
-i.fa-solid, i.fas, i.ti { /* Adding .fas for wider compatibility with FontAwesome versions if used, and .ti for Tabler Icons */
-    /* Ensure font-family is inherited or explicitly set if necessary, though Tabler CSS should handle this */
-    /* font-family: 'tabler-icons', sans-serif; */ /* This should be handled by Tabler's own CSS */
-    display: inline-block; /* Crucial for visibility */
-    width: 24px; /* Slightly larger default icon touch target / visual space */
+i.fa-solid, i.fas, i.ti {
+    display: inline-block;
+    width: 20px; /* Slightly smaller icon width */
     text-align: center;
-    vertical-align: middle; /* Better alignment with text */
-    margin-right: 0.75rem;
-    width: 24px; /* Slightly larger default icon touch target / visual space */
-    text-align: center;
-    vertical-align: middle; /* Better alignment with text */
-    display: inline-block; /* Ensure width is respected */
+    vertical-align: middle;
+    margin-right: 0.5rem; /* Reduced icon margin */
 }
 /* Specific icon colors can be set per component or use case */
 .icon-primary { color: var(--k-primary-pop-1); }
 .icon-secondary { color: var(--k-primary-pop-2); }
-.icon-accent { color: var(--k-accent-vibrant-yellow); } /* Example */
+.icon-accent { color: var(--k-accent-vibrant-yellow); }
 
 
 /* HEADER & NAVIGATION */
-header { background: var(--header-bg); color: var(--header-text); padding: 0.5rem 0; box-shadow: var(--shadow-medium); }
+header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 0.25rem 0; /* Further reduced vertical padding for header bar */
+    box-shadow: var(--shadow-medium);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding-top: 0.5rem; */ /* Container padding is now handled by general .container rule */
+    /* padding-bottom: 0.5rem; */
+}
+
 #logo {
     font-weight: 700;
-    font-size: 1.85rem;
+    font-size: 1.75rem; /* Slightly smaller logo text */
     color: var(--header-text);
-    display: flex; /* Use flexbox to align image and text */
-    align-items: center; /* Vertically align items in the center */
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem; /* Reduced margin */
 }
 #logo .header-logo {
-    height: 30px; /* Reduced height for the logo */
-    width: auto; /* Ensure width scales proportionally */
-    margin-right: 0.75rem; /* Space between logo and text */
-    /* border, background-color, padding, box-sizing removed as header is now white */
-    border-radius: 4px; /* Optional: if the logo itself isn't rounded, keep original radius if desired */
+    height: 28px; /* Slightly smaller logo image */
+    width: auto;
+    margin-right: 0.5rem; /* Reduced space to text */
+    border-radius: 4px;
 }
-#logo i.ti { color: var(--header-text); margin-right: 0.6rem; font-size: 1.7rem; /* Make logo icon larger */ } /* This might be removed if icon is replaced by image */
-.main-layout { display: flex; gap: 2.5rem; align-items: flex-start; margin-top: 2.5rem; }
-aside.main-nav {
-    flex: 0 0 230px;
-    position: sticky;
-    top: 2.5rem;
-    padding-right: 1.5rem;
-}
-main.main-content { flex: 1; min-width: 0; }
 
-.main-nav nav {
+/* Styles for the new navigation inside the header */
+#main-header-nav {
     display: flex;
-    flex-direction: column;
-    gap: 0.85rem; /* More space between nav items */
+    gap: 0.3rem; /* Further reduced gap */
+    align-items: center;
 }
+
 .nav-item {
     display: flex;
     align-items: center;
-    padding: 0.9rem 1.35rem; /* Slightly more padding */
+    padding: 0.5rem 0.8rem; /* Reduced padding for nav items */
     text-decoration: none;
     color: var(--k-text-secondary);
     font-weight: 500;
-    font-size: 1.05rem; /* Slightly larger nav text */
-    border-radius: 10px;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.2s ease;
+    font-size: 0.9rem; /* Slightly smaller font */
+    border-radius: 6px; /* Smaller radius */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     border: 1px solid transparent;
 }
-.nav-item i.ti { /* Using the general icon style now, specific adjustments if needed */
-    color: var(--k-text-secondary); /* Default icon color */
+.nav-item i.ti {
+    color: var(--k-text-secondary);
     transition: color 0.2s ease-in-out;
-    font-size: 1.1em; /* Slightly larger icons in nav */
+    font-size: 1em; /* Adjusted icon size */
+    margin-right: 0.4rem; /* Reduced space */
 }
 .nav-item:hover {
     background-color: var(--k-primary-pop-1-lighter);
-    color: var(--k-primary-pop-1-darker); /* Darker text on light hover */
+    color: var(--k-primary-pop-1-darker);
     border-color: var(--k-primary-pop-1-lighter);
-    transform: translateX(5px); /* Subtle hover effect */
+    /* transform: none; */ /* No horizontal transform needed for header nav */
 }
 .nav-item:hover i.ti {
     color: var(--k-primary-pop-1);
@@ -210,27 +264,57 @@ main.main-content { flex: 1; min-width: 0; }
     background-color: var(--k-primary-pop-1);
     color: var(--k-text-on-bright);
     font-weight: 600;
-    box-shadow: var(--shadow-medium); /* Stronger shadow for active item */
+    box-shadow: var(--shadow-soft); /* Softer shadow for active item in header */
     border-color: var(--k-primary-pop-1);
 }
 .nav-item.active i.ti {
     color: var(--k-text-on-bright);
 }
 
-/* Specific override for dashboard icon if it's still not showing */
-.nav-item[data-view="dashboard"] i.ti-home-smile {
-    display: inline-block !important; /* Force display */
-    font-style: normal !important; /* Ensure it's not italicized away */
-    speak: none; /* Accessibility */
-    font-variant: normal !important;
-    text-transform: none !important;
-    line-height: 1 !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: inherit !important; /* Inherit from .nav-item i.ti or set explicitly */
-    color: inherit !important; /* Inherit from .nav-item i.ti */
-    opacity: 1 !important; /* Ensure not transparent */
-    visibility: visible !important; /* Ensure not hidden */
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: none;
+    border: 1px solid var(--k-border-medium);
+    color: var(--k-text-secondary);
+    padding: 0.4rem 0.6rem; /* Reduced padding */
+    border-radius: 6px; /* Match nav items */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.theme-toggle-btn:hover {
+    background-color: var(--k-primary-pop-1-lighter);
+    color: var(--k-primary-pop-1-darker);
+    border-color: var(--k-primary-pop-1-lighter);
+}
+.theme-toggle-btn i.ti {
+    font-size: 1.2em;
+    margin-right: 0; /* No margin if it's just the icon */
+}
+
+body.dark-mode .theme-toggle-btn {
+    border-color: var(--dark-border-medium);
+    color: var(--dark-text-secondary);
+}
+body.dark-mode .theme-toggle-btn:hover {
+    background-color: var(--dark-primary-pop-1-lighter); /* Using the dark mode var */
+    color: var(--dark-primary-pop-1-darker); /* Assuming this is still readable */
+    border-color: var(--dark-primary-pop-1-lighter);
+}
+
+
+/* Main layout adjustments */
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem; /* Reduced space below sticky header */
+}
+/* aside.main-nav is removed from here, styles are now for #main-header-nav */
+main.main-content {
+    flex: 1; /* Take remaining space */
+    min-width: 0;
+    width: 100%; /* Ensure it takes full width */
 }
 
 
@@ -238,55 +322,63 @@ main.main-content { flex: 1; min-width: 0; }
 .empty-state-banner {
     background: linear-gradient(135deg, var(--k-primary-pop-1-lighter), var(--k-primary-pop-2-lighter)),
                   url('https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=2070&auto=format&fit=crop') center center/cover;
-    padding: 5rem 2.5rem; /* More padding */
-    border-radius: 24px; /* Larger radius */
+    padding: 3rem 1.5rem; /* Reduced padding */
+    border-radius: 16px; /* Reduced radius */
     text-align: center;
-    box-shadow: var(--shadow-strong); /* More prominent shadow */
-    color: var(--k-text-primary); /* Ensure text is readable */
+    box-shadow: var(--shadow-strong);
+    color: var(--k-text-primary);
+    margin-bottom: 2rem; /* Added margin bottom */
 }
 .banner-content {
-    background-color: rgba(255, 255, 255, 0.92); /* More opaque white */
+    background-color: rgba(255, 255, 255, 0.92);
     display: inline-block;
-    padding: 3rem 3.5rem;
-    border-radius: 16px; /* Larger radius */
+    padding: 2rem 2.5rem; /* Reduced padding */
+    border-radius: 12px; /* Reduced radius */
     backdrop-filter: blur(8px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-.banner-content h2 { color: var(--k-primary-pop-1); font-size: 2.5rem; } /* Heading takes pop color */
-.banner-content p { color: var(--k-text-secondary); font-size: 1.1rem; }
+.banner-content h2 { color: var(--k-primary-pop-1); font-size: 2rem; } /* Reduced font size */
+.banner-content p { color: var(--k-text-secondary); font-size: 1rem; } /* Reduced font size */
 
 
 /* Image specific CSS */
 .recipe-card-image {
     width: 100%;
-    height: 180px;
+    height: 160px; /* Reduced height */
     object-fit: cover;
-    border-radius: 10px 10px 0 0; /* Match card radius */
-    margin-bottom: 1rem;
+    border-radius: 8px 8px 0 0; /* Match card radius */
+    margin-bottom: 0.75rem; /* Reduced margin */
 }
-.plan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.plan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; } /* Reduced margin */
 .plan-instructions {
     text-align: center;
     color: var(--k-text-primary);
-    background-color: var(--k-primary-pop-2-lighter); /* Changed to pop-2 lighter */
-    padding: 1.25rem; /* More padding */
-    border-radius: 12px; /* Match card radius */
-    margin-bottom: 2.5rem;
-    border: 1px solid var(--k-primary-pop-2); /* Pop-2 border */
+    background-color: var(--k-primary-pop-2-lighter);
+    padding: 1rem; /* Reduced padding */
+    border-radius: 8px; /* Reduced radius */
+    margin-bottom: 1.5rem; /* Reduced margin */
+    border: 1px solid var(--k-primary-pop-2);
     font-weight: 500;
 }
 .plan-instructions i.ti { color: var(--k-primary-pop-2); }
 
 .card { /* General card styling for generator, inventory etc. */
     background-color: var(--k-bg-card);
-    padding: 2.5rem; /* More padding for main cards */
-    border-radius: 16px; /* Slightly larger radius for main cards */
+    padding: 1.5rem; /* Reduced padding */
+    border-radius: 12px; /* Reduced radius */
     box-shadow: var(--shadow-medium);
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem; /* Reduced margin */
     border: 1px solid var(--k-border-light);
     /* Consider adding a subtle top border in a pop color */
     /* border-top: 4px solid var(--k-primary-pop-1-lighter); */
 }
+body.dark-mode .card {
+    background-color: var(--dark-bg-card);
+    border-color: var(--dark-border-light);
+    /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); */ /* Optional: different shadow for dark mode */
+}
+body.dark-mode #dashboard-view .card { background-color: transparent; border: none; } /* Keep dashboard card transparent */
+
 #dashboard-view .card { box-shadow: none; border: none; padding: 0; }
 .view.hidden { display: none; }
 
@@ -294,21 +386,21 @@ main.main-content { flex: 1; min-width: 0; }
 /* REZEPTKARTEN - VIBRANT STYLING (General, used in generator and potentially calendar) */
 /* Styles for the original row-based dashboard layout */
 .day-container {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem; /* Reduced margin */
 }
 .day-container h3 { /* For "Montag", "Dienstag" etc. */
-    font-size: 1.8rem; /* Larger day titles */
+    font-size: 1.6rem; /* Reduced font size */
     font-weight: 700;
-    padding-bottom: 0.75rem;
-    border-bottom: 3px solid var(--k-primary-pop-1); /* Pop color border */
-    margin-bottom: 2rem; /* More space below day title */
-    color: var(--k-primary-pop-1); /* Pop color for day title text */
+    padding-bottom: 0.5rem; /* Reduced padding */
+    border-bottom: 2px solid var(--k-primary-pop-1); /* Thinner border */
+    margin-bottom: 1.5rem; /* Reduced margin */
+    color: var(--k-primary-pop-1);
 }
 
 .recipe-options { /* This is the container for the two recipe cards per day */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Should result in 2 columns on most screens */
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Slightly smaller minmax */
+    gap: 1.5rem; /* Reduced gap */
 }
 /* End of original row-based dashboard layout styles */
 
@@ -324,19 +416,24 @@ main.main-content { flex: 1; min-width: 0; }
 
 .recipe-card { /* Individual recipe card - general styling */
     background: var(--k-bg-card);
-    border: 2px solid transparent;
-    padding: 1.25rem; /* Slightly less padding inside recipe card */
-    border-radius: 12px;
+    border: 2px solid var(--k-border-medium);
+    padding: 1rem; /* Reduced padding */
+    border-radius: 8px; /* Reduced radius */
     box-shadow: var(--shadow-soft);
     transition: all 0.25s ease-in-out;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     /* border-left: 4px solid var(--k-accent-vibrant-blue); */ /* Default vibrant accent - Replaced by full border */
-    border-width: 2px; /* Harder border */
+    border-width: 2px;
     border-style: solid;
-    border-color: var(--k-border-medium); /* Default border color */
-    border-radius: 12px; /* Ensure rounded edges are clearly visible */
+    /* border-color: var(--k-border-medium); */
+    border-radius: 8px; /* Ensure rounded edges are clearly visible - matches above */
+}
+body.dark-mode .recipe-card {
+    background: var(--dark-bg-card);
+    /* Rainbow borders should still work. If not, define dark mode specific ones or adjust opacity of pop colors. */
+    /* For now, assuming pop colors are visible enough on dark-bg-card */
 }
 /* Rainbow border effect for recipe cards */
 .recipe-card:nth-of-type(6n+1) { border-color: var(--k-primary-pop-1); }
@@ -354,45 +451,47 @@ main.main-content { flex: 1; min-width: 0; }
     transform: translateY(-5px) scale(1.02);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25); /* Stronger shadow when selected */
     /* Ensure the border of selected card is prominent, maybe thicker or a specific highlight color */
-    border-width: 4px; /* Thicker border when selected */
+    border-width: 3px; /* Slightly thinner selected border */
 }
 .recipe-card:not(.selected) {
-    opacity: 1; /* Full opacity for non-selected cards */
+    opacity: 1;
 }
 .recipe-card:hover:not(.selected) {
-    transform: translateY(-5px) scale(1.02); /* Same effect as selected on hover */
+    transform: translateY(-3px) scale(1.01); /* Slightly less pronounced hover */
     box-shadow: var(--shadow-medium);
-    /* Hover border can be a consistent color or slightly thicker */
-    /* border-color: var(--k-primary-pop-2); */ /* Use secondary pop for hover border - or let the rainbow border persist */
+
 }
 .recipe-card h4 {
-    font-size: 1.2rem; /* Slightly larger recipe titles */
-    font-weight: 700; /* Bolder titles */
+    font-size: 1.1rem; /* Reduced font size */
+    font-weight: 700;
     color: var(--k-text-primary);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.4rem; /* Reduced margin */
 }
-.recipe-card p { font-size: 0.9rem; } /* Recipe description */
+.recipe-card p { font-size: 0.85rem; margin-bottom: 0.5rem; } /* Reduced font size and margin */
 
 /* Nutrition Info Styling */
 .recipe-nutrition-info {
-    margin-top: 1rem;
-    padding-top: 0.75rem;
+    margin-top: 0.75rem; /* Reduced margin */
+    padding-top: 0.5rem; /* Reduced padding */
     border-top: 1px solid var(--k-border-light);
 }
+body.dark-mode .recipe-nutrition-info {
+    border-top-color: var(--dark-border-light);
+}
 .recipe-nutrition-info h5 {
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Reduced font size */
     font-weight: 600;
     color: var(--k-text-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem; /* Reduced margin */
 }
 .recipe-nutrition-info ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.8rem; /* Reduced font size */
 }
 .recipe-nutrition-info li {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem; /* Reduced margin */
     color: var(--k-text-secondary);
 }
 .recipe-nutrition-info li strong {
@@ -402,11 +501,11 @@ main.main-content { flex: 1; min-width: 0; }
 
 
 /* Colorful tags - VIBRANT */
-.recipe-card .tags { margin-bottom: 1rem; }
+.recipe-card .tags { margin-bottom: 0.75rem; } /* Reduced margin */
 .recipe-card .tags span {
     display: inline-block;
-    padding: .45em 1em; /* More padding */
-    font-size: .8rem; /* Larger tag text */
+    padding: .35em .8em; /* Reduced padding */
+    font-size: .75rem; /* Reduced font size */
     font-weight: 600;
     border-radius: 8px; /* Less pill, more badge-like */
     margin: 0.3rem 0.2rem;
@@ -414,6 +513,16 @@ main.main-content { flex: 1; min-width: 0; }
     line-height: 1.3;
     transition: transform 0.2s ease;
 }
+/* Dark mode tags: text color might need to change if pop colors are too light */
+body.dark-mode .recipe-card .tags span {
+    /* color: var(--dark-text-on-bright); */ /* Assuming pop colors are dark enough for light text */
+}
+body.dark-mode .recipe-card .tags span:not(.price-tag):nth-of-type(5n+1), /* Yellow */
+body.dark-mode .recipe-card .tags span:not(.price-tag):nth-of-type(5n+3) { /* Green */
+    color: var(--dark-text-primary); /* Darker text for lighter tags in dark mode */
+}
+
+
 .recipe-card .tags span:hover { transform: scale(1.05); }
 
 .tags span i.ti { margin-right: 0.5rem; font-size: 0.8em; }
@@ -432,9 +541,12 @@ main.main-content { flex: 1; min-width: 0; }
 
 
 .recipe-card .match-info {
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: 0.75rem; /* Reduced margin */
+    padding-top: 0.75rem; /* Reduced padding */
     border-top: 1px solid var(--k-border-light);
+}
+body.dark-mode .recipe-card .match-info {
+    border-top-color: var(--dark-border-light);
 }
 .match-info .match-bar {
     width: 100%;
@@ -444,6 +556,9 @@ main.main-content { flex: 1; min-width: 0; }
     overflow: hidden;
     margin-bottom: 0.6rem;
 }
+body.dark-mode .match-info .match-bar {
+    background-color: var(--dark-border-medium);
+}
 .match-info .match-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--k-accent-vibrant-yellow), var(--k-primary-pop-1)); /* Vibrant gradient */
@@ -452,8 +567,11 @@ main.main-content { flex: 1; min-width: 0; }
 }
 .match-info .match-text { font-size: 0.9rem; font-weight: 600; color: var(--k-text-primary); }
 .match-info .missing-ingredients { font-size: 0.85rem; color: var(--k-accent-red); margin-top: 0.4rem; }
+body.dark-mode .match-info .missing-ingredients { color: var(--dark-accent-red); }
 .match-info .all-ingredients-present { font-size: 0.85rem; color: var(--k-primary-pop-2-darker); font-weight: 600; margin-top: 0.4rem; }
+body.dark-mode .match-info .all-ingredients-present { color: var(--dark-primary-pop-2-darker); } /* Assuming pop-2 darker is fine */
 .missing-ingredients strong { font-weight: 700; }
+
 
 /* BUTTONS - VIBRANT STYLING */
 .btn-primary, .btn-secondary, .btn-danger, .btn-confirm, .btn-info {
@@ -461,15 +579,15 @@ main.main-content { flex: 1; min-width: 0; }
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    font-size: 1rem; /* Larger base button font size */
+    font-size: 0.9rem; /* Reduced base button font size */
     text-align: center;
     cursor: pointer;
-    border: 2px solid transparent; /* Thicker base border for pop */
-    padding: 0.8rem 1.75rem; /* More padding */
-    border-radius: 10px; /* Consistent radius */
+    border: 2px solid transparent;
+    padding: 0.6rem 1.25rem; /* Reduced padding */
+    border-radius: 8px; /* Reduced radius */
     transition: all .2s ease-in-out;
-    box-shadow: var(--shadow-medium); /* Start with medium shadow for more pop */
-    text-transform: uppercase; /* Uppercase for more impact */
+    box-shadow: var(--shadow-medium);
+    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 .btn-primary:hover:not(:disabled),
@@ -477,8 +595,8 @@ main.main-content { flex: 1; min-width: 0; }
 .btn-confirm:hover:not(:disabled),
 .btn-danger:hover:not(:disabled),
 .btn-info:hover:not(:disabled) {
-    transform: translateY(-3px) scale(1.03); /* More hover pop */
-    box-shadow: var(--shadow-strong); /* Stronger shadow on hover */
+    transform: translateY(-2px) scale(1.02); /* Slightly less hover pop */
+    box-shadow: var(--shadow-strong);
 }
 
 .btn-primary {
@@ -490,6 +608,8 @@ main.main-content { flex: 1; min-width: 0; }
     background-color: var(--k-primary-pop-1-darker);
     border-color: var(--k-primary-pop-1-darker);
 }
+/* Dark mode buttons: Assuming pop colors are distinct enough. Text on buttons is --k-text-on-bright. */
+/* If pop colors change in dark mode, these might need --dark-primary-pop-1 etc. */
 
 .btn-secondary {
     background-color: var(--k-primary-pop-2);
@@ -516,9 +636,9 @@ main.main-content { flex: 1; min-width: 0; }
     color: var(--k-text-on-bright);
     border-color: var(--k-primary-pop-2);
     width: 100%;
-    margin-top: 2rem;
-    padding: 1rem 1.75rem; /* Larger padding for confirm */
-    font-size: 1.15rem; /* Larger font for confirm */
+    margin-top: 1.5rem; /* Reduced margin */
+    padding: 0.8rem 1.5rem; /* Reduced padding */
+    font-size: 1rem; /* Reduced font size */
 }
 .btn-confirm:hover:not(:disabled) {
     background-color: var(--k-primary-pop-2-darker);
@@ -528,11 +648,11 @@ main.main-content { flex: 1; min-width: 0; }
 .btn-info { /* For "Rezept ansehen" type buttons */
     background-color: transparent;
     color: var(--k-primary-pop-1);
-    border: 2px solid var(--k-primary-pop-1); /* Thicker border */
-    padding: 0.6rem 1.2rem; /* Adjusted padding */
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    text-transform: none; /* Info buttons can be normal case */
+    border: 2px solid var(--k-primary-pop-1);
+    padding: 0.5rem 1rem; /* Reduced padding */
+    margin-top: 0.75rem; /* Reduced margin */
+    font-size: 0.85rem; /* Reduced font size */
+    text-transform: none;
     letter-spacing: normal;
 }
 .btn-info:hover:not(:disabled) {
@@ -540,6 +660,16 @@ main.main-content { flex: 1; min-width: 0; }
     color: var(--k-primary-pop-1-darker);
     border-color: var(--k-primary-pop-1);
 }
+body.dark-mode .btn-info {
+    color: var(--k-primary-pop-1); /* Keep pop color for text */
+    border-color: var(--k-primary-pop-1); /* Keep pop color for border */
+}
+body.dark-mode .btn-info:hover:not(:disabled) {
+    background-color: var(--dark-primary-pop-1-lighter); /* Use dark mode lighter variant */
+    color: var(--k-primary-pop-1-darker); /* Text can remain darker pop */
+    border-color: var(--k-primary-pop-1);
+}
+
 
 button:disabled,
 .btn-primary:disabled,
@@ -547,13 +677,23 @@ button:disabled,
 .btn-danger:disabled,
 .btn-confirm:disabled,
 .btn-info:disabled {
-    background-color: var(--k-border-medium) !important; /* Use medium gray from new palette */
-    color: var(--k-text-secondary) !important; /* Use secondary text, slightly faded */
+    background-color: var(--k-border-medium) !important;
+    color: var(--k-text-secondary) !important;
     border-color: var(--k-border-medium) !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
     transform: none !important;
     opacity: 0.6;
+}
+body.dark-mode button:disabled,
+body.dark-mode .btn-primary:disabled,
+body.dark-mode .btn-secondary:disabled,
+body.dark-mode .btn-danger:disabled,
+body.dark-mode .btn-confirm:disabled,
+body.dark-mode .btn-info:disabled {
+    background-color: var(--dark-border-medium) !important;
+    color: var(--dark-text-secondary) !important;
+    border-color: var(--dark-border-medium) !important;
 }
 
 
@@ -566,17 +706,29 @@ input[type="password"],
 textarea,
 select {
     width: 100%;
-    padding: 0.85rem 1.1rem; /* Slightly more padding */
-    font-size: 1rem; /* Larger font size for inputs */
+    padding: 0.7rem 0.9rem; /* Reduced padding */
+    font-size: 0.9rem; /* Reduced font size */
     font-family: 'Poppins', sans-serif;
     color: var(--k-text-primary);
-    background-color: var(--k-bg-card); /* White background */
-    border: 2px solid var(--k-border-medium); /* Thicker, medium gray border */
+    background-color: var(--k-bg-card);
+    border: 2px solid var(--k-border-medium);
     border-radius: 8px;
-    box-shadow: none; /* Remove inner shadow for flatter, modern look */
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: none;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
     box-sizing: border-box;
 }
+body.dark-mode input[type="text"],
+body.dark-mode input[type="number"],
+body.dark-mode input[type="date"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: var(--dark-bg-card); /* Dark input background */
+    color: var(--dark-text-primary); /* Light text in inputs */
+    border-color: var(--dark-border-medium);
+}
+
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="date"]:focus,
@@ -585,69 +737,97 @@ input[type="password"]:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: var(--k-primary-pop-1); /* Pop color border on focus */
-    box-shadow: 0 0 0 3px var(--k-primary-pop-1-lighter); /* Lighter pop color glow */
+    border-color: var(--k-primary-pop-1);
+    box-shadow: 0 0 0 3px var(--k-primary-pop-1-lighter);
 }
+body.dark-mode input[type="text"]:focus,
+body.dark-mode input[type="number"]:focus,
+body.dark-mode input[type="date"]:focus,
+body.dark-mode input[type="email"]:focus,
+body.dark-mode input[type="password"]:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    border-color: var(--dark-primary-pop-1); /* Or use the standard pop color if it's visible enough */
+    box-shadow: 0 0 0 3px var(--dark-primary-pop-1-lighter); /* Dark mode lighter glow */
+}
+
 textarea {
     height: auto;
-    min-height: 120px; /* Slightly taller */
+    min-height: 100px; /* Reduced min-height */
     resize: vertical;
 }
 label {
     display: block;
-    font-weight: 600; /* Bolder labels */
-    margin-bottom: 0.6rem; /* More space below label */
-    font-size: 1rem; /* Larger label font size */
+    font-weight: 600;
+    margin-bottom: 0.4rem; /* Reduced margin */
+    font-size: 0.9rem; /* Reduced font size */
     color: var(--k-text-primary);
 }
-label i.ti { /* Icons in labels */
-    color: var(--k-primary-pop-2); /* Pop color for label icons */
-    margin-right: 0.5rem;
+label i.ti {
+    color: var(--k-primary-pop-2);
+    margin-right: 0.4rem; /* Reduced margin */
 }
 
-.form-group { margin-bottom: 1.75rem; } /* More space between form groups */
-.form-group-inline { display: flex; gap: 1.75rem; align-items: flex-end; }
+.form-group { margin-bottom: 1.25rem; } /* Reduced margin */
+.form-group-inline { display: flex; gap: 1.25rem; align-items: flex-end; } /* Reduced gap */
 .form-group-inline .form-group { flex: 1; margin-bottom: 0; }
 
 .radio-group-container, .checkbox-group-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Wider min for items */
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reduced minmax */
+    gap: 0.75rem; /* Reduced gap */
 }
-.radio-group, .checkbox-group { /* Container for each radio/checkbox + label */
+.radio-group, .checkbox-group {
     display: flex;
     align-items: center;
-    background-color: var(--k-bg-light); /* White background */
-    padding: 0.85rem 1.25rem; /* More padding */
-    border-radius: 10px; /* Larger radius */
-    border: 2px solid var(--k-border-light); /* Light border */
+    background-color: var(--k-bg-light);
+    padding: 0.7rem 1rem; /* Reduced padding */
+    border-radius: 8px; /* Reduced radius */
+    border: 2px solid var(--k-border-light);
     transition: all 0.2s ease-in-out;
     cursor: pointer;
     box-shadow: var(--shadow-soft);
 }
+body.dark-mode .radio-group, body.dark-mode .checkbox-group {
+    background-color: var(--dark-bg-light);
+    border-color: var(--dark-border-light);
+}
 .radio-group:hover, .checkbox-group:hover {
-    border-color: var(--k-primary-pop-2); /* Pop color border on hover */
+    border-color: var(--k-primary-pop-2);
     box-shadow: var(--shadow-medium);
 }
+body.dark-mode .radio-group:hover, body.dark-mode .checkbox-group:hover {
+    border-color: var(--dark-primary-pop-2);
+}
 .radio-group:has(input:checked), .checkbox-group:has(input:checked) {
-    border-color: var(--k-primary-pop-1); /* Primary pop color for selected */
+    border-color: var(--k-primary-pop-1);
     background-color: var(--k-primary-pop-1-lighter);
     box-shadow: var(--shadow-medium);
 }
+body.dark-mode .radio-group:has(input:checked), body.dark-mode .checkbox-group:has(input:checked) {
+    border-color: var(--dark-primary-pop-1);
+    background-color: var(--dark-primary-pop-1-lighter);
+}
 .radio-group:has(input:checked) label, .checkbox-group:has(input:checked) label {
-    color: var(--k-primary-pop-1-darker); /* Darker pop color for selected label text */
+    color: var(--k-primary-pop-1-darker);
     font-weight: 600;
 }
+body.dark-mode .radio-group:has(input:checked) label, body.dark-mode .checkbox-group:has(input:checked) label {
+    color: var(--dark-primary-pop-1-darker);
+}
 .radio-group:has(input:checked) i.ti, .checkbox-group:has(input:checked) i.ti {
-    color: var(--k-primary-pop-1); /* Pop color for icon in selected label */
+    color: var(--k-primary-pop-1);
+}
+body.dark-mode .radio-group:has(input:checked) i.ti, body.dark-mode .checkbox-group:has(input:checked) i.ti {
+    color: var(--dark-primary-pop-1);
 }
 
 
 .radio-group input[type="radio"], .checkbox-group input[type="checkbox"] {
-    width: 1.3em; /* Larger custom radio/checkbox */
-    height: 1.3em;
-    margin-right: 0.9rem;
-    accent-color: var(--k-primary-pop-1); /* Fallback for non-customized appearance */
+    width: 1.1em; /* Reduced size */
+    height: 1.1em; /* Reduced size */
+    margin-right: 0.7rem; /* Reduced margin */
+    accent-color: var(--k-primary-pop-1);
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
@@ -655,10 +835,10 @@ label i.ti { /* Icons in labels */
     border-radius: 50%;
     position: relative;
     transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
 }
 .checkbox-group input[type="checkbox"] {
-    border-radius: 5px; /* Squarer for checkbox */
+    border-radius: 4px; /* Slightly less round for checkbox */
 }
 .radio-group input[type="radio"]:checked, .checkbox-group input[type="checkbox"]:checked {
     background-color: var(--k-primary-pop-1);
@@ -672,9 +852,9 @@ label i.ti { /* Icons in labels */
 .radio-group input[type="radio"]:checked::before {
     content: '';
     display: block;
-    width: 0.6em; /* Larger dot */
-    height: 0.6em;
-    background-color: var(--k-text-on-bright); /* White dot */
+    width: 0.5em; /* Reduced dot size */
+    height: 0.5em; /* Reduced dot size */
+    background-color: var(--k-text-on-bright);
     border-radius: 50%;
     position: absolute;
     top: 50%; left: 50%;
@@ -684,8 +864,8 @@ label i.ti { /* Icons in labels */
     content: '\f00c';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: var(--k-text-on-bright); /* White checkmark */
-    font-size: 0.85em; /* Adjusted checkmark size */
+    color: var(--k-text-on-bright);
+    font-size: 0.75em; /* Reduced checkmark size */
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -695,15 +875,15 @@ label i.ti { /* Icons in labels */
 .radio-group label, .checkbox-group label {
     margin: 0;
     font-weight: 500;
-    font-size: 1rem; /* Larger label text */
+    font-size: 0.9rem; /* Reduced label text size */
     cursor: pointer;
     color: var(--k-text-secondary);
-    display: flex; /* Align icon and text within label */
+    display: flex;
     align-items: center;
 }
 .radio-group label i.ti, .checkbox-group label i.ti {
-    margin-right: 0.5rem;
-    color: var(--k-text-secondary); /* Default icon color in label */
+    margin-right: 0.4rem; /* Reduced margin */
+    color: var(--k-text-secondary);
     transition: color 0.2s ease-in-out;
 }
 
@@ -711,53 +891,57 @@ label i.ti { /* Icons in labels */
 select#cuisine-style {
     appearance: none;
     -webkit-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FF6B6B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E'); /* Pop color for arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FF6B6B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
-    background-position: right 1.1rem center; /* Adjusted position */
-    background-size: 0.9em; /* Adjusted size */
-    padding-right: 3rem; /* More space for arrow */
+    background-position: right 0.9rem center; /* Adjusted position */
+    background-size: 0.8em; /* Adjusted size */
+    padding-right: 2.5rem; /* Reduced padding */
 }
+/* Dark mode select arrow might need a different color if FF6B6B (Coral Pink) is not visible */
+/* For now, keeping it the same. If an issue, replace the fill color in the SVG data URI. */
 
 fieldset {
-    border: 2px solid var(--k-primary-pop-2-lighter); /* Lighter pop color border for fieldset */
-    padding: 2rem 2.5rem; /* More padding */
-    border-radius: 12px; /* Match card radius */
-    margin-bottom: 2.5rem;
+    border: 2px solid var(--k-primary-pop-2-lighter);
+    padding: 1.5rem 2rem; /* Reduced padding */
+    border-radius: 8px; /* Reduced radius */
+    margin-bottom: 2rem; /* Reduced margin */
     box-shadow: var(--shadow-soft);
 }
+body.dark-mode fieldset {
+    border-color: var(--dark-primary-pop-2-lighter);
+}
+
 
 /* Styling for the Generator Form for better horizontal layout */
 #generator-form {
     display: flex;
-    flex-direction: column; /* Main direction is column */
-    gap: 2rem; /* Overall gap between main sections of the form */
+    flex-direction: column;
+    gap: 1.5rem; /* Reduced gap */
 }
 
-#generator-form .form-group-inline, /* Portionen */
-#generator-form .generator-filter-grid { /* Container for Spezielle Eigenschaften */
-    width: 100%; /* Take full width within the column flow */
+#generator-form .form-group-inline,
+#generator-form .generator-filter-grid {
+    width: 100%;
 }
 
 /* Adjusting the generator-filter-grid for potentially single fieldset */
 .generator-filter-grid {
-    display: block; /* Change from grid to block if only one fieldset (Spezielle Eigenschaften) */
-    /* If it was intended to make the *contents* of Spezielle Eigenschaften horizontal, that's different.
-       The current structure has fieldset > div.checkbox-group-container.
-       Let's make the checkbox-group-container itself more row-oriented. */
-    margin-bottom: 1.5rem; /* Adjusted margin */
+    display: block;
+
+    margin-bottom: 1rem; /* Reduced margin */
 }
 
 /* Ensure Spezielle Eigenschaften (dynamic tags) flows horizontally if many tags */
 #dynamic-tags-checkboxes.checkbox-group-container {
-    display: flex; /* Make checkboxes flow in a row */
-    flex-wrap: wrap; /* Allow wrapping */
-    gap: 1rem; /* Gap between individual checkbox groups */
-    justify-content: flex-start; /* Align items to the start */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem; /* Reduced gap */
+    justify-content: flex-start;
 }
 
 #dynamic-tags-checkboxes .checkbox-group {
-    padding: 0.75rem 1rem; /* Slightly less padding for individual tag checkboxes if horizontal */
-    /* min-width: 150px; */ /* Remove min-width if we want them to be more compact horizontally */
+    padding: 0.6rem 0.8rem; /* Reduced padding */
+
 }
 
 
@@ -768,48 +952,55 @@ fieldset {
     gap: 2rem;
     margin-bottom: 2.5rem;
 } */
-.generator-filter-grid fieldset { /* This still applies to the fieldset within it */
+.generator-filter-grid fieldset {
     margin-bottom: 0;
 }
 
 /* Ensure the button has some top margin */
 .generator-submit-btn {
-    margin-top: 1.5rem;
-    align-self: flex-start; /* Align button to the left in the flex column */
+    margin-top: 1rem; /* Reduced margin */
+    align-self: flex-start;
 }
 
 
 fieldset legend {
-    color: var(--k-primary-pop-2); /* Pop color for legend */
-    font-weight: 700; /* Bolder legend */
-    padding: 0 1rem; /* More padding for legend */
-    font-size: 1.2rem; /* Larger legend text */
+    color: var(--k-primary-pop-2);
+    font-weight: 700;
+    padding: 0 0.75rem; /* Reduced padding */
+    font-size: 1.1rem; /* Reduced font size */
 }
 fieldset legend i.ti {
-    margin-right: 0.6rem;
+    margin-right: 0.5rem; /* Reduced margin */
 }
 /* textarea styles are now part of the general input/textarea block */
 /* textarea:focus - Handled by general textarea:focus */
 
 /* SHOPPING LIST - MINI CARDS */
 .shopping-list-category {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem; /* Reduced margin */
 }
 .shopping-list-category h3 {
-    color: var(--k-primary-pop-2); /* Vibrant color for category titles */
+    color: var(--k-primary-pop-2);
     border-bottom: 2px solid var(--k-primary-pop-2-lighter);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 1.6rem;
+    padding-bottom: 0.4rem; /* Reduced padding */
+    margin-bottom: 1rem; /* Reduced margin */
+    font-size: 1.4rem; /* Reduced font size */
+}
+body.dark-mode .shopping-list-category h3 {
+    color: var(--dark-primary-pop-2);
+    border-bottom-color: var(--dark-primary-pop-2-lighter);
 }
 .shopping-list-category h3 i.ti {
-    margin-right: 0.8rem;
+    margin-right: 0.6rem; /* Reduced margin */
     color: var(--k-primary-pop-2);
+}
+body.dark-mode .shopping-list-category h3 i.ti {
+    color: var(--dark-primary-pop-2);
 }
 
 .shopping-list-items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
@@ -818,11 +1009,15 @@ fieldset legend i.ti {
     border-radius: 12px;
     padding: 1.25rem;
     box-shadow: var(--shadow-medium);
-    border-left: 5px solid var(--k-accent-vibrant-yellow); /* Default accent border */
+    border-left: 5px solid var(--k-accent-vibrant-yellow);
     transition: all 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
-    position: relative; /* For absolute positioned icons */
+    position: relative;
+}
+body.dark-mode .shopping-list-item-card {
+    background-color: var(--dark-bg-card);
+    border-left-color: var(--k-accent-vibrant-yellow); /* Assuming yellow is visible, or use a dark-mode specific accent */
 }
 .shopping-list-item-card:hover {
     transform: translateY(-3px);
@@ -832,14 +1027,14 @@ fieldset legend i.ti {
 .item-card-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to top */
+    align-items: flex-start;
     margin-bottom: 0.75rem;
 }
 .item-card-header h4 {
     font-size: 1.15rem;
     font-weight: 600;
     color: var(--k-text-primary);
-    margin-right: 0.5rem; /* Space for icons */
+    margin-right: 0.5rem;
     line-height: 1.3;
 }
 .item-card-header .combined-icon {
@@ -848,22 +1043,28 @@ fieldset legend i.ti {
     margin-left: 0.3rem;
 }
 .item-card-header .have-at-home-icon {
-    color: var(--k-primary-pop-2); /* Green for "have at home" */
+    color: var(--k-primary-pop-2);
     font-size: 1.3em;
-    flex-shrink: 0; /* Prevent icon from shrinking */
+    flex-shrink: 0;
+}
+body.dark-mode .item-card-header .have-at-home-icon {
+    color: var(--dark-primary-pop-2);
 }
 
 .item-card-body .total-quantity {
     font-size: 1rem;
     font-weight: 500;
     color: var(--k-text-secondary);
-    display: flex; /* Align icon and text */
+    display: flex;
     align-items: center;
     margin-bottom: 0.75rem;
 }
 .item-card-body .total-quantity i.ti {
-    color: var(--k-primary-pop-1); /* Pop color for quantity icon */
+    color: var(--k-primary-pop-1);
     margin-right: 0.5rem;
+}
+body.dark-mode .item-card-body .total-quantity i.ti {
+    color: var(--dark-primary-pop-1);
 }
 
 .shopping-list-item-card .source-list {
@@ -872,6 +1073,9 @@ fieldset legend i.ti {
     margin-top: 0.75rem;
     border-top: 1px solid var(--k-border-light);
     font-size: 0.85rem;
+}
+body.dark-mode .shopping-list-item-card .source-list {
+    border-top-color: var(--dark-border-light);
 }
 .shopping-list-item-card .source-list li {
     color: var(--k-text-secondary);
@@ -887,21 +1091,28 @@ fieldset legend i.ti {
 
 /* Styling for "Have at Home" items */
 .shopping-list-item-card.have-at-home {
-    border-left-color: var(--k-primary-pop-2); /* Green accent for "have at home" */
-    background-color: var(--k-primary-pop-2-lighter); /* Light green background */
+    border-left-color: var(--k-primary-pop-2);
+    background-color: var(--k-primary-pop-2-lighter);
+}
+body.dark-mode .shopping-list-item-card.have-at-home {
+    border-left-color: var(--dark-primary-pop-2);
+    background-color: var(--dark-primary-pop-2-lighter);
 }
 .shopping-list-item-card.have-at-home .item-card-header h4 {
-    /* color: var(--k-text-primary); */ /* Keep primary text color or make it slightly darker if needed */
+
 }
 .shopping-list-item-card.have-at-home .total-quantity i.ti {
-    color: var(--k-primary-pop-2-darker); /* Darker green for quantity icon */
+    color: var(--k-primary-pop-2-darker);
+}
+body.dark-mode .shopping-list-item-card.have-at-home .total-quantity i.ti {
+    color: var(--dark-primary-pop-2-darker);
 }
 
 
 /* MODAL, FOOTER, etc. - VIBRANT STYLING */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: var(--k-bg-overlay); /* Already updated to neutral dark */
+    background-color: var(--k-bg-overlay);
     display: flex; justify-content: center; align-items: center;
     z-index: 2000;
     opacity: 0; visibility: hidden;
@@ -911,15 +1122,19 @@ fieldset legend i.ti {
 
 .modal-content {
     background-color: var(--k-bg-card);
-    padding: 2rem; /* Adjusted padding */
-    border-radius: 12px; /* Softer radius */
-    box-shadow: var(--shadow-strong); /* Use strong shadow for modal pop */
-    width: 90%; max-width: 700px; /* Slightly narrower max-width */
-    max-height: 85vh; /* Adjusted max height */
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-strong);
+    width: 90%; max-width: 700px;
+    max-height: 85vh;
     overflow-y: auto;
     position: relative;
-    transform: scale(0.95) translateY(10px); /* Add slight Y offset for entry animation */
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother cubic-bezier */
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+body.dark-mode .modal-content {
+    background-color: var(--dark-bg-card);
+    /* box-shadow: 0 8px 25px rgba(0,0,0,0.4); */ /* Optional: stronger shadow for dark modal */
 }
 .modal-overlay:not(.hidden) .modal-content {
     transform: scale(1) translateY(0);
@@ -927,15 +1142,15 @@ fieldset legend i.ti {
 }
 .modal-close-btn {
     position: absolute;
-    top: 1rem; right: 1.25rem; /* Slightly more space */
-    background: var(--k-primary-pop-1); /* Pop color background */
-    color: var(--k-text-on-bright); /* White X */
+    top: 1rem; right: 1.25rem;
+    background: var(--k-primary-pop-1);
+    color: var(--k-text-on-bright);
     border: none;
-    font-size: 1.2rem; /* Smaller font size for X */
+    font-size: 1.2rem;
     line-height: 1;
-    width: 32px; /* Square button */
+    width: 32px;
     height: 32px;
-    border-radius: 50%; /* Circular button */
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -943,65 +1158,96 @@ fieldset legend i.ti {
     box-shadow: var(--shadow-medium);
     transition: background-color 0.2s, transform 0.2s;
 }
+body.dark-mode .modal-close-btn {
+    background: var(--dark-primary-pop-1);
+    color: var(--dark-text-on-bright); /* If pop color changes, text might need to adapt */
+}
 .modal-close-btn:hover {
     background-color: var(--k-primary-pop-1-darker);
-    transform: rotate(90deg) scale(1.1); /* Rotate and slightly scale on hover */
+    transform: rotate(90deg) scale(1.1);
+}
+body.dark-mode .modal-close-btn:hover {
+    background-color: var(--dark-primary-pop-1-darker);
 }
 
-#modal-body h2 { /* Recipe Title in Modal */
+#modal-body h2 {
     color: var(--k-primary-pop-1);
-    border-bottom: 3px solid var(--k-primary-pop-1-lighter); /* Pop color accent border */
+    border-bottom: 3px solid var(--k-primary-pop-1-lighter);
     padding-bottom: 0.8rem;
     margin-bottom: 1.75rem;
-    font-size: 2rem; /* Larger title */
-    text-align: center; /* Center title */
+    font-size: 2rem;
+    text-align: center;
 }
-#modal-body h2 i.ti { color: var(--k-primary-pop-1); } /* Icon matches title color */
+body.dark-mode #modal-body h2 {
+    color: var(--dark-primary-pop-1);
+    border-bottom-color: var(--dark-primary-pop-1-lighter);
+}
+#modal-body h2 i.ti { color: var(--k-primary-pop-1); }
+body.dark-mode #modal-body h2 i.ti { color: var(--dark-primary-pop-1); }
 
-#modal-body h3 { /* "Zutaten", "Anleitung" */
-    color: var(--k-primary-pop-2); /* Secondary pop color */
+#modal-body h3 {
+    color: var(--k-primary-pop-2);
     margin-top: 2rem;
     margin-bottom: 1rem;
-    font-size: 1.5rem; /* Larger subtitles */
-    border-left: 4px solid var(--k-primary-pop-2); /* Accent border */
+    font-size: 1.5rem;
+    border-left: 4px solid var(--k-primary-pop-2);
     padding-left: 0.75rem;
 }
-#modal-body h3 i.ti { color: var(--k-primary-pop-2); } /* Icon matches subtitle color */
+body.dark-mode #modal-body h3 {
+    color: var(--dark-primary-pop-2);
+    border-left-color: var(--dark-primary-pop-2);
+}
+#modal-body h3 i.ti { color: var(--k-primary-pop-2); }
+body.dark-mode #modal-body h3 i.ti { color: var(--dark-primary-pop-2); }
 
 #modal-body .ingredient-list, #modal-body .instructions-list { list-style: none; padding: 0; }
 
 #modal-body .ingredient-list li {
-    background-color: var(--k-primary-pop-1-lighter); /* Light pop color background */
+    background-color: var(--k-primary-pop-1-lighter);
     color: var(--k-text-primary);
-    padding: 0.85rem 1.25rem; /* More padding */
+    padding: 0.85rem 1.25rem;
     border-radius: 8px;
     margin-bottom: 0.6rem;
     display: flex;
     justify-content: space-between;
-    font-size: 1rem; /* Larger ingredient text */
+    font-size: 1rem;
     font-weight: 500;
     box-shadow: var(--shadow-soft);
     border-left: 4px solid var(--k-primary-pop-1);
 }
-#modal-body .ingredient-list li i.ti { color: var(--k-primary-pop-1); margin-right: 0.6rem; } /* Optional: icon for each ingredient */
+body.dark-mode #modal-body .ingredient-list li {
+    background-color: var(--dark-primary-pop-1-lighter);
+    color: var(--dark-text-primary); /* Ensure text is readable on dark lighter pop bg */
+    border-left-color: var(--dark-primary-pop-1);
+}
+#modal-body .ingredient-list li i.ti { color: var(--k-primary-pop-1); margin-right: 0.6rem; }
+body.dark-mode #modal-body .ingredient-list li i.ti { color: var(--dark-primary-pop-1); }
 
 #modal-body .instructions-list li {
-    padding: 0.8rem 0.25rem; /* More padding */
-    border-bottom: 1px solid var(--k-border-medium); /* Slightly darker border */
-    line-height: 1.7; /* More readable line height */
-    font-size: 1rem; /* Larger instruction text */
+    padding: 0.8rem 0.25rem;
+    border-bottom: 1px solid var(--k-border-medium);
+    line-height: 1.7;
+    font-size: 1rem;
     color: var(--k-text-secondary);
 }
-#modal-body .instructions-list li strong { color: var(--k-text-primary); } /* Emphasize step number */
+body.dark-mode #modal-body .instructions-list li {
+    border-bottom-color: var(--dark-border-medium);
+}
+#modal-body .instructions-list li strong { color: var(--k-text-primary); }
 #modal-body .instructions-list li:last-child { border-bottom: none; }
 
 footer {
     text-align: center;
-    padding: 1.5rem 1rem; /* More padding */
+    padding: 1.5rem 1rem;
     color: var(--k-text-secondary);
-    margin-top: 4rem; /* More space above footer */
-    background-color: var(--k-primary-pop-2-lighter); /* Light pop color background for footer */
-    border-top: 3px solid var(--k-primary-pop-2); /* Pop color top border */
+    margin-top: 4rem;
+    background-color: var(--k-primary-pop-2-lighter);
+    border-top: 3px solid var(--k-primary-pop-2);
+}
+body.dark-mode footer {
+    background-color: var(--dark-primary-pop-2-lighter);
+    border-top-color: var(--dark-primary-pop-2);
+    color: var(--dark-text-secondary);
 }
 footer .container {
     display: flex;
@@ -1020,8 +1266,8 @@ footer i.fa-heart {
 
 /* RESPONSIVE DESIGN - Reviewed and Refined for VIBRANT THEME */
 @media (max-width: 1024px) { /* Adding a new breakpoint for larger tablets / smaller desktops */
-    .main-layout { gap: 1.5rem; }
-    aside.main-nav { flex: 0 0 200px; padding-right: 1rem; } /* Make nav a bit narrower */
+    /* .main-layout { gap: 1.5rem; } */ /* No longer needed as aside is gone */
+    /* aside.main-nav { flex: 0 0 200px; padding-right: 1rem; } */ /* Removed */
     .container { padding: 1.5rem; } /* Adjust container padding */
     h1 { font-size: 2.25rem; }
     h2 { font-size: 1.75rem; }
@@ -1031,32 +1277,32 @@ footer i.fa-heart {
 }
 
 @media (max-width: 992px) { /* Tablet and below */
-    .main-layout {
-        flex-direction: column;
-        margin-top: 1.5rem;
-        gap: 1.5rem;
-    }
-    aside.main-nav {
-        position: static;
-        width: 100%;
-        margin-bottom: 1.5rem;
-        padding-right: 0;
-        top: auto;
-    }
-    .main-nav nav {
-        flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 0.5rem; /* Keep small gap for wrapped items */
-    }
-    .nav-item {
-        flex-grow: 1;
-        justify-content: center;
-        padding: 0.85rem 1rem; /* Adjusted padding for horizontal */
-        font-size: 1rem; /* Slightly smaller for horizontal layout if needed */
-    }
-    .nav-item i { margin-right: 0.6rem; font-size: 1em; }
+    /* .main-layout flex-direction is already column from previous CSS, gap is fine */
+    /* aside.main-nav styles are removed */
 
+    header .container {
+        flex-direction: column; /* Stack logo and nav vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+    #logo {
+        margin-bottom: 0.75rem; /* Space below logo when stacked */
+    }
+    #main-header-nav {
+        width: 100%; /* Make nav take full width */
+        justify-content: space-around; /* Distribute nav items */
+        flex-wrap: wrap; /* Allow nav items to wrap */
+        gap: 0.25rem; /* Smaller gap for wrapped items */
+    }
+    .nav-item { /* Adjust nav items for smaller screens / wrapping */
+        flex-grow: 1; /* Allow items to grow and fill space */
+        justify-content: center; /* Center text/icon within item */
+        font-size: 0.9rem; /* Slightly smaller font */
+        padding: 0.7rem 0.5rem; /* Adjust padding */
+    }
+    .nav-item i.ti {
+         margin-right: 0.4rem; /* Adjust icon margin */
+         font-size: 1em;
+    }
 
     .form-group-inline {
         flex-direction: column;
@@ -1082,9 +1328,8 @@ footer i.fa-heart {
     h3 { font-size: 1.5rem; } /* Adjusted */
     h4 { font-size: 1.15rem; }
 
-
-    .nav-item { font-size: 0.95rem; padding: 0.8rem; }
-    .nav-item i { margin-right: 0.5rem; }
+    /* .nav-item rules are now handled in the 992px breakpoint for #main-header-nav .nav-item */
+    /* .nav-item i rules are now handled in the 992px breakpoint for #main-header-nav .nav-item i.ti */
 
     .recipe-options { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
     .shopping-list-items-grid { grid-template-columns: 1fr; gap: 1rem; } /* Stack shopping list cards */
@@ -1143,16 +1388,25 @@ footer i.fa-heart {
     .day-container h3 { font-size: 1.5rem; } /* Day titles also larger */
 
 
-    .main-nav nav {
+    /* .main-nav nav styles are removed */
+    /* .nav-item styles for this breakpoint are handled by #main-header-nav .nav-item at 992px,
+       but we might want to make them stack vertically if header also stacks logo/nav earlier.
+       The current 992px rule already makes header container flex-direction: column.
+       And #main-header-nav becomes full width with items spaced out/wrapping.
+       If we want individual nav items to stack here, we'd target #main-header-nav itself.
+    */
+    #main-header-nav { /* If nav items should stack vertically on smallest screens */
         flex-direction: column;
-        gap: 0.85rem; /* More gap for stacked items */
+        align-items: stretch; /* Make nav items take full width */
+        gap: 0.5rem;
     }
-    .nav-item {
-        width: 100%;
-        justify-content: flex-start;
-        font-size: 1.05rem; /* Keep nav item text readable */
-        padding: 0.9rem 1.25rem;
+    #main-header-nav .nav-item {
+        width: 100%; /* Ensure full width when stacked */
+        justify-content: flex-start; /* Align text to left */
+        font-size: 1rem; /* Reset or adjust font size */
+        padding: 0.8rem 1rem; /* Adjust padding */
     }
+
 
     .recipe-card { padding: 1.25rem; } /* More padding in recipe cards */
     .recipe-card-image { height: 170px; }
@@ -1324,48 +1578,75 @@ hr.section-divider {
     background-color: var(--k-bg-light);
     border-radius: 8px;
 }
+body.dark-mode #empty-pantry-message {
+    background-color: var(--dark-bg-light); /* Or dark-bg-card if preferred */
+}
 #find-recipes-from-pantry-btn {
     margin-top: 1.5rem; /* Space above this button */
 }
 
-/* SHOPPING LIST CARD STYLES */
+/* SHOPPING LIST CARD STYLES - Also used by current-pantry-display items */
 .shopping-list-items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-    padding-top: 1rem; /* Add some padding above the cards */
+    padding-top: 1rem;
 }
 
-.shopping-list-item-card {
+.shopping-list-item-card, /* Applied to shopping list */
+#current-pantry-display li.pantry-list-item /* Applied to pantry items */ {
     background-color: var(--k-bg-card);
     border-radius: 12px;
     padding: 1.25rem;
     box-shadow: var(--shadow-medium);
-    border-left: 5px solid var(--k-accent-vibrant-blue); /* Default accent border */
+    /* border-left was specific to shopping list item, pantry has its own */
     transition: all 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
 }
+/* pantry-list-item specific border already exists, shopping list specific below */
+.shopping-list-item-card {
+    border-left: 5px solid var(--k-accent-vibrant-blue);
+    position: relative; /* For absolute positioned icons in shopping list items */
+}
+body.dark-mode .shopping-list-item-card,
+body.dark-mode #current-pantry-display li.pantry-list-item {
+    background-color: var(--dark-bg-card);
+    /* border-left-color for shopping list might need adjustment if accent blue is not good on dark */
+}
+body.dark-mode .shopping-list-item-card {
+    border-left-color: var(--k-accent-vibrant-blue); /* Re-assert or change for dark mode */
+}
+/* pantry-list-item specific border in dark mode */
+body.dark-mode #current-pantry-display li.pantry-list-item {
+    border-left-color: var(--dark-primary-pop-2); /* Use dark pop 2 for pantry items */
+}
+
+
 .shopping-list-item-card:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-strong);
 }
+/* No hover for pantry list items for now, can be added if desired */
 
 .item-card-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to top */
-    margin-bottom: 1rem; /* Increased margin */
-    border-bottom: 1px solid var(--k-border-light); /* Separator */
-    padding-bottom: 0.75rem; /* Space for separator */
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--k-border-light);
+    padding-bottom: 0.75rem;
+}
+body.dark-mode .item-card-header {
+    border-bottom-color: var(--dark-border-light);
 }
 .item-card-header h4 {
-    font-size: 1.2rem; /* Slightly larger */
-    font-weight: 700; /* Bolder */
+    font-size: 1.2rem;
+    font-weight: 700;
     color: var(--k-text-primary);
-    margin-right: 0.5rem; /* Space for icons */
+    margin-right: 0.5rem;
     line-height: 1.3;
-    flex-grow: 1; /* Allow h4 to take available space */
+    flex-grow: 1;
 }
 .item-card-header .combined-icon {
     color: var(--k-text-secondary);
@@ -1374,10 +1655,13 @@ hr.section-divider {
     vertical-align: middle;
 }
 .item-card-header .have-at-home-icon {
-    color: var(--k-primary-pop-2); /* Green for "have at home" */
-    font-size: 1.5em; /* Larger icon */
-    flex-shrink: 0; /* Prevent icon from shrinking */
+    color: var(--k-primary-pop-2);
+    font-size: 1.5em;
+    flex-shrink: 0;
     margin-left: 0.5rem;
+}
+body.dark-mode .item-card-header .have-at-home-icon {
+    color: var(--dark-primary-pop-2);
 }
 
 .item-card-body .unit-entry {
@@ -1388,25 +1672,32 @@ hr.section-divider {
 }
 
 .item-card-body .total-quantity {
-    font-size: 1.05rem; /* Slightly larger */
-    font-weight: 600; /* Bolder */
-    color: var(--k-text-primary); /* Primary text color */
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--k-text-primary);
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem; /* Space below quantity */
+    margin-bottom: 0.5rem;
 }
 .item-card-body .total-quantity i {
-    color: var(--k-primary-pop-1); /* Pop color for quantity icon */
-    margin-right: 0.6rem; /* More space for icon */
+    color: var(--k-primary-pop-1);
+    margin-right: 0.6rem;
     font-size: 1.1em;
 }
+body.dark-mode .item-card-body .total-quantity i {
+    color: var(--dark-primary-pop-1);
+}
+
 
 .shopping-list-item-card .source-list {
     list-style: none;
-    padding: 0.5rem 0 0 0; /* Reduced top padding */
-    margin-top: 0.5rem; /* Reduced top margin */
-    border-top: 1px dashed var(--k-border-medium); /* Dashed separator */
-    font-size: 0.9rem; /* Slightly larger */
+    padding: 0.5rem 0 0 0;
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--k-border-medium);
+    font-size: 0.9rem;
+}
+body.dark-mode .shopping-list-item-card .source-list {
+    border-top-color: var(--dark-border-medium);
 }
 .shopping-list-item-card .source-list li {
     color: var(--k-text-secondary);
@@ -1419,25 +1710,32 @@ hr.section-divider {
 }
 .shopping-list-item-card .source-list li i {
     font-size: 0.9em;
-    margin-right: 0.5rem; /* More space */
+    margin-right: 0.5rem;
     color: var(--k-text-secondary);
-    width: 16px; /* Align icons */
+    width: 16px;
     text-align: center;
 }
 
 /* Styling for "Have at Home" items */
 .shopping-list-item-card.have-at-home {
-    border-left-color: var(--k-primary-pop-2); /* Green accent for "have at home" */
-    background-color: var(--k-primary-pop-2-lighter); /* Light green background */
+    border-left-color: var(--k-primary-pop-2);
+    background-color: var(--k-primary-pop-2-lighter);
+}
+body.dark-mode .shopping-list-item-card.have-at-home {
+    border-left-color: var(--dark-primary-pop-2);
+    background-color: var(--dark-primary-pop-2-lighter);
 }
 .shopping-list-item-card.have-at-home .item-card-header h4 {
-     /* Keep primary text color or adjust if needed */
+
 }
 .shopping-list-item-card.have-at-home .total-quantity i {
-    color: var(--k-primary-pop-2-darker); /* Darker green for quantity icon */
+    color: var(--k-primary-pop-2-darker);
+}
+body.dark-mode .shopping-list-item-card.have-at-home .total-quantity i {
+    color: var(--dark-primary-pop-2-darker);
 }
 .shopping-list-item-card.have-at-home .item-card-header .have-at-home-icon {
-    /* Icon color already set, but can be overridden if needed */
+
 }
 
 /* Responsive adjustments for shopping list cards if needed */
