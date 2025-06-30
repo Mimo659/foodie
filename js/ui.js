@@ -169,14 +169,45 @@ const ui = (() => {
             if (isLoading) { button.disabled = true; button.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generiere...`; } 
             else { button.disabled = false; button.innerHTML = originalHtml; }
         },
-        renderShoppingList: (list) => {
+        renderShoppingList: (categorizedList) => {
             const container = document.getElementById('shopping-list-container');
             const noList = document.getElementById('no-shopping-list');
-            if (list.length > 0) {
-                container.innerHTML = list.map(item => `<li class="${item.haveAtHome ? 'have-at-home' : ''}"><span>${item.name}</span><div><span class="unit">${item.quantity} ${item.unit}</span>${item.haveAtHome ? '<span class="status"> (Zuhause)</span>' : ''}</div></li>`).join('');
-                container.classList.remove('hidden'); noList.classList.add('hidden');
+            container.innerHTML = ''; // Clear previous content
+
+            if (categorizedList && categorizedList.length > 0) {
+                let htmlContent = '';
+                categorizedList.forEach(category => {
+                    if (category.items && category.items.length > 0) {
+                        htmlContent += `<div class="shopping-list-category">`;
+                        htmlContent += `<h3>${category.categoryName}</h3>`;
+                        htmlContent += `<ul class="list-unstyled">`; // Use list-unstyled for Bootstrap if available, or style manually
+                        category.items.forEach(item => {
+                            const haveAtHomeClass = item.haveAtHome ? 'have-at-home' : '';
+                            const atHomeStatus = item.haveAtHome ? '<span class="status"> (Zuhause)</span>' : '';
+                            // Use item.originalString for display to keep details like "(Größe M)"
+                            // item.name is the parsed name used for logic.
+                            const combinedIcon = item.combined ? ' <i class="fa-solid fa-layer-group" title="Zusammengefasst aus mehreren Rezepten"></i>' : '';
+
+                            // Round quantity to a reasonable number of decimal places if it's a float
+                            const displayQuantity = Number.isInteger(item.quantity) ? item.quantity : parseFloat(item.quantity).toFixed(2);
+
+                            htmlContent += `<li class="${haveAtHomeClass}">
+                                                <span>${item.originalString}${combinedIcon}</span>
+                                                <div>
+                                                    <span class="unit">${displayQuantity} ${item.unit}</span>
+                                                    ${atHomeStatus}
+                                                </div>
+                                            </li>`;
+                        });
+                        htmlContent += `</ul></div>`;
+                    }
+                });
+                container.innerHTML = htmlContent;
+                container.classList.remove('hidden');
+                noList.classList.add('hidden');
             } else {
-                container.classList.add('hidden'); noList.classList.remove('hidden');
+                container.classList.add('hidden');
+                noList.classList.remove('hidden');
             }
         }
     };
