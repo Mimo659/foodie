@@ -426,15 +426,53 @@ body.dark-mode #dashboard-view .card { background-color: transparent; border: no
 .recipe-options-for-day {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 1.5rem; /* Gap between cards */
-    margin-bottom: 1.5rem; /* Space below each day's options container */
+    gap: 1rem; /* Slightly reduced gap for a tighter look */
+    margin-bottom: 1rem; /* Space below each day's options container */
 }
 
 /* Wrapper for each recipe card (which includes the hidden radio) */
 .recipe-option-wrapper {
-    display: flex;
-    flex-direction: column; /* Ensure card takes up the space */
+    display: flex; /* Allows recipe card to fill the wrapper */
+    flex-direction: column;
+    position: relative; /* For potential future absolute positioning within wrapper if needed */
 }
+
+/* Ensure recipe card within the option wrapper behaves well in a flex/grid item */
+.recipe-option-wrapper .recipe-card {
+    flex-grow: 1; /* Make card expand to fill wrapper height if wrappers are equalized by grid */
+    /* The existing .recipe-card styles for border, padding, etc., will apply. */
+    /* The .selected-by-radio class will override border and add transform. */
+}
+
+/* Styling for the new informational text about the selected recipe */
+.selected-option-info {
+    font-size: 0.85em;
+    text-align: center;
+    color: var(--k-text-secondary);
+    margin-top: 0.75rem; /* Space above this text */
+    padding: 0.5rem;
+    background-color: var(--k-primary-pop-2-lighter); /* Subtle background */
+    border-radius: 4px;
+    border: 1px solid var(--k-primary-pop-2);
+}
+
+body.dark-mode .selected-option-info {
+    color: var(--dark-text-secondary);
+    background-color: var(--dark-primary-pop-2-lighter);
+    border-color: var(--dark-primary-pop-2);
+}
+
+
+/* Responsive adjustments for recipe options in generator */
+@media (max-width: 768px) { /* Smaller tablets / large phones */
+    .recipe-options-for-day {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Allow more flexible wrapping */
+        gap: 0.75rem;
+    }
+}
+
+/* The media query for 576px already handles .recipe-options-for-day stacking to 1fr */
+
 
 .recipe-card { /* Individual recipe card - general styling */
     background: var(--k-bg-card);
@@ -959,7 +997,7 @@ body.dark-mode fieldset {
 /* Adjusting the generator-filter-grid for potentially single fieldset */
 .generator-filter-grid {
     display: block;
-
+    /* Removed grid-template-columns if it's not a grid of fieldsets anymore */
     margin-bottom: 1rem; /* Reduced margin */
 }
 
@@ -1443,7 +1481,10 @@ footer i.fa-heart {
     }
 
     /* On mobile phones, stack recipe options for a day */
-    .recipe-options-for-day { grid-template-columns: 1fr; gap: 1rem; }
+    .recipe-options-for-day {
+        grid-template-columns: 1fr; /* Single column */
+        gap: 1rem;
+    }
 
     .recipe-card { padding: 1.25rem; } /* More padding in recipe cards */
     .recipe-card-image { height: 170px; }

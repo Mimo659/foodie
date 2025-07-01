@@ -382,87 +382,69 @@ export const renderDailyOptionsInGeneratorView = (plan, onInfoClick, onSelectRec
             dayTitle.textContent = dayObject.day;
             dayCard.appendChild(dayTitle);
 
-            if (dayObject.selected) {
-                const recipeCard = createRecipeCardElement(dayObject.selected, onInfoClick);
-                recipeCard.classList.add('confirmed-selection');
-                // Add a little note or change styling to allow unselecting or changing
-                const changeText = document.createElement('p');
-                changeText.innerHTML = 'Ausgewählt. Wähle eine andere Option, um zu wechseln.';
-                changeText.style.fontSize = '0.8em';
-                changeText.style.textAlign = 'center';
-                dayCard.appendChild(recipeCard);
-                dayCard.appendChild(changeText);
-
-                // Still show options to allow changing selection
+            if (dayObject.options && dayObject.options.length > 0) {
                 const optionsContainer = document.createElement('div');
-                optionsContainer.className = 'recipe-options-for-day';
+                optionsContainer.className = 'recipe-options-for-day'; // This class should define a stable grid or flex layout
+
                 dayObject.options.forEach((recipeOption, optionIndex) => {
                     const optionWrapper = document.createElement('div');
-                    optionWrapper.className = 'recipe-option-wrapper';
+                    optionWrapper.className = 'recipe-option-wrapper'; // Wrapper for radio and card
+
                     const recipeCardInstance = createRecipeCardElement(recipeOption, onInfoClick);
-                    const radioButton = document.createElement('input');
-                    radioButton.type = 'radio';
-                    radioButton.name = `gen-day-${dayIndex}-selection`;
-                    radioButton.value = recipeOption.id;
-                    radioButton.dataset.recipeIndex = optionIndex;
-                    radioButton.className = 'recipe-select-radio-generator'; // Different class for specific handler
-                    if (dayObject.selected && dayObject.selected.id === recipeOption.id) {
-                        radioButton.checked = true;
-                    }
-                    optionWrapper.appendChild(radioButton);
-                    optionWrapper.appendChild(recipeCardInstance);
-                    optionsContainer.appendChild(optionWrapper);
-                });
-                dayCard.appendChild(optionsContainer);
-
-            } else if (dayObject.options && dayObject.options.length > 0) {
-                const optionsContainer = document.createElement('div');
-                optionsContainer.className = 'recipe-options-for-day';
-                dayObject.options.forEach((recipeOption, optionIndex) => {
-                    const optionWrapper = document.createElement('div');
-                    optionWrapper.className = 'recipe-option-wrapper';
-                    const recipeCardInstance = createRecipeCardElement(recipeOption, onInfoClick); // Corrected variable name
                     const radioButton = document.createElement('input');
                     radioButton.type = 'radio';
                     radioButton.name = `gen-day-${dayIndex}-selection`; // Unique name for radio group per day
                     radioButton.value = recipeOption.id;
-                    radioButton.dataset.recipeIndex = optionIndex;
-                    radioButton.className = 'recipe-select-radio-generator visually-hidden-radio'; // Added class to hide radio
-                    // Check if this option is the selected one
+                    radioButton.dataset.recipeIndex = optionIndex; // Store option index for logic if needed
+                    radioButton.className = 'recipe-select-radio-generator visually-hidden-radio'; // Hide actual radio
+
+                    // Check if this option is the currently selected one for the day
                     if (dayObject.selected && dayObject.selected.id === recipeOption.id) {
                         radioButton.checked = true;
-                        recipeCardInstance.classList.add('selected-by-radio'); // Add class if selected
+                        recipeCardInstance.classList.add('selected-by-radio'); // Visual cue for selected card
                     }
 
+                    // Event listener on the card itself to act as the radio button label
                     recipeCardInstance.addEventListener('click', (e) => {
-                        // If the click is on the info button, let its own handler work
+                        // If the click is on the info button, let its own handler work and don't select
                         if (e.target.closest('.btn-info')) {
                             return;
                         }
                         e.stopPropagation(); // Prevent other click listeners if any
 
-                        // Unselect other cards visually for this day
-                        const allRadioSelectedCards = optionsContainer.querySelectorAll('.recipe-card.selected-by-radio');
-                        if(allRadioSelectedCards) {
-                            allRadioSelectedCards.forEach(card => {
-                                card.classList.remove('selected-by-radio');
-                            });
-                        }
-                        // Select current card visually
+                        // Visually unselect all other cards in this day's options
+                        const allCardsInGroup = optionsContainer.querySelectorAll('.recipe-card');
+                        allCardsInGroup.forEach(card => card.classList.remove('selected-by-radio'));
+
+                        // Visually select the clicked card
                         recipeCardInstance.classList.add('selected-by-radio');
 
-                        // Check the hidden radio button
+                        // Programmatically check the hidden radio button
                         radioButton.checked = true;
-                        // Manually trigger change event on radio button
-                        const event = new Event('change', { bubbles: true });
-                        radioButton.dispatchEvent(event);
+
+                        // Manually trigger a 'change' event on the radio button
+                        // This is crucial for the event listener in generatorView.js to pick up the change
+                        const changeEvent = new Event('change', { bubbles: true });
+                        radioButton.dispatchEvent(changeEvent);
                     });
 
-                    optionWrapper.appendChild(radioButton); // Keep radio for logic, but hide with CSS
-                    optionWrapper.appendChild(recipeCardInstance);
+                    optionWrapper.appendChild(radioButton); // Radio first (though hidden)
+                    optionWrapper.appendChild(recipeCardInstance); // Then the card
                     optionsContainer.appendChild(optionWrapper);
                 });
                 dayCard.appendChild(optionsContainer);
+
+                // Add a message if a recipe is selected
+                if (dayObject.selected) {
+                    const selectedInfoText = document.createElement('p');
+                    selectedInfoText.className = 'selected-option-info'; // For styling
+                    selectedInfoText.innerHTML = `Ausgewählt: <strong>${dayObject.selected.title}</strong>. Wähle eine andere Option, um zu wechseln.`;
+                    selectedInfoText.style.fontSize = '0.9em';
+                    selectedInfoText.style.textAlign = 'center';
+                    selectedInfoText.style.marginTop = '0.5rem'; // Add some space
+                    dayCard.appendChild(selectedInfoText);
+                }
+
             } else {
                 const noOptionsMsg = document.createElement('p');
                 noOptionsMsg.textContent = "Keine Rezeptoptionen für diesen Tag verfügbar.";
