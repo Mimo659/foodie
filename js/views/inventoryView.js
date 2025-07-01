@@ -1,5 +1,5 @@
 import * as ui from '../ui.js';
-import *ాలు from '../store.js';
+import * as store from '../store.js';
 import { findAlmostCompleteRecipes } from '../logic.js';
 // PANTRY_CATEGORIES and ALL_RECIPES will be needed. These should be passed in or loaded.
 // For now, they will be populated by an init function.
