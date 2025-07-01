@@ -148,7 +148,7 @@ function hideConfirmNewPlanModal() {
 export function initGeneratorView(allRecipes, callbacks) {
     ALL_RECIPES_DATA = allRecipes;
     currentWeeklyPlan = null; // Reset any previously generated plan in this view
-    currentlySelectedSingleRecipe = null;
+    // currentlySelectedSingleRecipe = null; // Removed - This variable belongs to randomRecipeView
 
     if (generatorForm) {
         generatorForm.addEventListener('submit', handleGeneratorFormSubmit);
