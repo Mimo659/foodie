@@ -120,7 +120,25 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="pantry-item-unit">Einheit</label>
-                                    <input type="text" id="pantry-item-unit" placeholder="z.B. Stk, g, L">
+                                    <select id="pantry-item-unit">
+                                        <option value="Stk." selected>Stk.</option>
+                                        <option value="g">g</option>
+                                        <option value="kg">kg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="L">L</option>
+                                        <option value="Pck.">Pck.</option>
+                                        <option value="Bund">Bund</option>
+                                        <option value="Prise">Prise</option>
+                                        <option value="EL">EL</option>
+                                        <option value="TL">TL</option>
+                                        <option value="Scheibe(n)">Scheibe(n)</option>
+                                        <option value="Dose(n)">Dose(n)</option>
+                                        <option value="Glas">Glas</option>
+                                        <option value="Flasche(n)">Flasche(n)</option>
+                                        <option value="Zehe(n)">Zehe(n)</option>
+                                        <option value="Handvoll">Handvoll</option>
+                                        <!-- Add more common units as needed -->
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="pantry-item-expiration">Haltbar bis (optional)</label>
@@ -161,6 +179,9 @@
                 <section id="shopping-list-view" class="view hidden">
                     <div class="card">
                         <h2><i class="ti ti-shopping-bag"></i> Deine Einkaufsliste</h2>
+                        <button id="export-shopping-list-btn" class="btn-secondary" style="margin-bottom: 1rem;">
+                            <i class="ti ti-clipboard-text"></i> In Zwischenablage kopieren
+                        </button>
                         <ul id="shopping-list-container"></ul>
                          <p id="no-shopping-list" class="hidden">Erstelle und bestätige zuerst einen Wochenplan, um eine Einkaufsliste zu sehen.</p>
                     </div>
