@@ -106,82 +106,74 @@ const ui = (() => {
     
     return {
         populateTagFilters, // Expose the new function
-        renderDashboard: (plan, onInfoClick, onSelectRecipe) => { // Added onSelectRecipe callback
+        renderDashboard: (plan, onInfoClick) => { // onSelectRecipe callback removed
             const planDisplay = document.getElementById('plan-display');
             const noPlanDisplay = document.getElementById('no-plan-display');
             const weeklyPlanContainer = document.getElementById('weekly-plan-container');
             const planInstructions = document.querySelector('#plan-display .plan-instructions');
 
-            if (plan && plan.length > 0) {
+            if (plan && plan.length > 0 && plan.some(day => day.selected)) {
                 weeklyPlanContainer.innerHTML = '';
-                weeklyPlanContainer.className = 'daily-selection-container'; // New class for styling day blocks
+                // Using 'recipe-options' class for a grid of selected recipe cards, similar to original intent
+                weeklyPlanContainer.className = 'recipe-options dashboard-plan-grid';
 
-                plan.forEach((dayObject, dayIndex) => {
-                    const dayCard = document.createElement('div');
-                    dayCard.className = 'day-selection-card';
-                    dayCard.dataset.dayIndex = dayIndex;
-
-                    const dayTitle = document.createElement('h3');
-                    dayTitle.textContent = dayObject.day;
-                    dayCard.appendChild(dayTitle);
-
+                let hasRenderedSelectedDay = false;
+                plan.forEach((dayObject) => {
                     if (dayObject.selected) {
-                        // If a recipe is already selected for the day, display it
+                        hasRenderedSelectedDay = true;
+                        const dayContainer = document.createElement('div');
+                        dayContainer.className = 'dashboard-recipe-wrapper'; // Wrapper for title + card
+
+                        const titleElement = document.createElement('h4');
+                        titleElement.textContent = dayObject.day;
+                        titleElement.style.marginBottom = '0.5rem';
+                        titleElement.style.textAlign = 'center';
+
                         const recipeCard = createRecipeCardElement(dayObject.selected, onInfoClick);
-                        // Add a visual cue that it's selected, or style it as "confirmed" for this day
-                        recipeCard.classList.add('confirmed-selection');
-                        dayCard.appendChild(recipeCard);
-                    } else if (dayObject.options && dayObject.options.length > 0) {
-                        // If no recipe selected, display options
-                        const optionsContainer = document.createElement('div');
-                        optionsContainer.className = 'recipe-options-for-day'; // Grid for two options
+                        recipeCard.classList.add('confirmed-selection'); // Ensure it looks confirmed
 
-                        dayObject.options.forEach((recipeOption, optionIndex) => {
-                            const optionWrapper = document.createElement('div');
-                            optionWrapper.className = 'recipe-option-wrapper';
-
-                            const recipeCard = createRecipeCardElement(recipeOption, onInfoClick);
-
-                            const radioButton = document.createElement('input');
-                            radioButton.type = 'radio';
-                            radioButton.name = `day-${dayIndex}-selection`;
-                            radioButton.value = recipeOption.id; // Use recipe ID as value
-                            radioButton.dataset.recipeIndex = optionIndex; // Store option index if needed by handler
-                            radioButton.className = 'recipe-select-radio';
-                            // The onSelectRecipe callback will be attached in app.js via event delegation
-
-                            optionWrapper.appendChild(radioButton);
-                            optionWrapper.appendChild(recipeCard);
-                            optionsContainer.appendChild(optionWrapper);
-                        });
-                        dayCard.appendChild(optionsContainer);
-                    } else {
-                        // No options available for this day (should ideally not happen if plan generated correctly)
-                        const noOptionsMsg = document.createElement('p');
-                        noOptionsMsg.textContent = "Keine Rezeptoptionen für diesen Tag verfügbar.";
-                        dayCard.appendChild(noOptionsMsg);
+                        dayContainer.appendChild(titleElement);
+                        dayContainer.appendChild(recipeCard);
+                        weeklyPlanContainer.appendChild(dayContainer);
                     }
-                    weeklyPlanContainer.appendChild(dayCard);
+                    // If dayObject.selected is null, we simply don't render anything for that day on the dashboard.
+                    // The dashboard is for viewing the *confirmed* plan.
                 });
 
-                if (planDisplay) {
-                    planDisplay.classList.remove('hidden');
-                    planDisplay.style.display = '';
-                }
-                if (noPlanDisplay) {
-                    noPlanDisplay.classList.add('hidden');
-                    noPlanDisplay.style.display = 'none';
-                }
-
-                if (planInstructions) {
-                    const allDaysSelected = plan.every(day => day.selected);
-                    if (allDaysSelected) {
-                        planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.";
-                    } else {
-                        planInstructions.textContent = "Wähle für jeden Tag ein Gericht aus, um deinen Plan zu finalisieren.";
+                if (hasRenderedSelectedDay) {
+                    if (planDisplay) {
+                        planDisplay.classList.remove('hidden');
+                        planDisplay.style.display = '';
+                    }
+                    if (noPlanDisplay) {
+                        noPlanDisplay.classList.add('hidden');
+                        noPlanDisplay.style.display = 'none';
+                    }
+                    if (planInstructions) {
+                        // Check if ALL days in the original plan structure have a selection.
+                        // This is important for plans that might be shorter than 7 days.
+                        const allDaysInPlanSelected = plan.every(day => day.selected);
+                        if (allDaysInPlanSelected) {
+                            planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.";
+                        } else {
+                            // This state should ideally not be reached if coming from the new generator flow,
+                            // as that requires all selections before confirming to dashboard.
+                            // However, could be relevant for partially selected plans from older storage.
+                            planInstructions.textContent = "Dein Plan ist teilweise ausgewählt. Gehe zu 'Plan erstellen' um ihn zu vervollständigen oder anzupassen.";
+                        }
+                    }
+                } else {
+                     // This means a plan structure exists, but nothing is selected (e.g. old plan from storage)
+                    if (planDisplay) {
+                        planDisplay.classList.add('hidden');
+                        planDisplay.style.display = 'none';
+                    }
+                    if (noPlanDisplay) {
+                        noPlanDisplay.classList.remove('hidden');
+                        noPlanDisplay.style.display = 'block';
                     }
                 }
-            } else { // No plan (plan is null or empty)
+            } else { // No plan, or plan exists but no recipes selected at all
                 if (planDisplay) {
                     planDisplay.classList.add('hidden');
                     planDisplay.style.display = 'none';
@@ -330,6 +322,99 @@ const ui = (() => {
                 container.classList.add('hidden');
                 if (noListMsg) noListMsg.classList.remove('hidden');
             }
+        },
+        renderDailyOptionsInGeneratorView: (plan, onInfoClick, onSelectRecipe) => {
+            const container = document.getElementById('daily-options-display-container');
+            if (!container) return;
+            container.innerHTML = ''; // Clear previous options
+
+            if (plan && plan.length > 0) {
+                container.className = 'daily-selection-container'; // Use same styling as dashboard had for options
+
+                plan.forEach((dayObject, dayIndex) => {
+                    const dayCard = document.createElement('div');
+                    dayCard.className = 'day-selection-card';
+                    dayCard.dataset.dayIndex = dayIndex;
+
+                    const dayTitle = document.createElement('h3');
+                    dayTitle.textContent = dayObject.day;
+                    dayCard.appendChild(dayTitle);
+
+                    if (dayObject.selected) {
+                        const recipeCard = createRecipeCardElement(dayObject.selected, onInfoClick);
+                        recipeCard.classList.add('confirmed-selection');
+                        // Add a little note or change styling to allow unselecting or changing
+                        const changeText = document.createElement('p');
+                        changeText.innerHTML = 'Ausgewählt. Wähle eine andere Option, um zu wechseln.';
+                        changeText.style.fontSize = '0.8em';
+                        changeText.style.textAlign = 'center';
+                        dayCard.appendChild(recipeCard);
+                        dayCard.appendChild(changeText);
+
+                        // Still show options to allow changing selection
+                        const optionsContainer = document.createElement('div');
+                        optionsContainer.className = 'recipe-options-for-day';
+                        dayObject.options.forEach((recipeOption, optionIndex) => {
+                            const optionWrapper = document.createElement('div');
+                            optionWrapper.className = 'recipe-option-wrapper';
+                            const recipeCardInstance = createRecipeCardElement(recipeOption, onInfoClick);
+                            const radioButton = document.createElement('input');
+                            radioButton.type = 'radio';
+                            radioButton.name = `gen-day-${dayIndex}-selection`;
+                            radioButton.value = recipeOption.id;
+                            radioButton.dataset.recipeIndex = optionIndex;
+                            radioButton.className = 'recipe-select-radio-generator'; // Different class for specific handler
+                            if (dayObject.selected && dayObject.selected.id === recipeOption.id) {
+                                radioButton.checked = true;
+                            }
+                            optionWrapper.appendChild(radioButton);
+                            optionWrapper.appendChild(recipeCardInstance);
+                            optionsContainer.appendChild(optionWrapper);
+                        });
+                        dayCard.appendChild(optionsContainer);
+
+                    } else if (dayObject.options && dayObject.options.length > 0) {
+                        const optionsContainer = document.createElement('div');
+                        optionsContainer.className = 'recipe-options-for-day';
+                        dayObject.options.forEach((recipeOption, optionIndex) => {
+                            const optionWrapper = document.createElement('div');
+                            optionWrapper.className = 'recipe-option-wrapper';
+                            const recipeCardInstance = createRecipeCardElement(recipeOption, onInfoClick); // Corrected variable name
+                            const radioButton = document.createElement('input');
+                            radioButton.type = 'radio';
+                            radioButton.name = `gen-day-${dayIndex}-selection`; // Unique name for radio group per day
+                            radioButton.value = recipeOption.id;
+                            radioButton.dataset.recipeIndex = optionIndex;
+                            radioButton.className = 'recipe-select-radio-generator';
+                            // Check if this option is the selected one (it shouldn't be if dayObject.selected is null, but good for consistency)
+                            if (dayObject.selected && dayObject.selected.id === recipeOption.id) {
+                                radioButton.checked = true;
+                            }
+                            optionWrapper.appendChild(radioButton);
+                            optionWrapper.appendChild(recipeCardInstance); // Corrected variable name
+                            optionsContainer.appendChild(optionWrapper);
+                        });
+                        dayCard.appendChild(optionsContainer);
+                    } else {
+                        const noOptionsMsg = document.createElement('p');
+                        noOptionsMsg.textContent = "Keine Rezeptoptionen für diesen Tag verfügbar.";
+                        dayCard.appendChild(noOptionsMsg);
+                    }
+                    container.appendChild(dayCard);
+                });
+            } else {
+                container.innerHTML = '<p>Kein Plan zum Anzeigen der Optionen vorhanden.</p>';
+            }
+        },
+
+        updateGeneratorConfirmButtonState: (plan) => {
+            const btn = document.getElementById('confirm-generated-plan-btn');
+            if (!btn) return;
+            if (!plan || plan.length === 0) {
+                btn.disabled = true;
+                return;
+            }
+            btn.disabled = !plan.every(day => day.selected !== null && day.selected !== undefined);
         }
     };
 })();
