@@ -43,11 +43,13 @@
                             <h2><i class="ti ti-calendar-event"></i> Mein aktueller Wochenplan</h2>
                             <button id="delete-plan-btn" class="btn-danger"><i class="ti ti-trash-x"></i> Plan löschen</button>
                         </div>
-                        <p class="plan-instructions">Wähle für jeden Tag ein Gericht aus, um deinen Plan zu finalisieren.</p>
                         <div id="weekly-plan-container"></div>
-                        <button id="confirm-plan-btn" class="btn-confirm" disabled>
-                            <i class="ti ti-circle-check-filled"></i> Plan und Einkaufsliste erstellen
-                        </button>
+                        <div class="plan-confirmation-controls">
+                            <p class="plan-finished-text">Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.</p>
+                            <button id="confirm-plan-btn" class="btn-confirm" disabled>
+                                <i class="ti ti-circle-check-filled"></i> Einkaufsliste erstellen
+                            </button>
+                        </div>
                     </div>
                     <div id="no-plan-display">
                         <div class="empty-state-banner">

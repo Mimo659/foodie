@@ -125,9 +125,9 @@ export const renderDashboard = (plan, onInfoClick) => { // onSelectRecipe callba
     const planDisplay = document.getElementById('plan-display');
     const noPlanDisplay = document.getElementById('no-plan-display');
     const weeklyPlanContainer = document.getElementById('weekly-plan-container');
-    const planInstructions = planDisplay ? planDisplay.querySelector('.plan-instructions') : null;
+    // const planInstructions = planDisplay ? planDisplay.querySelector('.plan-instructions') : null; // Removed as element is gone
 
-    if (!planDisplay || !noPlanDisplay || !weeklyPlanContainer || !planInstructions) {
+    if (!planDisplay || !noPlanDisplay || !weeklyPlanContainer) { // Removed planInstructions from check
         console.error("Dashboard elements not found for rendering.");
         return;
     }
@@ -166,17 +166,19 @@ export const renderDashboard = (plan, onInfoClick) => { // onSelectRecipe callba
             noPlanDisplay.classList.add('hidden');
             noPlanDisplay.style.display = 'none';
 
-            // Check if ALL days in the original plan structure have a selection.
-            // This is important for plans that might be shorter than 7 days.
-            const allDaysInPlanSelected = plan.every(day => day.selected);
-            if (allDaysInPlanSelected) {
-                planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.";
-            } else {
-                // This state should ideally not be reached if coming from the new generator flow,
-                // as that requires all selections before confirming to dashboard.
-                // However, could be relevant for partially selected plans from older storage.
-                planInstructions.textContent = "Dein Plan ist teilweise ausgewählt. Gehe zu 'Plan erstellen' um ihn zu vervollständigen oder anzupassen.";
-            }
+            // The text "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen."
+            // is now static in the HTML within .plan-confirmation-controls.
+            // The conditional logic that changed planInstructions.textContent is no longer needed here
+            // for the "plan is ready" state.
+            // If a message for "partially selected plan" is still required,
+            // it would need a new UI element or a different way to be displayed.
+            // For this task, we are focusing on the "plan is ready" layout.
+            // const allDaysInPlanSelected = plan.every(day => day.selected);
+            // if (allDaysInPlanSelected) {
+            //     // planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen."; // Removed
+            // } else {
+            //     // planInstructions.textContent = "Dein Plan ist teilweise ausgewählt. Gehe zu 'Plan erstellen' um ihn zu vervollständigen oder anzupassen."; // Removed
+            // }
         } else {
              // This means a plan structure exists, but nothing is selected (e.g. old plan from storage)
             planDisplay.classList.add('hidden');
@@ -191,7 +193,7 @@ export const renderDashboard = (plan, onInfoClick) => { // onSelectRecipe callba
         noPlanDisplay.style.display = 'block';
         weeklyPlanContainer.innerHTML = '';
         weeklyPlanContainer.className = '';
-        planInstructions.textContent = "Erstelle zuerst einen Plan."; // Default message
+        // if (planInstructions) planInstructions.textContent = "Erstelle zuerst einen Plan."; // Default message - Removed
     }
 };
 
