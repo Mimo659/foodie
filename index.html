@@ -274,5 +274,33 @@
     -->
     <script type="module" src="js/app.js"></script>
 
+    <!-- Cooking Steps Modal -->
+    <div id="cooking-steps-modal" class="modal-overlay hidden">
+        <div class="modal-content cooking-steps-content">
+            <button class="modal-close-btn" aria-label="Schließen Kochschritte">×</button>
+            <h2>Kochanleitung</h2>
+            <ol id="cooking-steps-list" class="styled-list cooking-steps-ordered-list">
+                <!-- Steps will be populated by JavaScript -->
+                <!-- Example Step Structure (for reference):
+                <li class="cooking-step step-completed" data-step-index="0">
+                    <div class="step-text">Step 1: Do something.</div>
+                    <button class="btn btn-sm step-done-btn" disabled><i class="ti ti-check"></i> Erledigt</button>
+                </li>
+                <li class="cooking-step step-active" data-step-index="1">
+                    <div class="step-text">Step 2: Do something else. This is a longer instruction to see how text wraps and if the layout holds up with more content.</div>
+                    <button class="btn btn-sm step-done-btn"><i class="ti ti-player-play"></i> Als erledigt markieren</button>
+                </li>
+                <li class="cooking-step step-pending" data-step-index="2">
+                    <div class="step-text">Step 3: Finish up.</div>
+                    <button class="btn btn-sm step-done-btn" disabled><i class="ti ti-player-play"></i> Als erledigt markieren</button>
+                </li>
+                -->
+            </ol>
+            <div class="cooking-steps-finished hidden text-center mt-2">
+                <p><i class="ti ti-party"></i> Alle Schritte erledigt! Guten Appetit!</p>
+                <button class="btn btn-primary close-cooking-modal-btn mt-1">Schließen</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

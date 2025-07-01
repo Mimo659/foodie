@@ -41,6 +41,127 @@ function setupModalEventListeners() {
 
 export function initModal() { // Export a function to be called by app.js
     setupModalEventListeners();
+    setupCookingStepsModalEventListeners(); // Add setup for the new modal
+}
+
+// --- Cooking Steps Modal Logic ---
+const closeCookingStepsModal = () => {
+    const cookingModal = document.getElementById('cooking-steps-modal');
+    if (cookingModal) cookingModal.classList.add('hidden');
+};
+
+function updateStepStates(stepsList, currentStepIndex) {
+    const steps = stepsList.querySelectorAll('.cooking-step');
+    steps.forEach((step, index) => {
+        step.classList.remove('step-active', 'step-completed', 'step-pending');
+        const doneBtn = step.querySelector('.step-done-btn');
+
+        if (index < currentStepIndex) {
+            step.classList.add('step-completed');
+            if (doneBtn) {
+                doneBtn.innerHTML = '<i class="ti ti-check"></i> Erledigt';
+                doneBtn.disabled = true;
+            }
+        } else if (index === currentStepIndex) {
+            step.classList.add('step-active');
+            if (doneBtn) {
+                doneBtn.innerHTML = '<i class="ti ti-player-play"></i> Als erledigt markieren';
+                doneBtn.disabled = false;
+            }
+        } else {
+            step.classList.add('step-pending');
+            if (doneBtn) {
+                doneBtn.innerHTML = '<i class="ti ti-player-play"></i> Als erledigt markieren';
+                doneBtn.disabled = true;
+            }
+        }
+    });
+
+    const cookingStepsFinishedMessage = document.getElementById('cooking-steps-modal').querySelector('.cooking-steps-finished');
+    if (currentStepIndex >= steps.length) {
+        if (cookingStepsFinishedMessage) cookingStepsFinishedMessage.classList.remove('hidden');
+    } else {
+        if (cookingStepsFinishedMessage) cookingStepsFinishedMessage.classList.add('hidden');
+    }
+}
+
+export const openCookingStepsModal = (recipe) => {
+    const cookingModal = document.getElementById('cooking-steps-modal');
+    const stepsList = document.getElementById('cooking-steps-list');
+    const cookingStepsFinishedMessage = cookingModal.querySelector('.cooking-steps-finished');
+
+    if (!cookingModal || !stepsList || !cookingStepsFinishedMessage) {
+        console.error("Cooking steps modal elements not found.");
+        return;
+    }
+
+    stepsList.innerHTML = ''; // Clear previous steps
+    if (!recipe.instructions || recipe.instructions.length === 0) {
+        stepsList.innerHTML = '<li>Keine Kochanleitung verfügbar.</li>';
+        cookingModal.classList.remove('hidden');
+        return;
+    }
+
+    recipe.instructions.forEach((instruction, index) => {
+        const stepLi = document.createElement('li');
+        stepLi.className = 'cooking-step'; // Initial state will be set by updateStepStates
+        stepLi.dataset.stepIndex = index;
+
+        const stepTextDiv = document.createElement('div');
+        stepTextDiv.className = 'step-text';
+        stepTextDiv.textContent = instruction;
+
+        const stepDoneButton = document.createElement('button');
+        stepDoneButton.className = 'btn btn-sm step-done-btn';
+        // Icon and text will be set by updateStepStates
+
+        stepLi.appendChild(stepTextDiv);
+        stepLi.appendChild(stepDoneButton);
+        stepsList.appendChild(stepLi);
+    });
+
+    updateStepStates(stepsList, 0); // Initialize with the first step active
+    cookingModal.classList.remove('hidden');
+};
+
+function setupCookingStepsModalEventListeners() {
+    const cookingModal = document.getElementById('cooking-steps-modal');
+    const stepsList = document.getElementById('cooking-steps-list');
+    const closeBtnMain = cookingModal ? cookingModal.querySelector('.modal-close-btn') : null;
+    const closeBtnFinished = cookingModal ? cookingModal.querySelector('.close-cooking-modal-btn') : null;
+
+    if (closeBtnMain) {
+        closeBtnMain.addEventListener('click', closeCookingStepsModal);
+    }
+    if (closeBtnFinished) {
+        closeBtnFinished.addEventListener('click', closeCookingStepsModal);
+    }
+    if (cookingModal) {
+        cookingModal.addEventListener('click', (e) => {
+            if (e.target === cookingModal) {
+                closeCookingStepsModal();
+            }
+        });
+    }
+    // Event listener for Esc key to close cooking steps modal
+    document.addEventListener('keydown', (e) => {
+        if (cookingModal && !cookingModal.classList.contains('hidden') && e.key === "Escape") {
+            closeCookingStepsModal();
+        }
+    });
+
+    if (stepsList) {
+        stepsList.addEventListener('click', (e) => {
+            const doneBtn = e.target.closest('.step-done-btn');
+            if (doneBtn) {
+                const stepLi = doneBtn.closest('.cooking-step');
+                if (stepLi && stepLi.classList.contains('step-active')) {
+                    const currentStepIndex = parseInt(stepLi.dataset.stepIndex, 10);
+                    updateStepStates(stepsList, currentStepIndex + 1);
+                }
+            }
+        });
+    }
 }
 
 
@@ -149,9 +270,22 @@ export const openRecipeModal = (recipe) => {
             </div>` : ''}
 
             <div class="recipe-detail-actions">
-                <button class="btn btn-primary btn-lg"><i class="ti ti-chef-hat"></i> Rezept kochen!</button>
+                <button class="btn btn-primary btn-lg cook-recipe-btn"><i class="ti ti-chef-hat"></i> Rezept kochen!</button>
             </div>
         </div>`;
+
+    // Attach event listener for the "Rezept kochen!" button
+    const cookRecipeBtn = modalBody.querySelector('.cook-recipe-btn');
+    if (cookRecipeBtn) {
+        // Remove old listener if any to prevent multiple attachments
+        cookRecipeBtn.replaceWith(cookRecipeBtn.cloneNode(true));
+        modalBody.querySelector('.cook-recipe-btn').addEventListener('click', () => {
+            openCookingStepsModal(recipe);
+            // Optionally close the main recipe modal:
+            // closeModal();
+        });
+    }
+
     modal.classList.remove('hidden');
 };
 
