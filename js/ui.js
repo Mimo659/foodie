@@ -201,6 +201,29 @@ const ui = (() => {
             placeholder.textContent = 'Gib Zutaten in deinen Vorrat ein, um Rezeptvorschläge zu sehen, oder lösche die aktuelle Ansicht.';
             container.appendChild(placeholder);
         },
+        renderSuggestedRecipes: (recipes, onSelectSuggestedRecipe, onInfoClick) => {
+            const container = document.getElementById('suggested-recipes-container');
+            if (!container) return;
+            container.innerHTML = ''; // Clear previous suggestions
+
+            if (recipes && recipes.length > 0) {
+                recipes.forEach(recipe => {
+                    const card = createRecipeCardElement(recipe, onInfoClick); // Reuse existing card creator
+                    card.dataset.recipeId = recipe.id; // Store recipe ID for selection
+                    card.classList.add('suggested-recipe-card'); // Add a class for specific styling or selection logic
+
+                    card.addEventListener('click', (e) => {
+                        // Handle visual selection: remove 'selected' from other suggested cards
+                        container.querySelectorAll('.suggested-recipe-card').forEach(c => c.classList.remove('selected'));
+                        e.currentTarget.classList.add('selected');
+                        onSelectSuggestedRecipe(recipe); // Pass the full recipe object to the callback
+                    });
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = '<p>Keine Rezeptvorschläge verfügbar.</p>';
+            }
+        },
         openRecipeModal: openModalWithRecipe,
         switchView: (viewId) => { document.querySelectorAll('.view').forEach(v => v.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); },
         updateConfirmButtonState: (plan) => {

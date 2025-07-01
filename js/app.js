@@ -59,10 +59,17 @@ function initializeApp() {
             const themeIconMoon = document.getElementById('theme-icon-moon');
             const themeIconSun = document.getElementById('theme-icon-sun');
             const shoppingListContainer = document.getElementById('shopping-list-container'); // For event delegation
+            const createSingleRecipePlanBtn = document.getElementById('create-single-recipe-plan-btn');
+
+            // Confirmation Modal Elements
+            const confirmNewPlanModal = document.getElementById('confirm-new-plan-modal');
+            const confirmNewPlanYesBtn = document.getElementById('confirm-new-plan-yes');
+            const confirmNewPlanNoBtn = document.getElementById('confirm-new-plan-no');
 
             let matchingRecipes = []; // To store inventory based recipe suggestions
             let selectedPantryItemForAdding = null; // To store the item selected from suggestions
             let collectedShoppingListItems = new Set(); // To store names of collected items
+            let currentlySelectedSingleRecipe = null; // To store the recipe selected from suggestions
 
             // Dark Mode Logic
             const applyTheme = (theme) => {
@@ -333,16 +340,116 @@ function initializeApp() {
                     } else if (viewId === 'shopping-list-view') {
                          const list = generateShoppingList(weeklyPlan, userPantry, persons, PANTRY_CATEGORIES); // Use userPantry and pass PANTRY_CATEGORIES
                         ui.renderShoppingList(list);
+                    } else if (viewId === 'generator-view') {
+                        if (store.getItem('weeklyPlan') && store.getItem('weeklyPlan').length > 0) {
+                            showConfirmNewPlanModal();
+                            // Don't switch view here, modal will handle next step or close.
+                        } else {
+                            navigateToGeneratorView(); // This function handles the view switch.
+                        }
+                    } else {
+                        ui.switchView(viewId); // For other views, switch immediately.
                     }
-                    ui.switchView(viewId);
                 });
             });
 
-            createPlanBtn.addEventListener('click', () => {
+            createPlanBtn.addEventListener('click', () => { // This is the button on the empty dashboard
+                // No need to check for existing plan here, as this button only shows if no plan.
+                navigateToGeneratorView();
+            });
+
+            const handleSuggestedRecipeSelect = (recipe) => {
+                currentlySelectedSingleRecipe = recipe;
+                if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = false;
+            };
+
+            // --- Confirmation Modal Logic ---
+            const showConfirmNewPlanModal = () => {
+                if (confirmNewPlanModal) confirmNewPlanModal.classList.remove('hidden');
+            };
+            const hideConfirmNewPlanModal = () => {
+                if (confirmNewPlanModal) confirmNewPlanModal.classList.add('hidden');
+            };
+
+            if (confirmNewPlanYesBtn) {
+                confirmNewPlanYesBtn.addEventListener('click', () => {
+                    weeklyPlan = null; // Clear in-memory plan
+                    store.setItem('weeklyPlan', null); // Clear stored plan
+                    store.setItem('persons', null); // Clear stored persons related to the plan
+
+                    // Potentially also clear dashboard and confirm button state
+                    ui.renderDashboard(null, handleRecipeSelect, handleInfoClick);
+                    ui.updateConfirmButtonState(null);
+
+                    hideConfirmNewPlanModal();
+                    navigateToGeneratorView(); // Proceed to generator view
+                });
+            }
+
+            if (confirmNewPlanNoBtn) {
+                confirmNewPlanNoBtn.addEventListener('click', () => {
+                    hideConfirmNewPlanModal();
+                    // Optionally, navigate to dashboard if user is not already there
+                    // For now, just closes modal, user stays on current view.
+                });
+            }
+             // Close modal if clicked outside of content
+            if (confirmNewPlanModal) {
+                confirmNewPlanModal.addEventListener('click', (e) => {
+                    if (e.target === confirmNewPlanModal) {
+                        hideConfirmNewPlanModal();
+                    }
+                });
+            }
+
+
+            // --- End Confirmation Modal Logic ---
+
+            const navigateToGeneratorView = () => {
                 ui.switchView('generator-view');
                 navLinks.forEach(n => n.classList.remove('active'));
-                document.querySelector('.nav-item[data-view="generator"]').classList.add('active');
-            });
+                const generatorNav = document.querySelector('.nav-item[data-view="generator"]');
+                if(generatorNav) generatorNav.classList.add('active');
+
+                const suggested = ALL_RECIPES.slice(0, 3);
+                ui.renderSuggestedRecipes(suggested, handleSuggestedRecipeSelect, handleInfoClick);
+                if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = true;
+                currentlySelectedSingleRecipe = null;
+            };
+
+
+            if (createSingleRecipePlanBtn) {
+                createSingleRecipePlanBtn.addEventListener('click', () => {
+                    if (!currentlySelectedSingleRecipe) {
+                        alert("Bitte wähle zuerst ein Rezept aus den Vorschlägen aus.");
+                        return;
+                    }
+
+                    const singleDayPlan = [{
+                        day: "Montag", // Defaulting to Monday for now
+                        options: [currentlySelectedSingleRecipe],
+                        selected: currentlySelectedSingleRecipe
+                    }];
+
+                    // Determine current portions setting (e.g., from the radio buttons in the full generator form)
+                    const selectedPortionsElement = document.querySelector('input[name="portions"]:checked');
+                    const portions = selectedPortionsElement ? selectedPortionsElement.value : '2';
+
+                    store.setItem('weeklyPlan', singleDayPlan);
+                    store.setItem('persons', portions); // Store portions setting
+
+                    ui.renderDashboard(singleDayPlan, handleRecipeSelect, handleInfoClick);
+                    ui.updateConfirmButtonState(singleDayPlan); // This might disable confirm if only one day
+                    ui.switchView('dashboard-view');
+                    navLinks.forEach(n => n.classList.remove('active'));
+                    const dashboardNav = document.querySelector('.nav-item[data-view="dashboard"]');
+                    if (dashboardNav) dashboardNav.classList.add('active');
+
+                    // Reset for next time
+                    currentlySelectedSingleRecipe = null;
+                    if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = true;
+                });
+            }
 
             function initUI() {
                 // Set the correct radio button based on the 'persons' value from localStorage

@@ -1794,3 +1794,59 @@ body.dark-mode .shopping-list-item-card.collected .item-card-header h4,
 body.dark-mode .shopping-list-item-card.collected .item-card-body {
     text-decoration-color: var(--dark-accent-red);
 }
+
+/* Confirmation Dialog Specific Styles */
+.confirm-dialog h3 {
+    margin-top: 0;
+    font-size: 1.6rem; /* Slightly larger for emphasis */
+    color: var(--k-text-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+    border-bottom: 2px solid var(--k-primary-pop-1-lighter);
+    padding-bottom: 0.75rem;
+}
+body.dark-mode .confirm-dialog h3 {
+    color: var(--dark-text-primary);
+    border-bottom-color: var(--dark-primary-pop-1-lighter);
+}
+
+.confirm-dialog p {
+    margin-bottom: 2rem; /* More space before buttons */
+    font-size: 1.1em;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--k-text-secondary);
+}
+body.dark-mode .confirm-dialog p {
+    color: var(--dark-text-secondary);
+}
+
+.confirm-dialog-actions {
+    display: flex;
+    justify-content: center; /* Center buttons */
+    gap: 1.5rem; /* More space between buttons */
+}
+
+.confirm-dialog-actions .btn-confirm,
+.confirm-dialog-actions .btn-danger {
+    padding: 0.75rem 1.75rem; /* More padding for better click target */
+    font-size: 1rem; /* Standard button font size */
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 180px; /* Ensure buttons have a decent minimum width */
+    justify-content: center;
+}
+
+/* Adjust modal content for confirm dialog */
+.modal-content.confirm-dialog {
+    max-width: 550px; /* Slightly wider for better text flow */
+    background-color: var(--k-bg-card); /* Use card background for consistency */
+    color: var(--k-text-primary);
+    text-align: left; /* Reset text-align if inherited */
+    padding: 2rem 2.5rem; /* Generous padding */
+}
+body.dark-mode .modal-content.confirm-dialog {
+    background-color: var(--dark-bg-card);
+    color: var(--dark-text-primary);
+}
