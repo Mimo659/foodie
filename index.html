@@ -22,9 +22,7 @@
     <div id="app-content" class="content-hidden">
         <header class="main-header">
             <div class="container">
-                <button id="hamburger-menu-btn" class="btn hamburger-btn" aria-label="Menü öffnen">
-                    <i class="ti ti-menu-2"></i>
-                </button>
+                <!-- Hamburger button removed -->
                 <a href="#" class="logo" id="logo-link">
                     <img src="logo.png" alt="Foodie Logo" class="header-logo">
                     Foodie
@@ -33,6 +31,7 @@
                     <ul>
                         <li><a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> <span>Dashboard</span></a></li>
                         <li><a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a></li>
+                        <li><a href="#" class="nav-item" data-view="random-recipe"><i class="ti ti-dice"></i> <span>Zufallsrezept</span></a></li>
                         <li><a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a></li>
                         <li><a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a></li>
                     </ul>
@@ -44,21 +43,9 @@
             </div>
         </header>
 
-        <!-- Mobile Slide-out Menu -->
-        <div id="mobile-slideout-menu" class="mobile-menu-overlay hidden">
-            <nav class="mobile-slideout-nav">
-                <button id="close-mobile-menu-btn" class="btn close-menu-btn" aria-label="Menü schließen"><i class="ti ti-x"></i></button>
-                <ul>
-                    <li><a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> <span>Dashboard</span></a></li>
-                    <li><a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a></li>
-                    <li><a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a></li>
-                    <li><a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a></li>
-                    <!-- Add any other links if needed, e.g., settings, profile -->
-                </ul>
-            </nav>
-        </div>
+        <!-- Mobile Slide-out Menu Removed -->
 
-        <div class="container main-content-area"> <!-- Added a class to distinguish from header/footer container -->
+        <div class="container main-content-area">
             <main class="main-content">
                 <!-- Sections like #dashboard-view will need their internal content updated by JS to use new classes -->
                 <!-- Example: buttons inside these sections should get .btn .btn-primary etc. -->
@@ -97,16 +84,9 @@
                             <div class="form-group-inline"> <!-- This will need custom styling or be refactored with new grid/flex utilities -->
                                 <div class="form-group">
                                     <label><i class="ti ti-friends"></i> Portionen</label>
-                                    <div class="radio-group-container" id="portions-radio-group">
-                                        <!-- Radio buttons might need custom styling to match the new theme -->
-                                        <div class="radio-group">
-                                            <input type="radio" id="portions-2" name="portions" value="2" checked>
-                                            <label for="portions-2">2</label>
-                                        </div>
-                                        <div class="radio-group">
-                                            <input type="radio" id="portions-4" name="portions" value="4">
-                                            <label for="portions-4">4</label>
-                                        </div>
+                                    <div class="button-group" id="portions-button-group">
+                                        <button type="button" class="btn btn-outline-primary portion-btn active" data-value="2">2 Personen</button>
+                                        <button type="button" class="btn btn-outline-primary portion-btn" data-value="4">4 Personen</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -140,14 +120,14 @@
                             <i class="ti ti-checks"></i> Auswahl bestätigen und Plan anzeigen
                         </button>
                     </div>
+                    <!-- Option 2 (Wähle ein einzelnes Rezept) is moved to its own section -->
+                </section>
 
-                    <hr class="section-divider my-2"> <!-- Added my-2 for margin -->
-
+                <section id="random-recipe-view" class="view hidden">
                     <div class="card">
-                        <h2><i class="ti ti-chef-hat"></i> Wähle ein einzelnes Rezept (Option 2)</h2>
-                        <p>Oder wähle ein Rezept aus unseren Vorschlägen für heute:</p>
-                        <!-- recipe-options might need to become recipe-grid or similar -->
-                        <div id="suggested-recipes-container" class="recipe-grid"> <!-- Changed to recipe-grid -->
+                        <h2><i class="ti ti-dice"></i> Zufälliges Rezept auswählen</h2>
+                        <p>Wähle ein Rezept aus unseren Vorschlägen für einen einzelnen Tag:</p>
+                        <div id="suggested-recipes-container" class="recipe-grid">
                         </div>
                         <button id="create-single-recipe-plan-btn" class="btn btn-primary mt-1" disabled>
                             <i class="ti ti-calendar-plus"></i> Dieses Rezept für heute einplanen
@@ -250,7 +230,11 @@
         </a>
         <a href="#" class="nav-item" data-view="generator" aria-label="Plan erstellen">
             <i class="ti ti-chef-hat"></i>
-            <span class="nav-text">Erstellen</span>
+            <span class="nav-text">Plan</span> <!-- Shortened "Erstellen" to "Plan" -->
+        </a>
+        <a href="#" class="nav-item" data-view="random-recipe" aria-label="Zufälliges Rezept">
+            <i class="ti ti-dice"></i>
+            <span class="nav-text">Rezept</span> <!-- Short name for mobile -->
         </a>
         <a href="#" class="nav-item" data-view="inventory" aria-label="Mein Vorrat">
             <i class="ti ti-fridge"></i>

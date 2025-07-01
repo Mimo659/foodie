@@ -6,14 +6,15 @@ import { generateWeeklyPlan } from '../logic.js';
 // Variables that might be shared or passed from app.js or loaded here
 let ALL_RECIPES_DATA = []; // Needs to be populated
 let currentWeeklyPlan = null; // Specific to the generator's active construction
-let currentlySelectedSingleRecipe = null;
+// let currentlySelectedSingleRecipe = null; // Removed - moved to randomRecipeView
 
 // DOM Elements
 const generatorForm = document.getElementById('generator-form');
+const portionsButtonGroup = document.getElementById('portions-button-group');
 const dailyOptionsDisplayContainer = document.getElementById('daily-options-display-container');
 const confirmGeneratedPlanBtn = document.getElementById('confirm-generated-plan-btn');
-const createSingleRecipePlanBtn = document.getElementById('create-single-recipe-plan-btn');
-const suggestedRecipesContainer = document.getElementById('suggested-recipes-container'); // For event delegation if needed
+// const createSingleRecipePlanBtn = document.getElementById('create-single-recipe-plan-btn'); // Removed
+// const suggestedRecipesContainer = document.getElementById('suggested-recipes-container'); // Removed
 
 // Confirmation Modal Elements (These might be better handled by a global modal manager in app.js)
 const confirmNewPlanModal = document.getElementById('confirm-new-plan-modal');
@@ -51,8 +52,8 @@ function handleGeneratorFormSubmit(event) {
             // const dietPreferenceElement = document.querySelector('input[name="diet"]:checked');
             // const dietPreference = dietPreferenceElement ? dietPreferenceElement.value : 'all';
 
-            const selectedPortionsElement = document.querySelector('input[name="portions"]:checked');
-            const selectedPortions = selectedPortionsElement ? selectedPortionsElement.value : '2';
+            const activePortionBtn = portionsButtonGroup ? portionsButtonGroup.querySelector('.portion-btn.active') : null;
+            const selectedPortions = activePortionBtn ? activePortionBtn.dataset.value : '2'; // Default to '2'
 
             const numberOfDaysElement = document.getElementById('number-of-days');
             const numberOfDays = numberOfDaysElement ? parseInt(numberOfDaysElement.value, 10) : 7;
@@ -115,36 +116,7 @@ function handleConfirmGeneratedPlan(callbacks) {
     }
 }
 
-function handleSuggestedRecipeSelect(recipe) {
-    currentlySelectedSingleRecipe = recipe;
-    if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = false;
-}
-
-function handleCreateSingleRecipePlan(callbacks) {
-    if (!currentlySelectedSingleRecipe) {
-        alert("Bitte wähle zuerst ein Rezept aus den Vorschlägen aus.");
-        return;
-    }
-
-    const singleDayPlan = [{
-        day: "Tag 1",
-        options: [currentlySelectedSingleRecipe],
-        selected: currentlySelectedSingleRecipe
-    }];
-
-    const selectedPortionsElement = document.querySelector('input[name="portions"]:checked');
-    const portions = selectedPortionsElement ? selectedPortionsElement.value : '2';
-
-    store.setWeeklyPlan(singleDayPlan);
-    store.setPersons(portions);
-
-    currentlySelectedSingleRecipe = null;
-    if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = true;
-
-    if (callbacks && typeof callbacks.onSingleRecipePlanCreated === 'function') {
-        callbacks.onSingleRecipePlanCreated(); // Notify app.js to switch to dashboard
-    }
-}
+// handleSuggestedRecipeSelect and handleCreateSingleRecipePlan functions are removed as they are moving to randomRecipeView.js
 
 // --- Confirmation Modal Logic (specific to generator view) ---
 function showConfirmNewPlanModal(onConfirmYes, onConfirmNo) {
@@ -199,9 +171,12 @@ export function initGeneratorView(allRecipes, callbacks) {
         confirmGeneratedPlanBtn.addEventListener('click', () => handleConfirmGeneratedPlan(callbacks));
     }
 
-    if (createSingleRecipePlanBtn) {
-        createSingleRecipePlanBtn.addEventListener('click', () => handleCreateSingleRecipePlan(callbacks));
-    }
+    // Event listener for createSingleRecipePlanBtn removed
+    // if (createSingleRecipePlanBtn) {
+    //     createSingleRecipePlanBtn.addEventListener('click', () => handleCreateSingleRecipePlan(callbacks));
+    // }
+
+    setupPortionButtons(); // Call the new setup function
 
     // Initial rendering of suggested recipes when view is initialized (or shown)
     // This part is moved to onShowGeneratorView to ensure it happens every time the view is activated.
@@ -219,10 +194,84 @@ export function initGeneratorView(allRecipes, callbacks) {
     }
 
     console.log("Generator view initialized");
+    // setupTagSelectionLimit(); // Called from onShowGeneratorView or prepareGeneratorInterface now
+}
+
+
+function setupTagSelectionLimit() {
+    const tagsContainer = document.getElementById('dynamic-tags-checkboxes');
+    if (tagsContainer) {
+        // Clear previous listeners by cloning and replacing if this function can be called multiple times
+        // For now, assume it's called once or listeners are idempotent for 'change'
+
+        tagsContainer.addEventListener('change', (event) => {
+            if (event.target.type === 'checkbox' && event.target.name === 'dynamic-tag') {
+                const checkedCheckboxes = tagsContainer.querySelectorAll('input[type="checkbox"]:checked');
+                const allCheckboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+
+                if (checkedCheckboxes.length >= 3) {
+                    allCheckboxes.forEach(cb => {
+                        if (!cb.checked) {
+                            cb.disabled = true;
+                        }
+                    });
+                } else {
+                    allCheckboxes.forEach(cb => {
+                        cb.disabled = false;
+                    });
+                }
+            }
+        });
+
+        // Initial state setup
+        const allCheckboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+        allCheckboxes.forEach(cb => cb.disabled = false); // Ensure all are enabled initially
+        const checkedCheckboxes = tagsContainer.querySelectorAll('input[type="checkbox"]:checked');
+        if (checkedCheckboxes.length >= 3) {
+            allCheckboxes.forEach(cb => {
+                if (!cb.checked) cb.disabled = true;
+            });
+        }
+    }
+}
+
+function setupPortionButtons() {
+    if (portionsButtonGroup) {
+        const portionButtons = portionsButtonGroup.querySelectorAll('.portion-btn');
+
+        function updatePortionButtonsVisualState(selectedValue) {
+            portionButtons.forEach(btn => {
+                if (btn.dataset.value === selectedValue) {
+                    btn.classList.add('active');
+                    btn.classList.remove('pseudo-disabled');
+                    // btn.disabled = false; // Ensure active is not disabled
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('pseudo-disabled');
+                    // btn.disabled = true; // Optional: actual disable
+                }
+            });
+        }
+
+        portionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const selectedValue = button.dataset.value;
+                updatePortionButtonsVisualState(selectedValue);
+                store.setPersons(selectedValue); // Update store on click
+            });
+        });
+
+        // Initialize state on load/show
+        const currentPortions = store.getPersons() || '2'; // Default to 2
+        updatePortionButtonsVisualState(currentPortions);
+    }
 }
 
 
 export function onShowGeneratorView(callbacks) {
+    // Refresh portion buttons state when view is shown, in case it was changed elsewhere or needs reset
+    setupPortionButtons();
+
     // Check if an active plan exists. If so, prompt user.
     const existingPlan = store.getWeeklyPlan();
     if (existingPlan && existingPlan.length > 0) {
@@ -243,13 +292,13 @@ export function onShowGeneratorView(callbacks) {
 }
 
 function prepareGeneratorInterface() {
-    // Shuffle ALL_RECIPES_DATA before slicing for suggestions
-    const shuffledRecipes = [...ALL_RECIPES_DATA].sort(() => 0.5 - Math.random());
-    const suggested = shuffledRecipes.slice(0, 3);
+    // Shuffle ALL_RECIPES_DATA before slicing for suggestions - This logic moves to randomRecipeView
+    // const shuffledRecipes = [...ALL_RECIPES_DATA].sort(() => 0.5 - Math.random());
+    // const suggested = shuffledRecipes.slice(0, 3);
 
-    ui.renderSuggestedRecipes(suggested, handleSuggestedRecipeSelect, handleInfoClick);
-    if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = true;
-    currentlySelectedSingleRecipe = null;
+    // ui.renderSuggestedRecipes(suggested, handleSuggestedRecipeSelect, handleInfoClick); // Moved
+    // if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = true; // Moved
+    // currentlySelectedSingleRecipe = null; // Moved
 
     // Reset and hide the daily options and confirm button from previous generation
     if (dailyOptionsDisplayContainer) {
@@ -261,19 +310,45 @@ function prepareGeneratorInterface() {
     }
     currentWeeklyPlan = null; // Clear any plan being built
 
-    // Set default portions based on localStorage or default to '2'
-    const portionsRadios = document.getElementsByName('portions');
-    const currentPortions = store.getPersons(); // getPersons defaults to '2'
-    for (const radio of portionsRadios) {
-        if (radio.value === currentPortions) {
-            radio.checked = true;
-            break;
+    // Set default portions based on localStorage or default to '2' - This is now handled by setupPortionButtons
+    // const portionsRadios = document.getElementsByName('portions');
+    // const currentPortions = store.getPersons(); // getPersons defaults to '2'
+    // for (const radio of portionsRadios) {
+    //     if (radio.value === currentPortions) {
+    //         radio.checked = true;
+    //         break;
+    //     }
+    // }
+    // // If no radio was checked (e.g. invalid value in localStore), default to '2'
+    // if (!document.querySelector('input[name="portions"]:checked')) {
+    //     const twoPortionsRadio = document.getElementById('portions-2');
+    //     if (twoPortionsRadio) twoPortionsRadio.checked = true;
+    // }
+    // Ensure portion buttons are correctly initialized/updated when interface is prepared.
+    setupPortionButtons();
+    // Ensure tag selection limits are reset/re-evaluated if tags are repopulated or view is reshown
+    // (populateTagFilters in app.js usually runs once on init, so this might not be strictly necessary here
+    // unless tags could change dynamically without a full re-init of the view)
+    // For safety, one could call setupTagSelectionLimit() here if tags could be re-rendered by ui.js.
+    // However, ui.populateTagFilters is called once in app.js.
+    // The event listener in setupTagSelectionLimit should handle changes.
+    // What IS needed is to reset the disabled state of checkboxes when the interface is prepared.
+    const tagsContainer = document.getElementById('dynamic-tags-checkboxes');
+    if (tagsContainer) {
+        const allCheckboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+        allCheckboxes.forEach(cb => {
+            cb.disabled = false; // Re-enable all on interface prep
+            // cb.checked = false; // Optionally uncheck all, or preserve state
+        });
+        // Re-evaluate disabled state based on currently checked ones (if any were preserved)
+        const checkedCheckboxes = tagsContainer.querySelectorAll('input[type="checkbox"]:checked');
+        if (checkedCheckboxes.length >= 3) {
+             allCheckboxes.forEach(cb => {
+                if (!cb.checked) {
+                    cb.disabled = true;
+                }
+            });
         }
-    }
-    // If no radio was checked (e.g. invalid value in localStore), default to '2'
-    if (!document.querySelector('input[name="portions"]:checked')) {
-        const twoPortionsRadio = document.getElementById('portions-2');
-        if (twoPortionsRadio) twoPortionsRadio.checked = true;
     }
 
 

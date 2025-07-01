@@ -24,6 +24,26 @@
     --padding-global: 20px;
 }
 
+body.dark-mode {
+    --primary-color: #FF9955; /* Slightly lighter orange for better contrast on dark if needed */
+    --secondary-color: #1e1e1e; /* Dark background for the page */
+    --text-dark: #e0e0e0;       /* Light text for dark backgrounds */
+    --text-medium: #b0b0b0;     /* Medium-light text */
+    --text-light: #121212;      /* Dark text for light elements on dark bg (e.g., text on orange button) */
+    --accent-green: #76c858;    /* Slightly lighter green */
+    --card-bg: #2a2a2a;         /* Dark card background */
+    --border-light: #444444;    /* Darker borders */
+    --box-shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow for dark mode */
+    --box-shadow-strong: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+/* Ensure components using these variables respond correctly.
+   For example, the main page background and text color will now be driven by these.
+   body { background-color: var(--secondary-color); color: var(--text-dark); }
+   .recipe-card { background-color: var(--card-bg); }
+   etc.
+*/
+
+
 /* Basic Reset */
 *,
 *::before,
@@ -41,15 +61,32 @@ body {
     font-family: var(--font-primary);
     line-height: 1.6;
     color: var(--text-dark);
-    background-color: #FFF; /* Default white background for pages */
+    background-color: var(--secondary-color); /* Use variable for consistency, assuming light beige as default page bg */
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-body.no-scroll {
-    overflow: hidden;
-    /* The color, background-color, and font-size were moved here by mistake. */
-    /* They should remain in the main body rule. */
+/* Apply flex to the main app wrapper as well */
+#app-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
+
+/* Ensure main content area can grow */
+.main-content-area { /* This is the .container wrapping main */
+    flex-grow: 1;
+    display: flex; /* To allow main inside it to also grow if needed, or just for structure */
+    flex-direction: column;
+}
+main.main-content {
+    flex-grow: 1;
+}
+
+
+/* body.no-scroll rule removed as it's no longer managed by JS */
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
@@ -568,20 +605,85 @@ ul {
 }
 /* End Custom Checkbox */
 
+/* Button Group for Portions/Tags */
+.button-group {
+    display: flex;
+    gap: 0.5rem; /* Space between buttons */
+    margin-top: 0.25rem;
+}
+
+.button-group .portion-btn,
+.button-group .tag-btn { /* .tag-btn will be used for "Spezielle Eigenschaften" */
+    flex-grow: 1; /* Make buttons take equal width if needed, or adjust */
+    padding: 0.5rem 0.75rem; /* Smaller padding for these buttons */
+    font-size: 0.9rem;
+}
+
+/* Active state for portion/tag buttons */
+.button-group .portion-btn.active,
+.button-group .tag-btn.active {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+    box-shadow: none; /* Remove hover shadow if it was applied via .btn:hover */
+}
+
+/* Styling for when a portion button might be conceptually "disabled" by the other's selection */
+/* JS will handle actually disabling or just visual cue */
+.button-group .portion-btn.pseudo-disabled {
+    background-color: var(--border-light);
+    color: var(--text-medium);
+    border-color: var(--border-light);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Styling for "Spezielle Eigenschaften" (Tag Filter Buttons) */
+#dynamic-tags-checkboxes {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap to next line */
+    gap: 0.5rem;    /* Consistent gap with portion buttons */
+}
+
+#dynamic-tags-checkboxes .checkbox-group {
+    /* Each checkbox-group will act as a button wrapper if we style the label */
+    /* We can make the label itself the button */
+}
+
+#dynamic-tags-checkboxes input[type="checkbox"] {
+    display: none; /* Hide the actual checkbox */
+}
+
+#dynamic-tags-checkboxes label {
+    display: inline-block;
+    padding: 0.5rem 0.75rem; /* Same as .portion-btn */
+    font-size: 0.9rem;        /* Same as .portion-btn */
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius-medium);
+    background-color: var(--card-bg);
+    color: var(--text-medium);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    text-align: center;
+}
+
+#dynamic-tags-checkboxes input[type="checkbox"]:checked + label {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+}
+
+#dynamic-tags-checkboxes input[type="checkbox"]:disabled + label {
+    background-color: var(--border-light);
+    color: var(--text-medium);
+    border-color: var(--border-light);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
 /* Mobile Navigation Specific Styles */
-.hamburger-btn {
-    display: none; /* Hidden on desktop */
-    background: none;
-    border: none;
-    color: var(--text-dark);
-    font-size: 1.6rem; /* Icon size */
-    padding: 0.3rem 0.5rem; /* Fine-tune padding */
-    z-index: 1050;
-    line-height: 1;
-}
-.hamburger-btn i {
-    vertical-align: middle;
-}
+/* Hamburger, Slideout, Overlay CSS Removed */
 
 #mobile-bottom-nav {
     display: none; /* Hidden on desktop */
@@ -630,88 +732,7 @@ ul {
     letter-spacing: 0.5px; /* Add some letter spacing if text is too cramped */
 }
 
-/* Mobile Slideout Menu */
-.mobile-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1040;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s 0.3s linear;
-}
-.mobile-menu-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0s 0s linear;
-}
-
-.mobile-slideout-nav {
-    position: fixed;
-    top: 0;
-    left: -280px; /* Start off-screen, slightly smaller width */
-    width: 280px; /* Slightly smaller width */
-    max-width: 75%; /* Max width */
-    height: 100%;
-    background-color: var(--card-bg);
-    box-shadow: 2px 0 15px rgba(0,0,0,0.2);
-    padding: var(--padding-global);
-    transition: left 0.3s ease-in-out;
-    z-index: 1041;
-    display: flex;
-    flex-direction: column;
-}
-.mobile-menu-overlay.is-open .mobile-slideout-nav {
-    left: 0; /* Slide in */
-}
-
-.mobile-slideout-nav .close-menu-btn {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: var(--text-medium);
-    padding: 0.25rem;
-    margin-bottom: 1rem;
-}
-.mobile-slideout-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.mobile-slideout-nav li a {
-    display: flex;
-    align-items: center;
-    padding: 0.85rem var(--padding-global);
-    color: var(--text-dark);
-    font-weight: 600;
-    border-bottom: 1px solid var(--border-light);
-    text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-.mobile-slideout-nav li:first-child a {
-    border-top: 1px solid var(--border-light);
-}
-.mobile-slideout-nav li a:hover,
-.mobile-slideout-nav li a.active {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-}
-.mobile-slideout-nav li a i {
-    margin-right: 1rem;
-    font-size: 1.3rem;
-    width: 24px;
-    text-align: center;
-    color: var(--text-medium);
-    transition: color 0.2s ease;
-}
-.mobile-slideout-nav li a:hover i,
-.mobile-slideout-nav li a.active i {
-    color: var(--primary-color);
-}
+/* Mobile Slideout Menu CSS Removed */
 
 
 /* Responsive Adjustments */
@@ -752,17 +773,21 @@ ul {
         display: none; /* Hide desktop nav on mobile */
     }
 
-    .hamburger-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.4rem;
-        /* order: -1; /* Ensure it's on the left if not using absolute for logo */
-    }
+    /* .hamburger-btn CSS removed */
 
     .theme-toggle-btn {
         font-size: 0.8rem;
         padding: 0.4rem 0.6rem;
+    }
+
+    /* Inventory View Specific Spacing */
+    #inventory-view .card > #add-pantry-item-form,
+    #inventory-view .card > #current-pantry-section {
+        margin-bottom: 1.5rem; /* mb-3 equivalent */
+    }
+    #inventory-view .card > #find-recipes-from-pantry-btn {
+        margin-top: 0; /* Reset default mt-2 if mb from above section is enough */
+                       /* Or adjust as needed, maybe keep mt-1 */
     }
 
     #mobile-bottom-nav {
