@@ -59,6 +59,7 @@ function initializeApp() {
             const themeIconMoon = document.getElementById('theme-icon-moon');
             const themeIconSun = document.getElementById('theme-icon-sun');
             const shoppingListContainer = document.getElementById('shopping-list-container'); // For event delegation
+            const weeklyPlanContainerElement = document.getElementById('weekly-plan-container'); // For event delegation for recipe selection
             const createSingleRecipePlanBtn = document.getElementById('create-single-recipe-plan-btn');
 
             // Confirmation Modal Elements
@@ -100,15 +101,37 @@ function initializeApp() {
                 applyTheme('light');
             }
 
-
-            const handleRecipeSelect = (dayIndex, recipeId) => {
-                if (!weeklyPlan) return;
-                const day = weeklyPlan[dayIndex];
-                day.selected = day.options.find(r => r.id === recipeId);
-                store.setItem('weeklyPlan', weeklyPlan);
-                ui.updateConfirmButtonState(weeklyPlan);
-            };
             const handleInfoClick = (recipe) => ui.openRecipeModal(recipe);
+
+            // New handleRecipeSelect for dashboard radio buttons
+            const handleRecipeSelect = (dayIndex, selectedRecipeId) => {
+                if (!weeklyPlan || !weeklyPlan[dayIndex]) return;
+
+                const day = weeklyPlan[dayIndex];
+                const selectedRecipe = day.options.find(option => option.id === selectedRecipeId);
+
+                if (selectedRecipe) {
+                    day.selected = selectedRecipe;
+                    store.setItem('weeklyPlan', weeklyPlan);
+                    ui.renderDashboard(weeklyPlan, handleInfoClick, handleRecipeSelect); // Re-render to show selection
+                    ui.updateConfirmButtonState(weeklyPlan);
+                } else {
+                    console.error(`Recipe with ID ${selectedRecipeId} not found in options for day ${dayIndex}`);
+                }
+            };
+
+            if (weeklyPlanContainerElement) {
+                weeklyPlanContainerElement.addEventListener('change', (e) => {
+                    if (e.target.classList.contains('recipe-select-radio') && e.target.checked) {
+                        const dayCard = e.target.closest('.day-selection-card');
+                        if (dayCard) {
+                            const dayIndex = parseInt(dayCard.dataset.dayIndex, 10);
+                            const selectedRecipeId = e.target.value; // The value of the radio is the recipe ID
+                            handleRecipeSelect(dayIndex, selectedRecipeId);
+                        }
+                    }
+                });
+            }
 
             generatorForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -147,14 +170,18 @@ function initializeApp() {
                             // ui.setButtonLoadingState is handled in finally
                             return;
                         }
-                        if (weeklyPlan.length < 7) {
-                            alert(`Hinweis: Wir haben nur genug einzigartige Rezepte für einen Plan von ${weeklyPlan.length} Tagen gefunden. Für mehr Vielfalt kannst du deine Filter anpassen oder die Filter löschen.`);
-                        }
+                        // Removed alert:
+                        // if (weeklyPlan.length < prefs.numberOfDays && weeklyPlan.length > 0) {
+                        //    alert(`Hinweis: Wir haben nur genug einzigartige Rezepte für einen Plan von ${weeklyPlan.length} Tagen gefunden (du hattest ${prefs.numberOfDays} Tage gewünscht). Für mehr Vielfalt kannst du deine Filter anpassen oder die Filter löschen.`);
+                        //} else if (weeklyPlan.length < 7 && prefs.numberOfDays === 7) { // Original condition, kept for reference during refactor
+                        //    alert(`Hinweis: Wir haben nur genug einzigartige Rezepte für einen Plan von ${weeklyPlan.length} Tagen gefunden. Für mehr Vielfalt kannst du deine Filter anpassen oder die Filter löschen.`);
+                        //}
+
 
                         store.setItem('weeklyPlan', weeklyPlan);
                         store.setItem('persons', prefs.persons.toString()); // Ensure 'persons' is stored as string
 
-                        ui.renderDashboard(weeklyPlan, handleInfoClick); // handleRecipeSelect removed
+                        ui.renderDashboard(weeklyPlan, handleInfoClick, handleRecipeSelect);
                         ui.updateConfirmButtonState(weeklyPlan);
                         ui.switchView('dashboard-view');
                         navLinks.forEach(n => n.classList.remove('active'));
@@ -387,7 +414,7 @@ function initializeApp() {
                     store.setItem('persons', null); // Clear stored persons related to the plan
 
                     // Potentially also clear dashboard and confirm button state
-                    ui.renderDashboard(null, handleInfoClick); // handleRecipeSelect removed
+                    ui.renderDashboard(null, handleInfoClick, handleRecipeSelect);
                     ui.updateConfirmButtonState(null);
 
                     hideConfirmNewPlanModal();
@@ -460,7 +487,7 @@ function initializeApp() {
                     store.setItem('weeklyPlan', singleDayPlan);
                     store.setItem('persons', portions); // Store portions setting
 
-                    ui.renderDashboard(singleDayPlan, handleInfoClick); // handleRecipeSelect removed
+                    ui.renderDashboard(singleDayPlan, handleInfoClick, handleRecipeSelect);
                     ui.updateConfirmButtonState(singleDayPlan); // This might disable confirm if only one day
                     ui.switchView('dashboard-view');
                     navLinks.forEach(n => n.classList.remove('active'));
@@ -484,7 +511,7 @@ function initializeApp() {
 
                 // inventoryInput.value = inventory.join(', '); // Old inventory input, remove
                 renderCurrentPantry(); // Initialize pantry display
-                ui.renderDashboard(weeklyPlan, handleInfoClick); // handleRecipeSelect removed
+                ui.renderDashboard(weeklyPlan, handleInfoClick, handleRecipeSelect);
                 ui.updateConfirmButtonState(weeklyPlan);
                 ui.switchView('dashboard-view'); // Default view
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');

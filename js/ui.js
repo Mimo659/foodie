@@ -106,79 +106,82 @@ const ui = (() => {
     
     return {
         populateTagFilters, // Expose the new function
-        renderDashboard: (plan, onInfoClick) => { // Removed onSelectRecipe as it's not used here anymore
+        renderDashboard: (plan, onInfoClick, onSelectRecipe) => { // Added onSelectRecipe callback
             const planDisplay = document.getElementById('plan-display');
             const noPlanDisplay = document.getElementById('no-plan-display');
             const weeklyPlanContainer = document.getElementById('weekly-plan-container');
             const planInstructions = document.querySelector('#plan-display .plan-instructions');
 
-            if (plan && plan.some(day => day.selected)) { // Check if there's at least one selected recipe
+            if (plan && plan.length > 0) {
                 weeklyPlanContainer.innerHTML = '';
-                // Use a more generic class for the container, or reuse 'recipe-options' if it styles a grid appropriately
-                weeklyPlanContainer.className = 'recipe-options'; // This class creates a responsive grid
+                weeklyPlanContainer.className = 'daily-selection-container'; // New class for styling day blocks
 
-                let hasRenderedDay = false;
                 plan.forEach((dayObject, dayIndex) => {
+                    const dayCard = document.createElement('div');
+                    dayCard.className = 'day-selection-card';
+                    dayCard.dataset.dayIndex = dayIndex;
+
+                    const dayTitle = document.createElement('h3');
+                    dayTitle.textContent = dayObject.day;
+                    dayCard.appendChild(dayTitle);
+
                     if (dayObject.selected) {
-                        hasRenderedDay = true;
-                        const dayContainer = document.createElement('div');
-                        // For a single card per day, 'day-container' might be too much,
-                        // but let's keep it for structure if 'recipe-options' is a grid.
-                        // If 'recipe-options' is a flex container for cards, dayContainer isn't needed per card.
-                        // For now, let's assume 'recipe-options' will be a grid of all selected recipe cards.
-                        // We will add day title inside or above the card.
-
+                        // If a recipe is already selected for the day, display it
                         const recipeCard = createRecipeCardElement(dayObject.selected, onInfoClick);
+                        // Add a visual cue that it's selected, or style it as "confirmed" for this day
+                        recipeCard.classList.add('confirmed-selection');
+                        dayCard.appendChild(recipeCard);
+                    } else if (dayObject.options && dayObject.options.length > 0) {
+                        // If no recipe selected, display options
+                        const optionsContainer = document.createElement('div');
+                        optionsContainer.className = 'recipe-options-for-day'; // Grid for two options
 
-                        // Prepend Day Title to the card or a wrapper
-                        const titleElement = document.createElement('h4'); // Or h3 if it fits better
-                        titleElement.textContent = dayObject.day;
-                        titleElement.style.marginBottom = '0.5rem'; // Add some spacing
-                        titleElement.style.textAlign = 'center'; // Center the day title above the card
+                        dayObject.options.forEach((recipeOption, optionIndex) => {
+                            const optionWrapper = document.createElement('div');
+                            optionWrapper.className = 'recipe-option-wrapper';
 
-                        const cardWrapper = document.createElement('div');
-                        cardWrapper.className = 'dashboard-recipe-wrapper'; // For potential styling
-                        cardWrapper.appendChild(titleElement);
-                        cardWrapper.appendChild(recipeCard);
+                            const recipeCard = createRecipeCardElement(recipeOption, onInfoClick);
 
-                        weeklyPlanContainer.appendChild(cardWrapper);
+                            const radioButton = document.createElement('input');
+                            radioButton.type = 'radio';
+                            radioButton.name = `day-${dayIndex}-selection`;
+                            radioButton.value = recipeOption.id; // Use recipe ID as value
+                            radioButton.dataset.recipeIndex = optionIndex; // Store option index if needed by handler
+                            radioButton.className = 'recipe-select-radio';
+                            // The onSelectRecipe callback will be attached in app.js via event delegation
+
+                            optionWrapper.appendChild(radioButton);
+                            optionWrapper.appendChild(recipeCard);
+                            optionsContainer.appendChild(optionWrapper);
+                        });
+                        dayCard.appendChild(optionsContainer);
+                    } else {
+                        // No options available for this day (should ideally not happen if plan generated correctly)
+                        const noOptionsMsg = document.createElement('p');
+                        noOptionsMsg.textContent = "Keine Rezeptoptionen für diesen Tag verfügbar.";
+                        dayCard.appendChild(noOptionsMsg);
                     }
+                    weeklyPlanContainer.appendChild(dayCard);
                 });
 
-                if (hasRenderedDay) {
-                    if (planDisplay) {
-                        planDisplay.classList.remove('hidden');
-                        planDisplay.style.display = '';
-                    }
-                    if (noPlanDisplay) {
-                        noPlanDisplay.classList.add('hidden');
-                        noPlanDisplay.style.display = 'none';
-                    }
-                    if (planInstructions) {
-                        // Update instructions text based on whether the plan is fully selected or not
-                        const allDaysSelected = plan.every(day => day.selected);
-                        if (allDaysSelected) {
-                            planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.";
-                        } else {
-                             // This case (some selected, some not) is now less likely if we only show selected.
-                             // But if the plan structure still has unselected days, this is relevant.
-                            planInstructions.textContent = "Hier sind deine ausgewählten Rezepte. Gehe zu 'Plan erstellen', um weitere Tage zu planen oder Änderungen vorzunehmen.";
-                        }
-                    }
-                } else {
-                    // This case means a plan structure exists, but nothing is selected.
-                    // Or, after filtering, no days with selected items remain.
-                    if (planDisplay) {
-                        planDisplay.classList.add('hidden');
-                        planDisplay.style.display = 'none';
-                    }
-                    if (noPlanDisplay) {
-                        noPlanDisplay.classList.remove('hidden');
-                        noPlanDisplay.style.display = 'block';
-                    }
+                if (planDisplay) {
+                    planDisplay.classList.remove('hidden');
+                    planDisplay.style.display = '';
+                }
+                if (noPlanDisplay) {
+                    noPlanDisplay.classList.add('hidden');
+                    noPlanDisplay.style.display = 'none';
                 }
 
-            } else { // No plan, or plan exists but no recipes selected
+                if (planInstructions) {
+                    const allDaysSelected = plan.every(day => day.selected);
+                    if (allDaysSelected) {
+                        planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.";
+                    } else {
+                        planInstructions.textContent = "Wähle für jeden Tag ein Gericht aus, um deinen Plan zu finalisieren.";
+                    }
+                }
+            } else { // No plan (plan is null or empty)
                 if (planDisplay) {
                     planDisplay.classList.add('hidden');
                     planDisplay.style.display = 'none';
@@ -190,6 +193,9 @@ const ui = (() => {
                 if (weeklyPlanContainer) {
                     weeklyPlanContainer.innerHTML = '';
                     weeklyPlanContainer.className = '';
+                }
+                if (planInstructions) {
+                    planInstructions.textContent = "Erstelle zuerst einen Plan."; // Default message
                 }
             }
         },
