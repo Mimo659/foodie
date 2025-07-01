@@ -1,6 +1,6 @@
 // js/ingredientMatcher.js
 
-const UNIT_STANDARDIZATION = {
+export const UNIT_STANDARDIZATION = {
     // Volume
     "ml": "ml", "milliliter": "ml", "millilitre": "ml",
     "l": "l", "liter": "l", "litre": "l",
@@ -44,7 +44,7 @@ const UNIT_STANDARDIZATION = {
 };
 
 // For converting between units of the same type (e.g., g to kg)
-const BASE_UNIT_CONVERSIONS = {
+export const BASE_UNIT_CONVERSIONS = {
     "g": {"kg": 0.001, "mg": 1000},
     "kg": {"g": 1000, "mg": 1000000},
     "ml": {"l": 0.001, "cl": 0.1},
@@ -56,7 +56,7 @@ const BASE_UNIT_CONVERSIONS = {
 
 // For ingredient-specific conversions, e.g., 1 Bund Petersilie -> 30g
 // This is highly approximate and context-dependent.
-const INGREDIENT_SPECIFIC_CONVERSIONS = {
+export const INGREDIENT_SPECIFIC_CONVERSIONS = {
     "petersilie": {
         "Bund": {"g": 30} // 1 Bund Petersilie is approx. 30g
     },
@@ -85,7 +85,7 @@ const INGREDIENT_SPECIFIC_CONVERSIONS = {
     // Add more ingredients and their typical conversions
 };
 
-const INGREDIENT_SYNONYMS = {
+export const INGREDIENT_SYNONYMS = {
     "naturreis": "Reis",
     "basmatireis": "Reis",
     "langkorn-spitzenreis": "Reis",
@@ -465,13 +465,13 @@ const INGREDIENT_SYNONYMS = {
     "ja! mini cordon bleu": "Cordon Bleu (Mini)",
 };
 
-function normalizeUnit(unitString) {
+export function normalizeUnit(unitString) {
     if (typeof unitString !== 'string') return "";
     const lowerUnit = unitString.toLowerCase().trim();
     return UNIT_STANDARDIZATION[lowerUnit] || unitString; // Return original if not found
 }
 
-function normalizeIngredientName(nameString) {
+export function normalizeIngredientName(nameString) {
     if (typeof nameString !== 'string') return "";
     let lowerName = nameString.toLowerCase().trim();
 
@@ -525,7 +525,7 @@ function normalizeIngredientName(nameString) {
 }
 
 
-function convertToBaseUnit(quantity, unit, ingredientName) {
+export function convertToBaseUnit(quantity, unit, ingredientName) {
     const normalizedName = normalizeIngredientName(ingredientName).toLowerCase(); // Ensure name is normalized for lookup
     const standardUnit = normalizeUnit(unit);
 
@@ -574,6 +574,7 @@ function convertToBaseUnit(quantity, unit, ingredientName) {
 // Make functions available for import in logic.js if using modules, or globally for script tags
 // For now, assuming global scope via script tags in index.html
 // If using Node.js for testing:
+/*
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         normalizeUnit,
@@ -586,3 +587,4 @@ if (typeof module !== 'undefined' && module.exports) {
     };
 }
 console.log("ingredientMatcher.js loaded");
+*/

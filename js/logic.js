@@ -1,4 +1,10 @@
-function generateWeeklyPlan(allRecipes, prefs) {
+import {
+    UNIT_STANDARDIZATION,
+    normalizeUnit,
+    normalizeIngredientName
+} from './ingredientMatcher.js';
+
+export function generateWeeklyPlan(allRecipes, prefs) {
     let availableRecipes = [...allRecipes];
 
     // Simplified dietary preferences filter
@@ -61,7 +67,7 @@ function generateWeeklyPlan(allRecipes, prefs) {
 }
 
 // Helper function to parse ingredient strings
-function parseIngredientString(ingString) {
+export function parseIngredientString(ingString) {
     const originalInputString = ingString;
 
     if (typeof ingString !== 'string') {
@@ -171,7 +177,7 @@ function parseIngredientString(ingString) {
 }
 
 
-function generateShoppingList(plan, userPantry, persons_unused = 1, pantryCategories) {
+export function generateShoppingList(plan, userPantry, persons_unused = 1, pantryCategories) {
     if (!plan || plan.length === 0) return [];
 
     const allIngredientsFromPlan = [];
@@ -264,7 +270,7 @@ function generateShoppingList(plan, userPantry, persons_unused = 1, pantryCatego
     return finalShoppingList;
 }
 
-function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
+export function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
     if (!userPantry || userPantry.length === 0) return [];
     console.warn("findAlmostCompleteRecipes: Matching based on full ingredient strings from data/recipes.json. This may be less accurate than matching parsed ingredient names.");
 
@@ -309,7 +315,7 @@ function findAlmostCompleteRecipes(allRecipes, userPantry, threshold = 0.55) {
     return matchedRecipes.slice(0, 10);
 }
 
-async function extractUniqueTags() {
+export async function extractUniqueTags() {
     const recipeFiles = ['data/recipes.json', 'data/recipes_2.json', 'data/recipes_4.json'];
     const allTags = new Set();
 
@@ -342,11 +348,12 @@ async function extractUniqueTags() {
 
 
 // Export functions for testing if in Node.js environment
+/*
 if (typeof module !== 'undefined' && module.exports) {
-    const ingredientMatcher = require('./ingredientMatcher.js');
-    UNIT_STANDARDIZATION = ingredientMatcher.UNIT_STANDARDIZATION; // Make it available in this module's scope
-    normalizeUnit = ingredientMatcher.normalizeUnit;
-    normalizeIngredientName = ingredientMatcher.normalizeIngredientName;
+    // const ingredientMatcher = require('./ingredientMatcher.js');
+    // UNIT_STANDARDIZATION = ingredientMatcher.UNIT_STANDARDIZATION; // Make it available in this module's scope
+    // normalizeUnit = ingredientMatcher.normalizeUnit;
+    // normalizeIngredientName = ingredientMatcher.normalizeIngredientName;
 
     module.exports = {
         generateWeeklyPlan,
@@ -356,3 +363,4 @@ if (typeof module !== 'undefined' && module.exports) {
         extractUniqueTags
     };
 }
+*/
