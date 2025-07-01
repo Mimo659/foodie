@@ -145,6 +145,7 @@ function setupGlobalEventListeners() {
 // --- Main Initialization ---
 async function initializeApp() {
     applyTheme(store.getTheme() || 'light'); // Set initial theme
+    ui.initModal(); // Initialize modal event listeners after DOM is ready
 
     try {
         const portionsForFetch = store.getPersons(); // Defaults to '2'

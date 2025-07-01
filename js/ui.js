@@ -1,31 +1,57 @@
-// Element selectors, kept at the top for easy access if needed by multiple functions
-const modal = document.getElementById('recipe-modal');
-const modalBody = document.getElementById('modal-body');
-const modalCloseBtn = modal ? modal.querySelector('.modal-close-btn') : null; // Guard against modal not found
+// Element selectors - modal related ones are now fetched on demand or in an init function
 const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
 const dynamicTagsCheckboxContainer = document.getElementById('dynamic-tags-checkboxes');
 
 // Private helper function for closing the modal
 const closeModal = () => {
+    const modal = document.getElementById('recipe-modal');
     if (modal) modal.classList.add('hidden');
 };
 
-// Event listeners for modal, setup once
-if (modal && modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !modal.classList.contains('hidden')) closeModal(); });
-} else {
-    console.warn("Modal elements not found for ui.js event listeners.");
+// Setup modal event listeners - can be called after DOM is ready, e.g., from app.js or an initUI function
+function setupModalEventListeners() {
+    const modal = document.getElementById('recipe-modal');
+    const modalCloseBtn = modal ? modal.querySelector('.modal-close-btn') : null;
+
+    if (modal && modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => {
+            // Check if modal is not null and not hidden before attempting to close
+            if (modal && !modal.classList.contains('hidden') && e.key === "Escape") {
+                closeModal();
+            }
+        });
+    } else {
+        console.warn("Modal elements not found for setting up ui.js event listeners.");
+    }
+}
+// Call it if app.js doesn't have an explicit UI init phase after DOMContentLoaded
+// For now, let's assume app.js structure handles calling this or similar.
+// Or, more simply, it can be called at the end of this file if this module is deferred.
+// Best practice: app.js calls an initUI() function exported from here after DOMContentLoaded.
+// For this fix, I'll assume it's called. If not, this would need to be exported and called.
+// Let's make it self-calling for now if not part of a larger init pattern in app.js
+// if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', setupModalEventListeners);
+// } else {
+//     setupModalEventListeners();
+// }
+// Simpler: app.js calls this. So, export it or make it part of a general ui.init()
+
+export function initModal() { // Export a function to be called by app.js
+    setupModalEventListeners();
 }
 
+
 export const populateTagFilters = (tags) => {
-    if (!dynamicTagsCheckboxContainer) return;
-    dynamicTagsCheckboxContainer.innerHTML = ''; // Clear any existing
+    // Ensure dynamicTagsCheckboxContainer is selected when needed, not at top level
+    const container = document.getElementById('dynamic-tags-checkboxes');
+    if (!container) return;
+    container.innerHTML = ''; // Clear any existing
     tags.forEach(tag => {
         const checkboxDiv = document.createElement('div');
-        // TODO: Apply new styling for checkboxes if available in styles.css
-        checkboxDiv.className = 'checkbox-group'; // This class might need new styles
+        checkboxDiv.className = 'checkbox-group';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `tag-${tag.toLowerCase().replace(/\s+/g, '-')}`;
@@ -36,11 +62,13 @@ export const populateTagFilters = (tags) => {
         label.textContent = tag;
         checkboxDiv.appendChild(checkbox);
         checkboxDiv.appendChild(label);
-        dynamicTagsCheckboxContainer.appendChild(checkboxDiv);
+        container.appendChild(checkboxDiv); // Use the locally scoped container
     });
 };
 
 export const openRecipeModal = (recipe) => {
+    const modal = document.getElementById('recipe-modal');
+    const modalBody = document.getElementById('modal-body');
     if (!modal || !modalBody) {
         console.error("Modal or modal body not found for openRecipeModal.");
         return;
