@@ -151,6 +151,10 @@ ul {
     display: none !important;
 }
 
+.visually-hidden-radio {
+    display: none !important;
+}
+
 /* Buttons */
 .btn {
     display: inline-block;
@@ -605,6 +609,16 @@ ul {
 }
 /* End Custom Checkbox */
 
+/* Generator View Form Spacing */
+#generator-view #generator-form .form-group,
+#generator-view #generator-form .form-group-inline,
+#generator-view #generator-form .generator-filter-grid {
+    margin-bottom: 1.5rem; /* Increase bottom margin for spacing */
+}
+#generator-view #generator-form .generator-submit-btn {
+    margin-top: 1.5rem; /* Ensure space above submit button */
+}
+
 /* Button Group for Portions/Tags */
 .button-group {
     display: flex;
@@ -754,15 +768,15 @@ ul {
     .main-header .container {
         flex-direction: row;
         justify-content: space-between;
-        position: relative;
+        /* position: relative; Removed as logo is no longer absolute */
         align-items: center; /* Ensure items are vertically centered */
     }
      .main-header .logo {
         font-size: 1.4rem; /* Slightly smaller logo on mobile */
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        /* Ensure logo doesn't overlap hamburger or theme toggle by limiting its width or using flex properties on parent */
+        /* position: absolute; Removed */
+        /* left: 50%; Removed */
+        /* transform: translateX(-50%); Removed */
+        /* Logo will now be a normal flex item, pushed to the left by justify-content: space-between */
     }
     .main-header .logo img {
         max-height: 28px; /* Control logo image height on mobile */
