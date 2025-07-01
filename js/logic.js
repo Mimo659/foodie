@@ -12,6 +12,11 @@ function generateWeeklyPlan(allRecipes, prefs) {
     // Budget filter (was non-functional anyway)
     // isQuick filter
     // Dynamic tags filter (prefs.selectedTags)
+    if (prefs.selectedTags && prefs.selectedTags.length > 0) {
+        availableRecipes = availableRecipes.filter(r =>
+            prefs.selectedTags.every(tag => Array.isArray(r.tags) && r.tags.includes(tag))
+        );
+    }
     // cuisine filter
 
     // Shuffle the available recipes
