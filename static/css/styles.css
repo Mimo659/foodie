@@ -1,0 +1,662 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #FF8C42; /* Orange */
+    --secondary-color: #F9F6F2; /* Light Beige */
+    --text-dark: #333333;
+    --text-medium: #777777;
+    --text-light: #FFFFFF;
+    --accent-green: #65B045;
+    --card-bg: #FFFFFF;
+    --border-light: #E0E0E0;
+
+    --border-radius-large: 20px;
+    --border-radius-medium: 10px;
+    --border-radius-small: 5px;
+
+    --box-shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --box-shadow-strong: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+    --font-primary: 'Poppins', sans-serif;
+    --font-script: 'Pacifico', cursive;
+
+    --container-width: 1140px;
+    --padding-global: 20px;
+}
+
+/* Basic Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: #FFF; /* Default white background for pages */
+    font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+}
+
+h1 { font-size: 2.5rem; } /* Example: "Best trending Now." */
+h2 { font-size: 2rem; }   /* Example: Section titles, Modal titles */
+h3 { font-size: 1.5rem; } /* Example: Card titles */
+h4 { font-size: 1.2rem; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Utility Classes */
+.container {
+    width: 90%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--padding-global);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-script {
+    font-family: var(--font-script);
+}
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-medium);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #e6732e; /* Darker orange */
+    border-color: #e6732e;
+    box-shadow: var(--box-shadow-soft);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+
+/* Header & Navigation */
+.main-header {
+    padding: 1rem 0;
+    background-color: #FFF; /* Assuming header is on white bg */
+    box-shadow: var(--box-shadow-soft); /* Subtle shadow for header */
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.logo .script-part { /* For "Healthfood" like styling */
+    font-family: var(--font-script);
+    color: var(--primary-color); /* Or keep dark, depends on exact logo */
+    font-weight: normal;
+}
+
+.main-nav ul {
+    display: flex;
+    align-items: center;
+}
+
+.main-nav li {
+    margin-left: 1.5rem;
+}
+
+.main-nav a {
+    color: var(--text-medium);
+    font-weight: 600;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--text-dark);
+    border-bottom-color: var(--primary-color);
+    text-decoration: none;
+}
+
+.main-nav .btn { /* For "Get Started" in nav */
+    margin-left: 1.5rem;
+    padding: 0.5rem 1rem; /* Smaller for nav */
+}
+
+
+/* Recipe Cards */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--padding-global);
+    padding: var(--padding-global) 0;
+}
+
+.recipe-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--box-shadow-soft);
+    padding: var(--padding-global);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* To contain image effects if any */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-strong);
+}
+
+.recipe-card-image-placeholder { /* Placeholder for actual image */
+    height: 180px;
+    background-color: #f0f0f0; /* Light gray for placeholder */
+    border-radius: var(--border-radius-medium); /* Rounded corners for image area */
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-medium);
+    font-style: italic;
+}
+/* Actual image styling */
+.recipe-card img.recipe-image {
+    width: 100%;
+    height: 180px; /* Or aspect-ratio: 3/2; */
+    object-fit: cover;
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 1rem;
+}
+
+
+.recipe-card-category {
+    font-size: 0.85rem;
+    color: var(--text-medium);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+.recipe-card-category img, .recipe-card-category svg { /* For small icon */
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+    opacity: 0.7;
+}
+
+.recipe-card-title {
+    font-size: 1.3rem; /* h3 is 1.5, this is slightly smaller */
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.recipe-card-description { /* Optional short description */
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    flex-grow: 1; /* Pushes actions to bottom if card heights vary */
+    margin-bottom: 1rem;
+}
+
+.recipe-card-actions {
+    margin-top: auto; /* Pushes to bottom */
+}
+
+
+/* Detailed Recipe View (Modal or Page Section) */
+.recipe-detail-wrapper {
+    background-color: var(--secondary-color); /* Light beige background for the whole modal backdrop/page area */
+    padding: var(--padding-global) 0; /* Or more if it's a full page */
+}
+
+.recipe-detail-content {
+    max-width: 800px; /* Max width for the content area */
+    margin: 2rem auto;
+    background-color: var(--card-bg); /* White card for content on beige backdrop */
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--box-shadow-strong);
+    padding: calc(var(--padding-global) * 1.5);
+    overflow: hidden; /* For potential curved elements */
+}
+/* If the beige is inside the white card for the top part: */
+.recipe-detail-header-bg {
+    background-color: var(--secondary-color);
+    margin: -calc(var(--padding-global) * 1.5) -calc(var(--padding-global) * 1.5) var(--padding-global);
+    padding: calc(var(--padding-global) * 1.5) calc(var(--padding-global) * 1.5) var(--padding-global);
+    border-bottom-left-radius: var(--border-radius-large); /* If needed */
+    border-bottom-right-radius: var(--border-radius-large); /* If needed */
+}
+
+
+.recipe-detail-image-placeholder { /* Placeholder for hero image */
+    height: 300px;
+    background-color: #e9e4dd; /* Slightly darker beige for placeholder */
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-medium);
+    font-style: italic;
+}
+.recipe-detail-content img.recipe-hero-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: var(--border-radius-medium); /* Image in detail view */
+    margin-bottom: 1.5rem;
+}
+
+
+.recipe-detail-title {
+    font-size: 2.2rem; /* h2 is 2rem, this is slightly larger */
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+/* Sub-description under title if needed */
+.recipe-detail-subtitle {
+    font-size: 1rem;
+    color: var(--text-medium);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+
+.recipe-detail-section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.recipe-detail-description p {
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+}
+
+.recipe-info-section {
+    /* The white section with Time, Ingredients, Calories */
+    background-color: var(--card-bg); /* This was planned as white */
+    /* If the whole .recipe-detail-content is white, this section might need a border or subtle bg */
+    /* For now, let's assume .recipe-detail-content is the main white card */
+    /* and this section is part of it. The image shows a different background for this section */
+    /* Let's try a subtle border and keep it white for now */
+    border: 1px solid var(--border-light);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-medium); /* Rounded corners for this specific box */
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    /* The tricky curved top-right border is deferred. Could use ::before/::after or SVG */
+}
+
+.recipe-info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-medium);
+}
+
+.recipe-info-item .icon { /* Placeholder for actual icons */
+    width: 32px;
+    height: 32px;
+    background-color: var(--accent-green); /* Green circle for icon bg */
+    color: var(--text-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem; /* Icon size */
+}
+.recipe-info-item .icon.calories { background-color: #8c5df5; } /* Purple for calories icon */
+.recipe-info-item .icon.ingredients { background-color: var(--primary-color); } /* Orange for ingredients */
+
+
+.recipe-info-item .value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.recipe-info-item .label {
+    font-size: 0.85rem;
+}
+
+.recipe-tags-section {
+    margin: 1.5rem 0;
+}
+
+.recipe-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.tag {
+    background-color: var(--border-light); /* Light gray background for tags */
+    color: var(--text-medium);
+    padding: 0.4rem 1rem;
+    border-radius: var(--border-radius-medium);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tag:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.recipe-detail-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.recipe-detail-actions .btn {
+    padding: 1rem 2.5rem; /* Larger button */
+    font-size: 1.1rem;
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--text-dark);
+    color: var(--text-light);
+    padding: 2rem 0;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.main-footer p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+.main-footer a {
+    color: var(--primary-color);
+}
+
+/* Styled List (base for ingredients, instructions, shopping list) */
+.styled-list {
+    list-style: none;
+    padding-left: 0;
+}
+.styled-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.styled-list li:last-child {
+    border-bottom: none;
+}
+.styled-list strong { /* For step numbers or emphasis */
+    color: var(--text-dark);
+}
+
+/* Custom styling for shopping list items */
+.shopping-list-custom .shopping-list-item {
+    padding: 0.75rem var(--padding-global); /* More padding for shopping list items */
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 0.75rem;
+    box-shadow: var(--box-shadow-soft);
+    transition: box-shadow 0.3s ease;
+}
+.shopping-list-custom .shopping-list-item:hover {
+    box-shadow: var(--box-shadow-strong);
+}
+
+.shopping-list-item .item-main-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.shopping-list-item .item-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-left: 0.5rem;
+}
+
+.shopping-list-item .item-quantity-details {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+.shopping-list-item.have-at-home .item-name {
+    text-decoration: line-through;
+    color: var(--text-medium);
+}
+.shopping-list-item.have-at-home .have-at-home-icon {
+    color: var(--accent-green);
+}
+
+.shopping-list-item .source-info-icon {
+    color: var(--text-medium);
+    cursor: help;
+}
+.shopping-list-item .combined-icon {
+    color: var(--primary-color);
+    font-size: 0.9em;
+}
+
+/* Basic custom checkbox - can be expanded */
+.styled-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    position: relative;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.styled-checkbox:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.styled-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--text-light);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+/* End Custom Checkbox */
+
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .recipe-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .recipe-detail-content {
+        padding: var(--padding-global);
+    }
+    .recipe-detail-header-bg {
+        margin: -var(--padding-global) -var(--padding-global) var(--padding-global);
+        padding: var(--padding-global) var(--padding-global) var(--padding-global);
+    }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.3rem; }
+
+    .main-header .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .main-nav {
+        margin-top: 1rem;
+    }
+    .main-nav ul {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .main-nav li {
+        margin: 0.5rem;
+    }
+    .main-nav .btn {
+        margin-top: 0.5rem;
+    }
+
+    .recipe-info-section {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .recipe-info-item {
+        width: 100%; /* Make items stack nicely */
+    }
+
+    .recipe-detail-title {
+        font-size: 1.8rem;
+    }
+    .recipe-detail-actions .btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 15px;
+    }
+    .container {
+        width: 95%;
+        padding: calc(var(--padding-global) * 0.75);
+    }
+    .recipe-grid {
+        grid-template-columns: 1fr; /* Single column */
+    }
+    .recipe-card {
+        padding: calc(var(--padding-global) * 0.75);
+    }
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    .main-nav a {
+        font-size: 0.9rem;
+    }
+}
+
+/*
+Placeholder for the curved border on .recipe-info-section.
+This is a complex shape and might be best achieved with an SVG background
+or a more complex pseudo-element setup.
+
+Example using pseudo-elements (simplified conceptual):
+.recipe-info-section::before {
+    content: '';
+    position: absolute;
+    top: -20px; // Adjust
+    right: 0;
+    width: 100px; // Adjust
+    height: 100px; // Adjust
+    background-color: var(--secondary-color); // Should match the parent's background
+    border-bottom-left-radius: 50px; // Creates the curve
+    z-index: -1; // Places it behind the content but above parent's background
+}
+.recipe-info-section {
+    position: relative; // Needed for absolute positioning of pseudo-element
+    overflow: visible; // May be needed if pseudo-element goes outside bounds
+}
+This would need careful tuning and might clip if not done right.
+For now, a standard border-radius is used.
+*/

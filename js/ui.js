@@ -24,7 +24,8 @@ export const populateTagFilters = (tags) => {
     dynamicTagsCheckboxContainer.innerHTML = ''; // Clear any existing
     tags.forEach(tag => {
         const checkboxDiv = document.createElement('div');
-        checkboxDiv.className = 'checkbox-group';
+        // TODO: Apply new styling for checkboxes if available in styles.css
+        checkboxDiv.className = 'checkbox-group'; // This class might need new styles
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `tag-${tag.toLowerCase().replace(/\s+/g, '-')}`;
@@ -44,82 +45,156 @@ export const openRecipeModal = (recipe) => {
         console.error("Modal or modal body not found for openRecipeModal.");
         return;
     }
-    // Ingredients are now an array of strings
+
+    const recipeName = recipe.title || "Unbenanntes Rezept";
+    const recipeDescriptionText = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Keine Beschreibung verfügbar.");
+    const imageUrl = recipe.image || 'static/images/placeholder_large.png'; // Assume a placeholder
+    const servings = recipe.servings || 'N/A';
+    const prepTime = recipe.prepTime || 'N/A';
+    const cookTime = recipe.cookTime || 'N/A';
+    // Placeholder values for calories & ingredients count, as they are not directly in recipe object
+    const calories = recipe.nutritionalInfo ? (recipe.nutritionalInfo.calories || 'N/A') : 'N/A';
+    const ingredientCount = recipe.ingredients ? recipe.ingredients.length : 'N/A';
+
+
     let ingredientsHtml = recipe.ingredients && Array.isArray(recipe.ingredients)
         ? recipe.ingredients.map(ingString => `<li>${ingString}</li>`).join('')
         : '<li>Zutaten nicht verfügbar</li>';
 
     let instructionsHtml = recipe.instructions && Array.isArray(recipe.instructions)
-        ? recipe.instructions.map((step, index) => `<li><strong>Schritt ${index + 1}:</strong> ${step}</li>`).join('')
+        ? recipe.instructions.map((step, index) => `<li><p><strong>Schritt ${index + 1}:</strong></p><p>${step}</p></li>`).join('')
         : '<li>Anleitung nicht verfügbar</li>';
 
-    // Use recipe.title, and recipe.difficulty for description if recipe.description is missing
-    const recipeName = recipe.title || "Unbenanntes Rezept";
-    const recipeDescription = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Keine Beschreibung verfügbar.");
+    let tagsHtml = '';
+    if (recipe.tags && Array.isArray(recipe.tags) && recipe.tags.length > 0) {
+        tagsHtml = recipe.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    }
 
-    modalBody.innerHTML = `<h2>${recipeName}</h2><p>${recipeDescription}</p><h3><i class="fa-solid fa-list-check"></i> Zutaten</h3><ul class="ingredient-list">${ingredientsHtml}</ul><h3><i class="fa-solid fa-person-chalkboard"></i> Anleitung</h3><ol class="instructions-list">${instructionsHtml}</ol>`;
+    modalBody.innerHTML = `
+        <div class="recipe-detail-content">
+            <div class="recipe-detail-image-placeholder" style="background-image: url('${imageUrl}');">
+                </div>
+
+            <h2 class="recipe-detail-title">${recipeName}</h2>
+
+            <div class="recipe-detail-description">
+                <p>${recipeDescriptionText}</p>
+            </div>
+
+            <div class="recipe-info-section">
+                <div class="recipe-info-item">
+                    <span class="icon"><i class="ti ti-clock"></i></span>
+                    <span class="value">${prepTime}</span>
+                    <span class="label">Vorbereitung</span>
+                </div>
+                <div class="recipe-info-item">
+                    <span class="icon"><i class="ti ti-tools-kitchen-2"></i></span>
+                    <span class="value">${ingredientCount}</span>
+                    <span class="label">Zutaten</span>
+                </div>
+                <div class="recipe-info-item">
+                    <span class="icon"><i class="ti ti-flame"></i></span>
+                    <span class="value">${calories}</span>
+                    <span class="label">Kalorien</span>
+                </div>
+                 <div class="recipe-info-item">
+                    <span class="icon"><i class="ti ti-users"></i></span>
+                    <span class="value">${servings}</span>
+                    <span class="label">Portionen</span>
+                </div>
+            </div>
+
+            <div class="recipe-detail-section ingredients-section">
+                <h3 class="recipe-detail-section-title"><i class="fa-solid fa-list-check"></i> Zutaten</h3>
+                <ul class="ingredient-list styled-list">${ingredientsHtml}</ul>
+            </div>
+
+            <div class="recipe-detail-section instructions-section">
+                <h3 class="recipe-detail-section-title"><i class="fa-solid fa-person-chalkboard"></i> Anleitung</h3>
+                <ol class="instructions-list styled-list">${instructionsHtml}</ol>
+            </div>
+
+            ${tagsHtml ? `
+            <div class="recipe-detail-section recipe-tags-section">
+                <h3 class="recipe-detail-section-title"><i class="fa-solid fa-tags"></i> Tags</h3>
+                <div class="recipe-tags-list">${tagsHtml}</div>
+            </div>` : ''}
+
+            <div class="recipe-detail-actions">
+                <button class="btn btn-primary btn-lg"><i class="ti ti-chef-hat"></i> Rezept kochen!</button>
+            </div>
+        </div>`;
     modal.classList.remove('hidden');
 };
 
-// This function is used by many render functions, so it's good to keep it in this module.
-// If it were only used by one, it could be a private function within that render function.
 const createRecipeCardElement = (recipe, onInfoClick) => {
     const card = document.createElement('div');
     card.className = 'recipe-card';
 
-    // recipe.estimatedCostPerServing is not in data/recipes.json, hide price tag or show placeholder
-    const priceTagHtml = (typeof recipe.estimatedCostPerServing === 'number' && !isNaN(recipe.estimatedCostPerServing))
-        ? `<span class="price-tag">~${recipe.estimatedCostPerServing.toFixed(2)}€/P</span>`
-        : '';
+    const imageUrl = recipe.image || 'static/images/placeholder_card.png'; // Define a placeholder for card images
 
-    let tagsHtml = `<div class="tags">${priceTagHtml}`;
-    if (recipe.tags && Array.isArray(recipe.tags)) {
-        recipe.tags.forEach(tag => {
-            // Special handling for 'schnell' to include an icon, if desired
-            if (tag.toLowerCase() === 'schnell') {
-                tagsHtml += `<span><i class="fa-solid fa-bolt"></i> ${tag}</span>`;
-            } else {
-                tagsHtml += `<span>${tag}</span>`;
-            }
-        });
+    // Category: Use first tag or a default. The design has small category text.
+    const category = recipe.tags && recipe.tags.length > 0 ? recipe.tags[0] : 'Allgemein';
+    // Small icon for category (example: using Tabler Icons)
+    const categoryIcon = '<i class="ti ti-tag"></i>'; // Generic tag icon, can be more specific
+
+    const recipeName = recipe.title || "Unbenanntes Rezept";
+    // Shorten description for card if it's too long
+    let recipeDescription = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Mehr Details im Rezept.");
+    if (recipeDescription.length > 100) {
+        recipeDescription = recipeDescription.substring(0, 97) + "...";
     }
-    tagsHtml += `</div>`;
 
+    // Prepare tags for display - using the new .tag class
+    let tagsHtml = '';
+    if (recipe.tags && Array.isArray(recipe.tags)) {
+        // Show a limited number of tags on the card, e.g., first 2-3
+        tagsHtml = recipe.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('');
+    }
+
+    // Match info (if applicable from inventory search)
     let matchInfoHtml = '';
     if (recipe.matchPercentage !== undefined) {
         const percentage = Math.round(recipe.matchPercentage * 100);
-        // recipe.missingIngredients is now an array of strings
         const missingText = recipe.missingIngredients && recipe.missingIngredients.length > 0
-            ? `<p class="missing-ingredients"><strong>Fehlt noch:</strong> ${recipe.missingIngredients.join(', ')}</p>`
-            : `<p class="all-ingredients-present"><i class="fa-solid fa-check-double"></i> Alles da!</p>`;
-        matchInfoHtml = `<div class="match-info"><div class="match-bar"><div class="match-bar-fill" style="width: ${percentage}%"></div></div><span class="match-text">${percentage}% Übereinstimmung</span>${missingText}</div>`;
+            ? `<p class="missing-ingredients" style="font-size:0.8em;">Fehlt: ${recipe.missingIngredients.join(', ')}</p>`
+            : `<p class="all-ingredients-present" style="font-size:0.8em; color:var(--accent-green);"><i class="ti ti-check"></i> Alles da!</p>`;
+        matchInfoHtml = `
+            <div class="match-info mt-1">
+                <small>Passend zu deinem Vorrat: ${percentage}%</small>
+                <div class="progress-bar small-progress" style="height: 8px; background-color: #e0e0e0; border-radius: 4px; margin-top: 4px;">
+                    <div class="progress-bar-fill" style="width: ${percentage}%; height: 100%; background-color: var(--accent-green); border-radius: 4px;"></div>
+                </div>
+                ${missingText}
+            </div>`;
     }
 
-    const recipeName = recipe.title || "Unbenanntes Rezept";
-    const recipeDescription = recipe.description || (recipe.difficulty ? `Schwierigkeit: ${recipe.difficulty}` : "Keine Beschreibung verfügbar.");
+    card.innerHTML = `
+        <div class="recipe-card-image-placeholder" style="background-image: url('${imageUrl}');">
+            </div>
+        <div class="recipe-card-category">
+            ${categoryIcon} <span>${category}</span>
+        </div>
+        <h3 class="recipe-card-title">${recipeName}</h3>
+        <p class="recipe-card-description">${recipeDescription}</p>
+        ${tagsHtml ? `<div class="recipe-card-tags mt-1">${tagsHtml}</div>` : ''}
+        ${matchInfoHtml}
+        <div class="recipe-card-actions mt-auto">
+            <button class="btn btn-sm btn-primary btn-block view-recipe-btn"><i class="ti ti-eye"></i> Rezept ansehen</button>
+        </div>
+    `;
+    // mt-auto on actions pushes it to the bottom if card content is shorter
 
-    let nutritionHtml = '';
-    if (recipe.nutritionalInfo) {
-        nutritionHtml += '<div class="recipe-nutrition-info">';
-        nutritionHtml += '<h5>Nährwerte (pro Portion)</h5><ul>'; // Corrected: pro Portion, not pro 100g unless specified
-        for (const [key, value] of Object.entries(recipe.nutritionalInfo)) {
-            nutritionHtml += `<li><strong>${key}:</strong> ${value}</li>`;
-        }
-        nutritionHtml += '</ul></div>';
-    }
-
-    const cardContent = document.createElement('div');
-    cardContent.className = 'recipe-card-content';
-    cardContent.innerHTML = `<h4>${recipeName}</h4><p>${recipeDescription}</p>${tagsHtml}${nutritionHtml}${matchInfoHtml}<button class="btn-info"><i class="fa-solid fa-book-open"></i> Rezept ansehen</button>`;
-
-    card.appendChild(cardContent);
-
-    const btnInfo = cardContent.querySelector('.btn-info');
+    const btnInfo = card.querySelector('.view-recipe-btn');
     if (btnInfo) {
-        btnInfo.addEventListener('click', (e) => { e.stopPropagation(); onInfoClick(recipe); });
+        btnInfo.addEventListener('click', (e) => {
+            e.stopPropagation();
+            onInfoClick(recipe);
+        });
     }
     return card;
 };
+
 
 export const renderDashboard = (plan, onInfoClick) => { // onSelectRecipe callback removed
     const planDisplay = document.getElementById('plan-display');
@@ -310,58 +385,59 @@ export const renderShoppingList = (shoppingList) => {
     container.innerHTML = ''; // Clear previous content
 
     if (shoppingList && shoppingList.length > 0) {
-        // Use the new grid container class
-        container.className = 'shopping-list-items-grid';
+        container.className = 'styled-list shopping-list-custom'; // New class for UL styling
 
         shoppingList.forEach(ingredientGroup => {
-            const haveAtHomeClass = ingredientGroup.haveAtHome ? 'have-at-home' : '';
+            const listItem = document.createElement('li');
+            listItem.className = 'shopping-list-item';
+            if (ingredientGroup.haveAtHome) {
+                listItem.classList.add('have-at-home');
+            }
+
+            // Using Tabler Icons
             const atHomeIconHtml = ingredientGroup.haveAtHome
-                ? '<i class="fa-solid fa-house-circle-check have-at-home-icon" title="Ganz oder teilweise vorhanden"></i>'
+                ? '<i class="ti ti-home-check have-at-home-icon" title="Ganz oder teilweise vorhanden"></i> '
                 : '';
             const combinedIconHtml = ingredientGroup.combined
-                ? ' <i class="fa-solid fa-layer-group combined-icon" title="Zusammengefasst aus mehreren Rezepten oder gleichen Zutaten"></i>'
+                ? ' <i class="ti ti-package combined-icon" title="Zusammengefasst aus mehreren Quellen"></i>' // ti-package is a placeholder, could be ti-layers-intersect or similar
                 : '';
 
-            let unitEntriesHtml = '';
+            let unitEntriesDisplay = '';
             ingredientGroup.unitEntries.forEach(unitEntry => {
                 const displayTotalQuantity = Number.isInteger(unitEntry.totalQuantity)
                     ? unitEntry.totalQuantity
                     : parseFloat(unitEntry.totalQuantity).toFixed(unitEntry.totalQuantity < 1 && unitEntry.totalQuantity > 0 ? 2 : (unitEntry.totalQuantity === 0 ? 0 : 1));
 
-                let sourcesHtml = '';
+                unitEntriesDisplay += `<span class="quantity-unit">${displayTotalQuantity} ${unitEntry.unit}</span>`;
+
                 if (unitEntry.recipeSources && unitEntry.recipeSources.length > 0) {
-                    sourcesHtml = '<ul class="source-list">';
-                    unitEntry.recipeSources.forEach(rs => {
-                        sourcesHtml += `<li><i class="fa-solid fa-utensils"></i> ${rs.recipeName}: ${rs.quantity} ${unitEntry.unit}</li>`;
-                    });
-                    sourcesHtml += '</ul>';
+                    let sourcesTooltip = unitEntry.recipeSources.map(rs => `${rs.recipeName}: ${rs.quantity} ${unitEntry.unit}`).join('; ');
+                    unitEntriesDisplay += ` <i class="ti ti-info-circle source-info-icon" title="${sourcesTooltip}"></i>`;
                 }
-
-                unitEntriesHtml += `
-                    <div class="unit-entry">
-                        <p class="total-quantity"><i class="fa-solid fa-boxes-stacked"></i> ${displayTotalQuantity} ${unitEntry.unit}</p>
-                        ${sourcesHtml}
-                    </div>`;
+                unitEntriesDisplay += '; ';
             });
+            if (unitEntriesDisplay.endsWith('; ')) {
+                unitEntriesDisplay = unitEntriesDisplay.slice(0, -2);
+            }
 
-            const cardHtml = `
-                <div class="shopping-list-item-card ${haveAtHomeClass}" data-ingredient-name="${ingredientGroup.displayName}">
-                    <div class="item-card-header">
-                        <input type="checkbox" class="shopping-list-item-checkbox" aria-label="Artikel gesammelt ${ingredientGroup.displayName}">
-                        <h4>${ingredientGroup.displayName}${combinedIconHtml}</h4>
-                        ${atHomeIconHtml}
-                    </div>
-                    <div class="item-card-body">
-                        ${unitEntriesHtml}
-                    </div>
-                </div>`;
-            container.innerHTML += cardHtml;
+            const uniqueId = `sl-item-${ingredientGroup.displayName.replace(/\s+/g, '-')}-${Math.random().toString(36).substr(2, 9)}`;
+
+            listItem.innerHTML = `
+                <div class="item-main-info">
+                    <input type="checkbox" class="shopping-list-item-checkbox styled-checkbox" id="${uniqueId}" aria-label="Artikel ${ingredientGroup.displayName} gesammelt">
+                    <label for="${uniqueId}" class="item-name">${atHomeIconHtml}${ingredientGroup.displayName}${combinedIconHtml}</label>
+                </div>
+                <div class="item-quantity-details">
+                    ${unitEntriesDisplay}
+                </div>
+            `;
+            container.appendChild(listItem);
         });
 
         container.classList.remove('hidden');
         noListMsg.classList.add('hidden');
     } else {
-        container.className = ''; // Reset class if empty
+        container.className = 'styled-list shopping-list-custom';
         container.classList.add('hidden');
         noListMsg.classList.remove('hidden');
     }
