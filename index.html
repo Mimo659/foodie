@@ -9,54 +9,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Tabler Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
 
-    <div id="loading-screen">
-        <div class="logo-container"></div>
+    <div id="loading-screen"> <!-- This could be styled with new theme variables if needed -->
+        <div class="logo-container"></div> <!-- Assuming this is for the initial large logo -->
         <p>Dein Wochenplaner wird geladen...</p>
     </div>
 
     <div id="app-content" class="content-hidden">
-        <header>
+        <header class="main-header">
             <div class="container">
-                <h1 id="logo"><img src="logo.png" alt="Foodie Logo" class="header-logo"> Foodie</h1>
-                <nav id="main-header-nav">
-                    <a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> <span>Dashboard</span></a>
-                    <a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a>
-                    <a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a>
-                    <a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a>
+                <!-- Hamburger button removed -->
+                <a href="#" class="logo" id="logo-link">
+                    <img src="logo.png" alt="Foodie Logo" class="header-logo">
+                    Foodie
+                </a>
+                <nav class="main-nav" id="main-header-nav">
+                    <ul>
+                        <li><a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> <span>Dashboard</span></a></li>
+                        <li><a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a></li>
+                        <li><a href="#" class="nav-item" data-view="random-recipe"><i class="ti ti-dice"></i> <span>Zufallsrezept</span></a></li>
+                        <li><a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a></li>
+                        <li><a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a></li>
+                    </ul>
                 </nav>
-                <button id="dark-mode-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                <button id="dark-mode-toggle" class="btn theme-toggle-btn" aria-label="Toggle dark mode">
                     <i class="ti ti-moon" id="theme-icon-moon"></i>
                     <i class="ti ti-sun hidden" id="theme-icon-sun"></i>
                 </button>
             </div>
         </header>
 
-        <div class="container main-layout">
+        <!-- Mobile Slide-out Menu Removed -->
+
+        <div class="container main-content-area">
             <main class="main-content">
+                <!-- Sections like #dashboard-view will need their internal content updated by JS to use new classes -->
+                <!-- Example: buttons inside these sections should get .btn .btn-primary etc. -->
                 <section id="dashboard-view" class="view">
                     <div id="plan-display" class="hidden">
-                        <div class="plan-header">
+                        <div class="plan-header"> <!-- This class might need styling or be replaced by utility classes -->
                             <h2><i class="ti ti-calendar-event"></i> Mein aktueller Wochenplan</h2>
-                            <button id="delete-plan-btn" class="btn-danger"><i class="ti ti-trash-x"></i> Plan löschen</button>
+                            <button id="delete-plan-btn" class="btn btn-danger"><i class="ti ti-trash-x"></i> Plan löschen</button> <!-- Added .btn -->
                         </div>
-                        <div id="weekly-plan-container"></div>
-                        <div class="plan-confirmation-controls">
+                        <div id="weekly-plan-container" class="recipe-grid"></div> <!-- Added recipe-grid for card layout -->
+                        <div class="plan-confirmation-controls text-center mt-2"> <!-- Added utility classes -->
                             <p class="plan-finished-text">Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.</p>
-                            <button id="confirm-plan-btn" class="btn-confirm" disabled>
+                            <button id="confirm-plan-btn" class="btn btn-primary" disabled> <!-- Changed btn-confirm to btn-primary -->
                                 <i class="ti ti-circle-check-filled"></i> Einkaufsliste erstellen
                             </button>
                         </div>
                     </div>
                     <div id="no-plan-display">
-                        <div class="empty-state-banner">
-                            <div class="banner-content">
+                        <div class="empty-state-banner card"> <!-- Assuming empty-state can be styled like a card -->
+                            <div class="banner-content text-center">
                                 <h2>Beginne deine kulinarische Woche!</h2>
                                 <p>Spare Geld, iss lecker und plane voraus. Dein perfekter Wochenplan ist nur einen Klick entfernt.</p>
-                                <button id="create-plan-btn" class="btn-primary">
+                                <button id="create-plan-btn" class="btn btn-primary btn-lg mt-1"> <!-- Added btn, btn-primary, btn-lg, mt-1 -->
                                     <i class="ti ti-sparkles"></i> Erstelle meinen Essensplan
                                 </button>
                             </div>
@@ -65,26 +77,21 @@
                 </section>
 
                 <section id="generator-view" class="view hidden">
+                    <!-- The existing .card class here should pick up some base styling -->
                     <div class="card">
                         <h2><i class="ti ti-settings"></i> Plane deine Woche (Option 1: Ganze Woche)</h2>
                         <form id="generator-form">
-                            <div class="form-group-inline">
+                            <div class="form-group-inline"> <!-- This will need custom styling or be refactored with new grid/flex utilities -->
                                 <div class="form-group">
                                     <label><i class="ti ti-friends"></i> Portionen</label>
-                                    <div class="radio-group-container" id="portions-radio-group">
-                                        <div class="radio-group">
-                                            <input type="radio" id="portions-2" name="portions" value="2" checked>
-                                            <label for="portions-2">2</label>
-                                        </div>
-                                        <div class="radio-group">
-                                            <input type="radio" id="portions-4" name="portions" value="4">
-                                            <label for="portions-4">4</label>
-                                        </div>
+                                    <div class="button-group" id="portions-button-group">
+                                        <button type="button" class="btn btn-outline-primary portion-btn active" data-value="2">2 Personen</button>
+                                        <button type="button" class="btn btn-outline-primary portion-btn" data-value="4">4 Personen</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="number-of-days"><i class="ti ti-calendar-stats"></i> Anzahl der Tage</label>
-                                    <select id="number-of-days" name="numberOfDays">
+                                    <select id="number-of-days" name="numberOfDays" class="form-control"> <!-- Added form-control, needs styling -->
                                         <option value="1">Tag 1</option>
                                         <option value="2">Tage 2</option>
                                         <option value="3">Tage 3</option>
@@ -94,42 +101,35 @@
                                         <option value="7" selected>Tage 7</option>
                                     </select>
                                 </div>
-                            </div> <!-- Closing the form-group-inline that starts with Portionen -->
+                            </div>
 
                             <div class="generator-filter-grid">
                                 <fieldset id="tags-filter-container">
                                     <legend><i class="fa-solid fa-tags"></i> Spezielle Eigenschaften</legend>
+                                    <!-- Checkboxes here will be dynamic. JS needs to ensure they are styled (e.g. custom checkboxes) -->
                                     <div class="checkbox-group-container" id="dynamic-tags-checkboxes">
-                                        <!-- Checkboxes will be dynamically inserted here by JavaScript -->
                                     </div>
                                 </fieldset>
-                                <!-- "Kategorien & Eigenschaften" and "Küchenstil" fieldsets are removed.
-                                     The generator-filter-grid div will now only contain the "Spezielle Eigenschaften" fieldset.
-                                     The closing div for generator-filter-grid will be removed later if this is the only child,
-                                     or adjusted if we change to a horizontal layout directly on the form. -->
-                            </div> <!-- This closes generator-filter-grid -->
-                            <button type="submit" class="btn-primary generator-submit-btn"><i class="ti ti-rocket"></i> Plan generieren</button>
+                            </div>
+                            <button type="submit" class="btn btn-primary generator-submit-btn mt-2"><i class="ti ti-rocket"></i> Plan generieren</button> <!-- Added btn, btn-primary -->
                         </form>
-                        <!-- Container for displaying recipe options directly on this page -->
-                        <div id="daily-options-display-container" class="hidden" style="margin-top: 2rem;">
-                            <!-- Recipe options will be rendered here by JavaScript -->
+
+                        <div id="daily-options-display-container" class="hidden recipe-grid mt-2"> <!-- Added recipe-grid -->
                         </div>
-                        <!-- Button to confirm selections made on this page -->
-                        <button id="confirm-generated-plan-btn" class="btn-confirm hidden" style="margin-top: 1rem;">
+                        <button id="confirm-generated-plan-btn" class="btn btn-primary hidden mt-1"> <!-- Changed btn-confirm to btn-primary -->
                             <i class="ti ti-checks"></i> Auswahl bestätigen und Plan anzeigen
                         </button>
                     </div>
+                    <!-- Option 2 (Wähle ein einzelnes Rezept) is moved to its own section -->
+                </section>
 
-                    <hr class="section-divider"> <!-- Visual separator -->
-
-                    <!-- New section for suggested recipes -->
+                <section id="random-recipe-view" class="view hidden">
                     <div class="card">
-                        <h2><i class="ti ti-chef-hat"></i> Wähle ein einzelnes Rezept (Option 2)</h2>
-                        <p>Oder wähle ein Rezept aus unseren Vorschlägen für heute:</p>
-                        <div id="suggested-recipes-container" class="recipe-options">
-                            <!-- Suggested recipe cards will be injected here by JavaScript -->
+                        <h2><i class="ti ti-dice"></i> Zufälliges Rezept auswählen</h2>
+                        <p>Wähle ein Rezept aus unseren Vorschlägen für einen einzelnen Tag:</p>
+                        <div id="suggested-recipes-container" class="recipe-grid">
                         </div>
-                        <button id="create-single-recipe-plan-btn" class="btn-primary" style="margin-top: 1rem;" disabled>
+                        <button id="create-single-recipe-plan-btn" class="btn btn-primary mt-1" disabled>
                             <i class="ti ti-calendar-plus"></i> Dieses Rezept für heute einplanen
                         </button>
                     </div>
@@ -138,25 +138,22 @@
                 <section id="inventory-view" class="view hidden">
                     <div class="card">
                         <h2><i class="ti ti-home-question"></i> Was habe ich zu Hause?</h2>
-
-                        <!-- New Item Input Area -->
                         <div id="add-pantry-item-form">
                             <p>Füge Lebensmittel zu deinem Vorrat hinzu:</p>
-
                             <div class="form-group">
                                 <label for="pantry-item-search">Lebensmittel suchen</label>
-                                <input type="text" id="pantry-item-search" placeholder="z.B. Milch, Zwiebel, Hähnchenbrust..." autocomplete="off">
-                                <div id="pantry-item-suggestions" class="suggestions-list"></div> <!-- For auto-complete -->
+                                <input type="text" id="pantry-item-search" placeholder="z.B. Milch, Zwiebel, Hähnchenbrust..." autocomplete="off" class="form-control"> <!-- Added form-control -->
+                                <div id="pantry-item-suggestions" class="suggestions-list"></div>
                             </div>
 
-                            <div class="form-group-inline hidden" id="pantry-item-details">
+                            <div class="form-group-inline hidden" id="pantry-item-details"> <!-- Needs styling or refactor -->
                                 <div class="form-group">
                                     <label for="pantry-item-quantity">Menge</label>
-                                    <input type="number" id="pantry-item-quantity" min="0" value="1">
+                                    <input type="number" id="pantry-item-quantity" min="0" value="1" class="form-control"> <!-- Added form-control -->
                                 </div>
                                 <div class="form-group">
                                     <label for="pantry-item-unit">Einheit</label>
-                                    <select id="pantry-item-unit">
+                                    <select id="pantry-item-unit" class="form-control"> <!-- Added form-control -->
                                         <option value="Stk." selected>Stk.</option>
                                         <option value="g">g</option>
                                         <option value="kg">kg</option>
@@ -173,41 +170,34 @@
                                         <option value="Flasche(n)">Flasche(n)</option>
                                         <option value="Zehe(n)">Zehe(n)</option>
                                         <option value="Handvoll">Handvoll</option>
-                                        <!-- Add more common units as needed -->
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="pantry-item-expiration">Haltbar bis (optional)</label>
-                                    <input type="date" id="pantry-item-expiration">
+                                    <input type="date" id="pantry-item-expiration" class="form-control"> <!-- Added form-control -->
                                 </div>
                             </div>
-                            <button id="add-item-to-pantry-btn" class="btn-primary hidden">
+                            <button id="add-item-to-pantry-btn" class="btn btn-primary hidden mt-1">
                                 <i class="ti ti-circle-plus"></i> Zum Vorrat hinzufügen
                             </button>
                         </div>
 
-                        <!-- Display of Current Pantry -->
-                        <hr class="section-divider">
+                        <hr class="section-divider my-2">
                         <div id="current-pantry-section">
                             <h3><i class="ti ti-box-multiple"></i> Mein aktueller Vorrat</h3>
-                            <div id="current-pantry-display">
-                                <!-- Items will be listed here -->
+                            <div id="current-pantry-display"> <!-- JS will fill this. Items should be styled. -->
                             </div>
                             <p id="empty-pantry-message">Dein Vorrat ist leer.</p>
                         </div>
 
-                        <!-- Action button for finding recipes -->
-                        <button id="find-recipes-from-pantry-btn" class="btn-secondary">
+                        <button id="find-recipes-from-pantry-btn" class="btn btn-outline-primary mt-2"> <!-- Changed to btn-outline-primary -->
                             <i class="ti ti-bulb"></i> Rezepte für meinen Vorrat finden
                         </button>
-                        <!-- The old save-inventory-btn is replaced by find-recipes-from-pantry-btn -->
-                        <!-- The old textarea inventory-input is removed -->
                     </div>
 
-                    <div id="inventory-results-container">
-                        <!-- Content dynamically filled by js/ui.js -->
+                    <div id="inventory-results-container" class="recipe-grid mt-2"> <!-- Added recipe-grid -->
                     </div>
-                    <button id="delete-inventory-recipes-btn" class="btn-danger hidden">
+                    <button id="delete-inventory-recipes-btn" class="btn btn-danger hidden mt-1">
                         <i class="ti ti-trash-x"></i> Vorgeschlagene Rezepte löschen
                     </button>
                 </section>
@@ -215,41 +205,68 @@
                 <section id="shopping-list-view" class="view hidden">
                     <div class="card">
                         <h2><i class="ti ti-shopping-bag"></i> Deine Einkaufsliste</h2>
-                        <button id="export-shopping-list-btn" class="btn-secondary" style="margin-bottom: 1rem;">
+                        <button id="export-shopping-list-btn" class="btn btn-outline-primary mb-2"> <!-- Changed to btn-outline-primary -->
                             <i class="ti ti-clipboard-text"></i> In Zwischenablage kopieren
                         </button>
-                        <ul id="shopping-list-container"></ul>
+                        <ul id="shopping-list-container"></ul> <!-- List items will need styling -->
                          <p id="no-shopping-list" class="hidden">Erstelle und bestätige zuerst einen Wochenplan, um eine Einkaufsliste zu sehen.</p>
                     </div>
                 </section>
             </main>
         </div>
 
-        <footer>
+        <footer class="main-footer"> <!-- Added main-footer class -->
             <div class="container">
-                Gestaltet mit <i class="fa-solid fa-heart" style="color: #E63946;"></i> für dich
+                Gestaltet mit <i class="fa-solid fa-heart" style="color: var(--primary-color);"></i> für dich <!-- Used CSS var for heart -->
             </div>
         </footer>
     </div>
     
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav id="mobile-bottom-nav">
+        <a href="#" class="nav-item active" data-view="dashboard" aria-label="Dashboard">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-view="generator" aria-label="Plan erstellen">
+            <i class="ti ti-chef-hat"></i>
+            <span class="nav-text">Plan</span> <!-- Shortened "Erstellen" to "Plan" -->
+        </a>
+        <a href="#" class="nav-item" data-view="random-recipe" aria-label="Zufälliges Rezept">
+            <i class="ti ti-dice"></i>
+            <span class="nav-text">Rezept</span> <!-- Short name for mobile -->
+        </a>
+        <a href="#" class="nav-item" data-view="inventory" aria-label="Mein Vorrat">
+            <i class="ti ti-fridge"></i>
+            <span class="nav-text">Vorrat</span>
+        </a>
+        <a href="#" class="nav-item" data-view="shopping-list" aria-label="Einkaufsliste">
+            <i class="ti ti-shopping-cart-plus"></i>
+            <span class="nav-text">Liste</span>
+        </a>
+    </nav>
+
+    <!-- Modal structure is generally fine, classes .modal-overlay and .modal-content are in styles.css -->
     <div id="recipe-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <button class="modal-close-btn">×</button>
+        <div class="modal-content"> <!-- This will be the main white card for the modal -->
+            <button class="modal-close-btn btn">×</button> <!-- Added .btn for base styling, specific modal close styling in CSS -->
+            <!-- modal-body will be filled by JS. It should use .recipe-detail-wrapper or .recipe-detail-content structure -->
             <div id="modal-body"></div>
         </div>
     </div>
 
     <div id="confirm-new-plan-modal" class="modal-overlay hidden">
-        <div class="modal-content confirm-dialog">
+        <div class="modal-content confirm-dialog card"> <!-- Added .card for base styling -->
             <h3>Bestätigung</h3>
             <p>Du hast bereits einen aktiven Plan. Bist du sicher, dass du einen neuen Plan erstellen und den alten überschreiben möchtest?</p>
-            <div class="confirm-dialog-actions">
-                <button id="confirm-new-plan-yes" class="btn-confirm"><i class="ti ti-check"></i> Ja, neuen Plan erstellen</button>
-                <button id="confirm-new-plan-no" class="btn-danger"><i class="ti ti-x"></i> Abbrechen</button>
+            <div class="confirm-dialog-actions mt-2"> <!-- Added mt-2 -->
+                <button id="confirm-new-plan-yes" class="btn btn-primary"><i class="ti ti-check"></i> Ja, neuen Plan erstellen</button> <!-- Changed btn-confirm -->
+                <button id="confirm-new-plan-no" class="btn btn-danger"><i class="ti ti-x"></i> Abbrechen</button>
             </div>
         </div>
     </div>
     
+    <!-- Scripts remain the same -->
     <!--
     <script src="js/ingredientMatcher.js"></script>
     <script src="js/logic.js"></script>
@@ -257,5 +274,33 @@
     -->
     <script type="module" src="js/app.js"></script>
 
+    <!-- Cooking Steps Modal -->
+    <div id="cooking-steps-modal" class="modal-overlay hidden">
+        <div class="modal-content cooking-steps-content">
+            <button class="modal-close-btn" aria-label="Schließen Kochschritte">×</button>
+            <h2>Kochanleitung</h2>
+            <ol id="cooking-steps-list" class="styled-list cooking-steps-ordered-list">
+                <!-- Steps will be populated by JavaScript -->
+                <!-- Example Step Structure (for reference):
+                <li class="cooking-step step-completed" data-step-index="0">
+                    <div class="step-text">Step 1: Do something.</div>
+                    <button class="btn btn-sm step-done-btn" disabled><i class="ti ti-check"></i> Erledigt</button>
+                </li>
+                <li class="cooking-step step-active" data-step-index="1">
+                    <div class="step-text">Step 2: Do something else. This is a longer instruction to see how text wraps and if the layout holds up with more content.</div>
+                    <button class="btn btn-sm step-done-btn"><i class="ti ti-player-play"></i> Als erledigt markieren</button>
+                </li>
+                <li class="cooking-step step-pending" data-step-index="2">
+                    <div class="step-text">Step 3: Finish up.</div>
+                    <button class="btn btn-sm step-done-btn" disabled><i class="ti ti-player-play"></i> Als erledigt markieren</button>
+                </li>
+                -->
+            </ol>
+            <div class="cooking-steps-finished hidden text-center mt-2">
+                <p><i class="ti ti-party"></i> Alle Schritte erledigt! Guten Appetit!</p>
+                <button class="btn btn-primary close-cooking-modal-btn mt-1">Schließen</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
