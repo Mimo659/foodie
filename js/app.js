@@ -123,6 +123,9 @@ function initializeApp() {
                         // Default to 2 portions if somehow nothing is selected, though HTML defaults to 2.
                         const selectedPortions = selectedPortionsElement ? selectedPortionsElement.value : '2';
 
+                        const numberOfDaysElement = document.getElementById('number-of-days');
+                        const numberOfDays = numberOfDaysElement ? parseInt(numberOfDaysElement.value, 10) : 7;
+
 
                         // Get selected tags
                         const selectedTagNodes = document.querySelectorAll('#dynamic-tags-checkboxes input[type="checkbox"]:checked');
@@ -132,7 +135,8 @@ function initializeApp() {
                             persons: parseInt(selectedPortions, 10),
                             isVegetarian: dietPreference === 'vegetarian',
                             isVegan: dietPreference === 'vegan',
-                            selectedTags: selectedTags
+                            selectedTags: selectedTags,
+                            numberOfDays: numberOfDays
                             // Consider adding other filters like isQuick, cuisine if they are still in HTML and intended to be used.
                         };
 
@@ -150,7 +154,7 @@ function initializeApp() {
                         store.setItem('weeklyPlan', weeklyPlan);
                         store.setItem('persons', prefs.persons.toString()); // Ensure 'persons' is stored as string
 
-                        ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);
+                        ui.renderDashboard(weeklyPlan, handleInfoClick); // handleRecipeSelect removed
                         ui.updateConfirmButtonState(weeklyPlan);
                         ui.switchView('dashboard-view');
                         navLinks.forEach(n => n.classList.remove('active'));
@@ -172,7 +176,7 @@ function initializeApp() {
                 if (confirm("Bist du sicher, dass du den aktuellen Wochenplan löschen möchtest?")) {
                     weeklyPlan = null;
                     store.setItem('weeklyPlan', null);
-                    ui.renderDashboard(null, handleRecipeSelect, handleInfoClick);
+                    ui.renderDashboard(null, handleInfoClick); // handleRecipeSelect removed
                     ui.updateConfirmButtonState(null);
                     ensureNavItemsVisibility(); // Ensure nav items are visible
                 }
@@ -383,7 +387,7 @@ function initializeApp() {
                     store.setItem('persons', null); // Clear stored persons related to the plan
 
                     // Potentially also clear dashboard and confirm button state
-                    ui.renderDashboard(null, handleRecipeSelect, handleInfoClick);
+                    ui.renderDashboard(null, handleInfoClick); // handleRecipeSelect removed
                     ui.updateConfirmButtonState(null);
 
                     hideConfirmNewPlanModal();
@@ -441,7 +445,7 @@ function initializeApp() {
                     }
 
                     const singleDayPlan = [{
-                        day: "Montag", // Defaulting to Monday for now
+                        day: "Tag 1", // Defaulting to "Tag 1"
                         options: [currentlySelectedSingleRecipe],
                         selected: currentlySelectedSingleRecipe
                     }];
@@ -453,7 +457,7 @@ function initializeApp() {
                     store.setItem('weeklyPlan', singleDayPlan);
                     store.setItem('persons', portions); // Store portions setting
 
-                    ui.renderDashboard(singleDayPlan, handleRecipeSelect, handleInfoClick);
+                    ui.renderDashboard(singleDayPlan, handleInfoClick); // handleRecipeSelect removed
                     ui.updateConfirmButtonState(singleDayPlan); // This might disable confirm if only one day
                     ui.switchView('dashboard-view');
                     navLinks.forEach(n => n.classList.remove('active'));
@@ -477,7 +481,7 @@ function initializeApp() {
 
                 // inventoryInput.value = inventory.join(', '); // Old inventory input, remove
                 renderCurrentPantry(); // Initialize pantry display
-                ui.renderDashboard(weeklyPlan, handleRecipeSelect, handleInfoClick);
+                ui.renderDashboard(weeklyPlan, handleInfoClick); // handleRecipeSelect removed
                 ui.updateConfirmButtonState(weeklyPlan);
                 ui.switchView('dashboard-view'); // Default view
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');

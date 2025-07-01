@@ -18,17 +18,16 @@ function generateWeeklyPlan(allRecipes, prefs) {
     const shuffledRecipes = [...availableRecipes].sort(() => 0.5 - Math.random());
 
     const finalPlan = [];
-    const days = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+    const numDaysToPlan = prefs.numberOfDays || 7; // Use selected number of days, default to 7
     const recipesNeededPerDay = 2;
-    const totalRecipesNeeded = days.length * recipesNeededPerDay;
+    const totalRecipesNeeded = numDaysToPlan * recipesNeededPerDay;
 
-    if (shuffledRecipes.length < totalRecipesNeeded && shuffledRecipes.length > 1) {
-        // Not enough recipes for a full week with 2 options, but some can be provided.
-        // This case is handled by the alert in app.js.
-        // We will generate a plan for as many days as possible.
-        console.warn(`Nicht genügend Rezepte für einen vollen 7-Tage-Plan mit ${recipesNeededPerDay} Optionen pro Tag. Verfügbar: ${shuffledRecipes.length}`);
+    if (shuffledRecipes.length < totalRecipesNeeded && shuffledRecipes.length >= recipesNeededPerDay) {
+        // Not enough recipes for the desired number of days with 2 options, but some can be provided.
+        console.warn(`Nicht genügend Rezepte für einen ${numDaysToPlan}-Tage-Plan mit ${recipesNeededPerDay} Optionen pro Tag. Verfügbar: ${shuffledRecipes.length}. Es wird ein kürzerer Plan erstellt.`);
+        // The app.js alert will handle informing the user if the generated plan is shorter than requested.
     } else if (shuffledRecipes.length < recipesNeededPerDay) { // Check if there are at least two recipes to form one day's options
-        console.warn("Konnte keinen Plan erstellen: weniger als 2 passende Rezepte insgesamt nach Filterung gefunden.");
+        console.warn(`Konnte keinen Plan erstellen: weniger als ${recipesNeededPerDay} passende Rezepte insgesamt nach Filterung gefunden.`);
         return []; // Return empty if not enough for even one day with two options
     }
 
@@ -36,25 +35,20 @@ function generateWeeklyPlan(allRecipes, prefs) {
     // If fewer are available, the loop for days will handle it.
     const recipePool = shuffledRecipes.slice(0, totalRecipesNeeded);
 
-    for (let i = 0; i < days.length; i++) {
+    for (let i = 0; i < numDaysToPlan; i++) {
         const option1Index = i * recipesNeededPerDay;
         const option2Index = option1Index + 1;
 
         if (recipePool[option1Index] && recipePool[option2Index]) {
             finalPlan.push({
-                day: days[i],
+                day: `Tag ${i + 1}`, // Label days as "Tag 1", "Tag 2", etc.
                 options: [recipePool[option1Index], recipePool[option2Index]],
                 selected: null
             });
-        } else if (recipePool[option1Index] && availableRecipes.length === 1 && i === 0) {
-            // Special case: only 1 recipe available in total after filtering, offer it as the only option for day 1.
-            // This is unlikely if the initial check `shuffledRecipes.length < recipesNeededPerDay` is robust.
-            // For simplicity, we'll stick to requiring at least 2 recipes to form any plan.
-            // This block could be enhanced if single-option days are desired when very few recipes match.
-            // For now, the `shuffledRecipes.length < recipesNeededPerDay` check above should prevent this.
-            break; // Stop if we can't form a pair for the current day
         } else {
-            // Not enough recipes left in the pool to create two options for the current day.
+            // Not enough recipes left in the pool to create two options for the current day or subsequent days.
+            // The plan will be shorter than numDaysToPlan.
+            console.log(`Planerstellung für Tag ${i + 1} gestoppt: Nicht genügend Rezepte im Pool.`);
             break;
         }
     }
