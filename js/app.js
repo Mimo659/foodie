@@ -11,14 +11,19 @@ let ALL_RECIPES_DATA = [];
 let PANTRY_CATEGORIES_DATA = [];
 
 // DOM Elements for global interactions
-const navLinks = document.querySelectorAll('.nav-item');
+const navLinks = document.querySelectorAll('.nav-item'); // This will select all items with .nav-item class
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 const themeIconMoon = document.getElementById('theme-icon-moon');
 const themeIconSun = document.getElementById('theme-icon-sun');
-const pantrySearchInput = document.getElementById('pantry-item-search'); // Renamed for clarity
-const pantrySuggestionsContainer = document.getElementById('pantry-item-suggestions'); // Renamed for clarity
-const dashboardConfirmPlanBtn = document.getElementById('confirm-plan-btn'); // Confirm button on Dashboard
+const pantrySearchInput = document.getElementById('pantry-item-search');
+const pantrySuggestionsContainer = document.getElementById('pantry-item-suggestions');
+const dashboardConfirmPlanBtn = document.getElementById('confirm-plan-btn');
 
+// Mobile Navigation DOM Elements
+const hamburgerMenuBtn = document.getElementById('hamburger-menu-btn');
+const mobileSlideoutMenu = document.getElementById('mobile-slideout-menu');
+const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
+// Note: mobileNavLinks and mobileBottomNavLinks are already covered by 'navLinks' querySelectorAll('.nav-item')
 
 // --- Theme Management ---
 function applyTheme(selectedTheme) {
@@ -33,9 +38,18 @@ function handleThemeToggle() {
     store.setTheme(newTheme);
 }
 
+// --- Mobile Menu Toggle ---
+function toggleMobileMenu() {
+    if (mobileSlideoutMenu) {
+        const isOpen = mobileSlideoutMenu.classList.toggle('is-open');
+        document.body.classList.toggle('no-scroll', isOpen); // Optional: prevent body scroll
+    }
+}
+
 // --- Navigation ---
 function updateActiveNavLink(viewName) {
-    navLinks.forEach(link => {
+    // This selector now correctly targets all nav items including desktop, slideout, and bottom mobile nav
+    document.querySelectorAll('.nav-item').forEach(link => {
         link.classList.toggle('active', link.getAttribute('data-view') === viewName);
     });
 }
@@ -74,13 +88,35 @@ function navigateToGeneratorView() {
 function setupGlobalEventListeners() {
     if (darkModeToggle) darkModeToggle.addEventListener('click', handleThemeToggle);
 
-    navLinks.forEach(link => {
+    // Consolidated Nav Link Handling (covers desktop, slideout, and bottom mobile nav)
+    document.querySelectorAll('.nav-item').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetView = e.currentTarget.getAttribute('data-view');
+
+            // If the link is inside the slideout menu, close the menu first
+            if (e.currentTarget.closest('#mobile-slideout-menu')) {
+                toggleMobileMenu();
+            }
+
             switchAppView(targetView);
         });
     });
+
+    // Hamburger Menu Event Listeners
+    if (hamburgerMenuBtn) {
+        hamburgerMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
+    if (closeMobileMenuBtn) {
+        closeMobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
+    if (mobileSlideoutMenu) { // Listener for clicking on the overlay to close
+        mobileSlideoutMenu.addEventListener('click', (e) => {
+            if (e.target === mobileSlideoutMenu) { // Only if overlay itself is clicked
+                toggleMobileMenu();
+            }
+        });
+    }
 
     // Listener for dashboard's "confirm plan" button to switch to shopping list
     if (dashboardConfirmPlanBtn) {

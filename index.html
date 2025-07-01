@@ -21,28 +21,44 @@
 
     <div id="app-content" class="content-hidden">
         <header class="main-header">
-            <div class="container"> <!-- main-header-container class removed, direct .container is fine based on styles.css -->
-                <a href="#" class="logo" id="logo-link"> <!-- Changed h1 to a, added id for JS if needed -->
-                    <img src="logo.png" alt="Foodie Logo" class="header-logo"> <!-- class header-logo might need adjustment or removal if new CSS handles img within .logo -->
-                    Foodie <!-- Wrap "Foodie" in span.script-part if that specific styling is desired, or style .logo directly -->
+            <div class="container">
+                <button id="hamburger-menu-btn" class="btn hamburger-btn" aria-label="Menü öffnen">
+                    <i class="ti ti-menu-2"></i>
+                </button>
+                <a href="#" class="logo" id="logo-link">
+                    <img src="logo.png" alt="Foodie Logo" class="header-logo">
+                    Foodie
                 </a>
-                <nav class="main-nav" id="main-header-nav"> <!-- Added main-nav class -->
-                    <ul> <!-- Added ul wrapper for li elements as per styles.css structure -->
+                <nav class="main-nav" id="main-header-nav">
+                    <ul>
                         <li><a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> <span>Dashboard</span></a></li>
                         <li><a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a></li>
                         <li><a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a></li>
                         <li><a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a></li>
                     </ul>
                 </nav>
-                <button id="dark-mode-toggle" class="btn theme-toggle-btn" aria-label="Toggle dark mode"> <!-- Added btn class for base styling -->
+                <button id="dark-mode-toggle" class="btn theme-toggle-btn" aria-label="Toggle dark mode">
                     <i class="ti ti-moon" id="theme-icon-moon"></i>
                     <i class="ti ti-sun hidden" id="theme-icon-sun"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Removed main-layout class as .container should handle layout. main-content is fine. -->
-        <div class="container">
+        <!-- Mobile Slide-out Menu -->
+        <div id="mobile-slideout-menu" class="mobile-menu-overlay hidden">
+            <nav class="mobile-slideout-nav">
+                <button id="close-mobile-menu-btn" class="btn close-menu-btn" aria-label="Menü schließen"><i class="ti ti-x"></i></button>
+                <ul>
+                    <li><a href="#" class="nav-item" data-view="dashboard"><i class="ti ti-layout-dashboard"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#" class="nav-item" data-view="generator"><i class="ti ti-chef-hat"></i> <span>Plan erstellen</span></a></li>
+                    <li><a href="#" class="nav-item" data-view="inventory"><i class="ti ti-fridge"></i> <span>Mein Vorrat</span></a></li>
+                    <li><a href="#" class="nav-item" data-view="shopping-list"><i class="ti ti-shopping-cart-plus"></i> <span>Einkaufsliste</span></a></li>
+                    <!-- Add any other links if needed, e.g., settings, profile -->
+                </ul>
+            </nav>
+        </div>
+
+        <div class="container main-content-area"> <!-- Added a class to distinguish from header/footer container -->
             <main class="main-content">
                 <!-- Sections like #dashboard-view will need their internal content updated by JS to use new classes -->
                 <!-- Example: buttons inside these sections should get .btn .btn-primary etc. -->
@@ -226,6 +242,26 @@
         </footer>
     </div>
     
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav id="mobile-bottom-nav">
+        <a href="#" class="nav-item active" data-view="dashboard" aria-label="Dashboard">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-view="generator" aria-label="Plan erstellen">
+            <i class="ti ti-chef-hat"></i>
+            <span class="nav-text">Erstellen</span>
+        </a>
+        <a href="#" class="nav-item" data-view="inventory" aria-label="Mein Vorrat">
+            <i class="ti ti-fridge"></i>
+            <span class="nav-text">Vorrat</span>
+        </a>
+        <a href="#" class="nav-item" data-view="shopping-list" aria-label="Einkaufsliste">
+            <i class="ti ti-shopping-cart-plus"></i>
+            <span class="nav-text">Liste</span>
+        </a>
+    </nav>
+
     <!-- Modal structure is generally fine, classes .modal-overlay and .modal-content are in styles.css -->
     <div id="recipe-modal" class="modal-overlay hidden">
         <div class="modal-content"> <!-- This will be the main white card for the modal -->
