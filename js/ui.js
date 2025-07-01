@@ -385,13 +385,36 @@ const ui = (() => {
                             radioButton.name = `gen-day-${dayIndex}-selection`; // Unique name for radio group per day
                             radioButton.value = recipeOption.id;
                             radioButton.dataset.recipeIndex = optionIndex;
-                            radioButton.className = 'recipe-select-radio-generator';
-                            // Check if this option is the selected one (it shouldn't be if dayObject.selected is null, but good for consistency)
+                            radioButton.className = 'recipe-select-radio-generator visually-hidden-radio'; // Added class to hide radio
+                            // Check if this option is the selected one
                             if (dayObject.selected && dayObject.selected.id === recipeOption.id) {
                                 radioButton.checked = true;
+                                recipeCardInstance.classList.add('selected-by-radio'); // Add class if selected
                             }
-                            optionWrapper.appendChild(radioButton);
-                            optionWrapper.appendChild(recipeCardInstance); // Corrected variable name
+
+                            recipeCardInstance.addEventListener('click', (e) => {
+                                // If the click is on the info button, let its own handler work
+                                if (e.target.closest('.btn-info')) {
+                                    return;
+                                }
+                                e.stopPropagation(); // Prevent other click listeners if any
+
+                                // Unselect other cards visually for this day
+                                optionsContainer.querySelectorAll('.recipe-card.selected-by-radio').forEach(card => {
+                                    card.classList.remove('selected-by-radio');
+                                });
+                                // Select current card visually
+                                recipeCardInstance.classList.add('selected-by-radio');
+
+                                // Check the hidden radio button
+                                radioButton.checked = true;
+                                // Manually trigger change event on radio button
+                                const event = new Event('change', { bubbles: true });
+                                radioButton.dispatchEvent(event);
+                            });
+
+                            optionWrapper.appendChild(radioButton); // Keep radio for logic, but hide with CSS
+                            optionWrapper.appendChild(recipeCardInstance);
                             optionsContainer.appendChild(optionWrapper);
                         });
                         dayCard.appendChild(optionsContainer);

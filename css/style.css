@@ -130,6 +130,13 @@
 .hidden {
     display: none !important;
 }
+.visually-hidden-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
 
 /* BASE STYLES */
 body {
@@ -415,6 +422,19 @@ body.dark-mode #dashboard-view .card { background-color: transparent; border: no
 /* .calendar-recipe-options .recipe-card { ... } */
 /* .no-options-text { ... } */
 
+/* Container for options for a single day in the generator view */
+.recipe-options-for-day {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 1.5rem; /* Gap between cards */
+    margin-bottom: 1.5rem; /* Space below each day's options container */
+}
+
+/* Wrapper for each recipe card (which includes the hidden radio) */
+.recipe-option-wrapper {
+    display: flex;
+    flex-direction: column; /* Ensure card takes up the space */
+}
 
 .recipe-card { /* Individual recipe card - general styling */
     background: var(--k-bg-card);
@@ -437,17 +457,18 @@ body.dark-mode .recipe-card {
     /* Rainbow borders should still work. If not, define dark mode specific ones or adjust opacity of pop colors. */
     /* For now, assuming pop colors are visible enough on dark-bg-card */
 }
-/* Rainbow border effect for recipe cards */
-.recipe-card:nth-of-type(6n+1) { border-color: var(--k-primary-pop-1); }
-.recipe-card:nth-of-type(6n+2) { border-color: var(--k-accent-vibrant-orange); }
-.recipe-card:nth-of-type(6n+3) { border-color: var(--k-accent-vibrant-yellow); }
-.recipe-card:nth-of-type(6n+4) { border-color: var(--k-primary-pop-2); }
-.recipe-card:nth-of-type(6n+5) { border-color: var(--k-accent-vibrant-blue); }
-.recipe-card:nth-of-type(6n+6) { border-color: var(--k-accent-vibrant-purple); }
+/* Rainbow border effect for recipe cards - applies to cards not otherwise having a selection-specific border */
+.recipe-card:not(.selected-by-radio):not(.selected):nth-of-type(6n+1) { border-color: var(--k-primary-pop-1); }
+.recipe-card:not(.selected-by-radio):not(.selected):nth-of-type(6n+2) { border-color: var(--k-accent-vibrant-orange); }
+.recipe-card:not(.selected-by-radio):not(.selected):nth-of-type(6n+3) { border-color: var(--k-accent-vibrant-yellow); }
+.recipe-card:not(.selected-by-radio):not(.selected):nth-of-type(6n+4) { border-color: var(--k-primary-pop-2); }
+.recipe-card:not(.selected-by-radio):not(.selected):nth-of-type(6n+5) { border-color: var(--k-accent-vibrant-blue); }
+.recipe-card:not(.selected-by-radio):not(.selected):nth-of-type(6n+6) { border-color: var(--k-accent-vibrant-purple); }
 
 
 .recipe-card > *:last-child { margin-top: auto; }
 
+/* General selected class, can be used by other mechanisms if needed */
 .recipe-card.selected {
     border-color: var(--k-primary-pop-1); /* Prominent border color for selected card */
     transform: translateY(-5px) scale(1.02);
@@ -455,13 +476,22 @@ body.dark-mode .recipe-card {
     border-width: 4px; /* Thicker border for selected card */
     z-index: 10; /* Ensure selected card is on top if overlapping during transform */
 }
-.recipe-card:not(.selected) {
+
+/* Specific style for cards selected via radio button click (now card click) */
+.recipe-card.selected-by-radio {
+    border-color: var(--k-primary-pop-1) !important; /* Ensure this overrides the rainbow border */
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Slightly less shadow than .selected potentially */
+    border-width: 3px; /* Thicker border */
+    z-index: 5; /* Above non-selected cards */
+}
+
+.recipe-card:not(.selected):not(.selected-by-radio) {
     opacity: 1;
 }
-.recipe-card:hover:not(.selected) {
+.recipe-card:hover:not(.selected):not(.selected-by-radio) {
     transform: translateY(-3px) scale(1.01); /* Slightly less pronounced hover */
     box-shadow: var(--shadow-medium);
-
 }
 .recipe-card h4 {
     font-size: 1.1rem; /* Reduced font size */
@@ -1334,6 +1364,9 @@ footer i.fa-heart {
     /* .nav-item i rules are now handled in the 992px breakpoint for #main-header-nav .nav-item i.ti */
 
     .recipe-options { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
+    /* Ensure two columns for recipe options per day on smaller tablets, then stack on phones */
+    .recipe-options-for-day { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+
     .shopping-list-items-grid { grid-template-columns: 1fr; gap: 1rem; } /* Stack shopping list cards */
 
     .empty-state-banner {
@@ -1409,6 +1442,8 @@ footer i.fa-heart {
         padding: 0.8rem 1rem; /* Adjust padding */
     }
 
+    /* On mobile phones, stack recipe options for a day */
+    .recipe-options-for-day { grid-template-columns: 1fr; gap: 1rem; }
 
     .recipe-card { padding: 1.25rem; } /* More padding in recipe cards */
     .recipe-card-image { height: 170px; }
