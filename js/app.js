@@ -156,6 +156,7 @@ function initializeApp() {
                         navLinks.forEach(n => n.classList.remove('active'));
                         const dashboardNav = document.querySelector('.nav-item[data-view="dashboard"]');
                         if (dashboardNav) dashboardNav.classList.add('active');
+                        ensureNavItemsVisibility(); // Ensure nav items are visible
 
                     } catch (error) {
                         console.error("Fehler bei der Plangenerierung:", error);
@@ -173,6 +174,7 @@ function initializeApp() {
                     store.setItem('weeklyPlan', null);
                     ui.renderDashboard(null, handleRecipeSelect, handleInfoClick);
                     ui.updateConfirmButtonState(null);
+                    ensureNavItemsVisibility(); // Ensure nav items are visible
                 }
             });
 
@@ -332,12 +334,14 @@ function initializeApp() {
                     navLinks.forEach(navLink => navLink.classList.remove('active'));
                     e.currentTarget.classList.add('active');
                     if (viewId === 'inventory-view') {
+                        ui.switchView('inventory-view'); // Make the inventory view visible
                         // When navigating to inventory view, re-render based on current matchingRecipes
                         // This ensures that if recipes were cleared, they stay cleared,
                         // or if they were previously loaded, they are shown again.
                         ui.renderInventoryResults(matchingRecipes, handleInfoClick);
                         renderCurrentPantry(); // Also render the pantry list when switching to this view
                     } else if (viewId === 'shopping-list-view') {
+                         ui.switchView('shopping-list-view'); // Make the shopping list view visible
                          const list = generateShoppingList(weeklyPlan, userPantry, persons, PANTRY_CATEGORIES); // Use userPantry and pass PANTRY_CATEGORIES
                         ui.renderShoppingList(list);
                     } else if (viewId === 'generator-view') {
@@ -350,6 +354,7 @@ function initializeApp() {
                     } else {
                         ui.switchView(viewId); // For other views, switch immediately.
                     }
+                    ensureNavItemsVisibility(); // Ensure nav items are visible after any nav link click
                 });
             });
 
@@ -383,6 +388,7 @@ function initializeApp() {
 
                     hideConfirmNewPlanModal();
                     navigateToGeneratorView(); // Proceed to generator view
+                    ensureNavItemsVisibility(); // Ensure nav items are visible
                 });
             }
 
@@ -404,6 +410,15 @@ function initializeApp() {
 
 
             // --- End Confirmation Modal Logic ---
+
+            function ensureNavItemsVisibility() {
+                const inventoryNavItem = document.querySelector('.nav-item[data-view="inventory"]');
+                if (inventoryNavItem) {
+                    inventoryNavItem.classList.remove('hidden');
+                }
+                // If other nav items also need this treatment, add them here.
+                // For now, only "Mein Vorrat" is specified.
+            }
 
             const navigateToGeneratorView = () => {
                 ui.switchView('generator-view');
@@ -466,6 +481,7 @@ function initializeApp() {
                 ui.updateConfirmButtonState(weeklyPlan);
                 ui.switchView('dashboard-view'); // Default view
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
+                ensureNavItemsVisibility(); // Ensure nav items are visible on initial UI setup
                 ui.showApp();
             }
 
