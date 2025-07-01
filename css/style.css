@@ -369,7 +369,32 @@ main.main-content {
     border: 1px solid var(--k-primary-pop-2);
     font-weight: 500;
 }
-.plan-instructions i.ti { color: var(--k-primary-pop-2); }
+/* .plan-instructions i.ti { color: var(--k-primary-pop-2); } */ /* Original plan-instructions is removed */
+
+/* New styles for plan confirmation controls */
+.plan-confirmation-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.5rem; /* Replaces button's original margin-top */
+    padding: 1rem;
+    background-color: var(--k-primary-pop-2-lighter); /* Similar to old plan-instructions bg */
+    border-radius: 8px;
+    border: 1px solid var(--k-primary-pop-2);
+}
+
+.plan-finished-text {
+    flex-basis: 50%;
+    margin-bottom: 0; /* Remove default p margin */
+    padding-right: 0.5rem; /* Space between text and button */
+    font-weight: 500; /* Match old plan-instructions */
+    color: var(--k-text-primary); /* Match old plan-instructions */
+    font-size: 0.95rem; /* Adjust as needed */
+    line-height: 1.4;
+}
+/* Ensure icon within the text, if any, gets pop color */
+/* .plan-finished-text i.ti { color: var(--k-primary-pop-2); } */
+
 
 .card { /* General card styling for generator, inventory etc. */
     background-color: var(--k-bg-card);
@@ -705,10 +730,14 @@ body.dark-mode .match-info .all-ingredients-present { color: var(--dark-primary-
     background-color: var(--k-primary-pop-2); /* Defaulting to pop-2 for confirm */
     color: var(--k-text-on-bright);
     border-color: var(--k-primary-pop-2);
-    width: 100%;
-    margin-top: 1.5rem; /* Reduced margin */
-    padding: 0.8rem 1.5rem; /* Reduced padding */
-    font-size: 1rem; /* Reduced font size */
+    /* width: 100%; */ /* Changed for new layout */
+    width: auto; /* Allow flexbox to manage width */
+    flex-basis: 50%; /* Assign 50% of space */
+    margin-top: 0; /* Adjusted by new container */
+    /* padding: 0.8rem 1.5rem; */ /* Adjusted for consistency */
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem; /* Align with other buttons */
+    margin-left: 0.5rem; /* Space between text and button */
 }
 .btn-confirm:hover:not(:disabled) {
     background-color: var(--k-primary-pop-2-darker);
