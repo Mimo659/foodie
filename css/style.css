@@ -15,7 +15,7 @@
     /* --border-color: #E9ECEF; */ /* Original Light Border - Deprecated, replaced by --k-border-light */
 
     /* New Kitchen-Friendly Harmonious & Colorful Palette - REFINED */
-    --k-bg-light: #FDFCFB; /* Slightly brighter Warm Cream BG */
+    --k-bg-light: #FFFFFF; /* Slightly brighter Warm Cream BG */
     --k-bg-card: #FFFFFF; /* Card BG - keeping white */
     --k-bg-overlay: rgba(61, 44, 42, 0.65); /* Overlay for modal, using dark brown base */
 
@@ -81,6 +81,19 @@
     --k-border-medium: #D5D8DC; /* Medium Gray */
     /* --k-border-dark: #B0A5A1; */ /* DEPRECATED - old warm border */
     /* --k-border-vibrant-accent: To be defined by use case */
+
+    /* Rainbow Palette - Saturated and Vibrant */
+    --rainbow-red: #FF1744; /* Vivid Red */
+    --rainbow-orange: #FF9100; /* Vivid Orange */
+    --rainbow-yellow: #FFEA00; /* Vivid Yellow */
+    --rainbow-green: #00E676; /* Vivid Green */
+    --rainbow-blue: #2979FF; /* Vivid Blue */
+    --rainbow-indigo: #6200EA; /* Vivid Indigo */
+    --rainbow-violet: #D500F9; /* Vivid Violet */
+
+    /* Lighter shade for box-shadows or subtle backgrounds */
+    --rainbow-blue-lighter: rgba(41, 121, 255, 0.25);
+
 
     /* Header specific - Option 2 (Dark Contrast) chosen - NOW CHANGED TO LIGHT HEADER */
     --header-bg: #FFFFFF; /* White */
@@ -149,7 +162,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
 body.dark-mode {
     --k-bg-light: var(--dark-bg-light);
     --k-bg-card: var(--dark-bg-card);
@@ -183,8 +200,11 @@ h2 { font-size: 2rem; line-height: 1.2; } /* Smaller h2 */
 h3 { font-size: 1.5rem; line-height: 1.25; } /* Smaller h3 */
 h4 { font-size: 1.15rem; line-height: 1.35; font-weight: 600; } /* Smaller h4 */
 p { margin-top: 0; margin-bottom: 0.75rem; color: var(--k-text-secondary); } /* Reduced bottom margin for paragraphs */
-a { color: var(--k-primary-pop-1); text-decoration: none; font-weight: 500; transition: color 0.2s ease-in-out; }
-a:hover { color: var(--k-primary-pop-1-darker); }
+a { color: var(--k-primary-pop-1); text-decoration: none; font-weight: 500; transition: color 0.2s ease-in-out, text-shadow 0.2s ease-in-out; }
+a:hover {
+    color: var(--rainbow-orange); /* Change to a rainbow color on hover */
+    text-shadow: 0 0 5px var(--rainbow-orange); /* Add a subtle glow */
+}
 
 /* Icon base size and margin */
 i.fa-solid, i.fas, i.ti {
@@ -261,20 +281,24 @@ header .container {
     margin-right: 0.4rem; /* Reduced space */
 }
 .nav-item:hover {
-    background-color: var(--k-primary-pop-1-lighter);
-    color: var(--k-primary-pop-1-darker);
-    border-color: var(--k-primary-pop-1-lighter);
+    background: linear-gradient(90deg, var(--rainbow-red), var(--rainbow-orange), var(--rainbow-yellow), var(--rainbow-green), var(--rainbow-blue), var(--rainbow-indigo), var(--rainbow-violet));
+    background-size: 200% 200%;
+    animation: rainbow-bg 3s ease infinite;
+    color: var(--k-text-on-bright);
+    border-color: transparent;
     /* transform: none; */ /* No horizontal transform needed for header nav */
 }
 .nav-item:hover i.ti {
-    color: var(--k-primary-pop-1);
+    color: var(--k-text-on-bright);
 }
 .nav-item.active {
-    background-color: var(--k-primary-pop-1);
+    background: linear-gradient(90deg, var(--rainbow-red), var(--rainbow-orange), var(--rainbow-yellow), var(--rainbow-green), var(--rainbow-blue), var(--rainbow-indigo), var(--rainbow-violet));
+    background-size: 200% 200%;
+    animation: rainbow-bg 3s ease infinite reverse; /* Reverse animation for active */
     color: var(--k-text-on-bright);
     font-weight: 600;
     box-shadow: var(--shadow-soft); /* Softer shadow for active item in header */
-    border-color: var(--k-primary-pop-1);
+    border-color: transparent;
 }
 .nav-item.active i.ti {
     color: var(--k-text-on-bright);
@@ -290,12 +314,11 @@ header .container {
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .theme-toggle-btn:hover {
-    background-color: var(--k-primary-pop-1-lighter);
-    color: var(--k-primary-pop-1-darker);
-    border-color: var(--k-primary-pop-1-lighter);
+    border-color: var(--rainbow-red);
+    box-shadow: 0 0 10px var(--rainbow-red);
 }
 .theme-toggle-btn i.ti {
     font-size: 1.2em;
@@ -318,6 +341,7 @@ body.dark-mode .theme-toggle-btn:hover {
     display: flex;
     flex-direction: column;
     margin-top: 1rem; /* Reduced space below sticky header */
+    flex-grow: 1; /* Allow main content to grow and push footer down */
 }
 /* aside.main-nav is removed from here, styles are now for #main-header-nav */
 main.main-content {
@@ -329,15 +353,31 @@ main.main-content {
 
 /* BANNER & SEKTIONEN */
 .empty-state-banner {
-    background: linear-gradient(135deg, var(--k-primary-pop-1-lighter), var(--k-primary-pop-2-lighter)),
+    background: linear-gradient(45deg, var(--rainbow-red), var(--rainbow-orange), var(--rainbow-yellow), var(--rainbow-green), var(--rainbow-blue), var(--rainbow-indigo), var(--rainbow-violet)),
                   url('https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=2070&auto=format&fit=crop') center center/cover;
+    background-size: 400% 400%, cover; /* For gradient animation */
     padding: 3rem 1.5rem; /* Reduced padding */
     border-radius: 16px; /* Reduced radius */
     text-align: center;
     box-shadow: var(--shadow-strong);
     color: var(--k-text-primary);
     margin-bottom: 2rem; /* Added margin bottom */
+    animation: rainbow-bg 15s ease infinite; /* Apply rainbow animation to the gradient */
+    position: relative; /* For pseudo-elements if needed */
 }
+/* Optional: Add a subtle overlay to ensure text readability over the animated gradient */
+.empty-state-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1); /* Light overlay */
+    border-radius: 16px; /* Match parent */
+    z-index: 1;
+}
+
 .banner-content {
     background-color: rgba(255, 255, 255, 0.92);
     display: inline-block;
@@ -345,6 +385,8 @@ main.main-content {
     border-radius: 12px; /* Reduced radius */
     backdrop-filter: blur(8px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative; /* To ensure it's above the pseudo-element */
+    z-index: 2;
 }
 .banner-content h2 { color: var(--k-primary-pop-1); font-size: 2rem; } /* Reduced font size */
 .banner-content p { color: var(--k-text-secondary); font-size: 1rem; } /* Reduced font size */
@@ -650,15 +692,18 @@ body.dark-mode .recipe-card .match-info {
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 0.6rem;
+    border: 1px solid var(--k-border-light); /* Add a subtle border to the bar itself */
 }
 body.dark-mode .match-info .match-bar {
     background-color: var(--dark-border-medium);
+    border-color: var(--dark-border-medium);
 }
 .match-info .match-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--k-accent-vibrant-yellow), var(--k-primary-pop-1)); /* Vibrant gradient */
+    background: linear-gradient(90deg, var(--rainbow-red), var(--rainbow-orange), var(--rainbow-yellow), var(--rainbow-green), var(--rainbow-blue));
     border-radius: 6px;
     transition: width 0.5s ease-in-out;
+    animation: rainbow-bg 5s linear infinite; /* Animated gradient for the fill */
 }
 .match-info .match-text { font-size: 0.9rem; font-weight: 600; color: var(--k-text-primary); }
 .match-info .missing-ingredients { font-size: 0.85rem; color: var(--k-accent-red); margin-top: 0.4rem; }
@@ -836,8 +881,8 @@ input[type="password"]:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: var(--k-primary-pop-1);
-    box-shadow: 0 0 0 3px var(--k-primary-pop-1-lighter);
+    border-color: var(--rainbow-blue);
+    box-shadow: 0 0 0 3px var(--rainbow-blue-lighter);
 }
 body.dark-mode input[type="text"]:focus,
 body.dark-mode input[type="number"]:focus,
@@ -1339,9 +1384,11 @@ footer {
     text-align: center;
     padding: 1.5rem 1rem;
     color: var(--k-text-secondary);
-    margin-top: 4rem;
+    /* margin-top: 4rem; */ /* Removed fixed margin-top for sticky footer */
     background-color: var(--k-primary-pop-2-lighter);
     border-top: 3px solid var(--k-primary-pop-2);
+    width: 100%; /* Ensure footer takes full width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 body.dark-mode footer {
     background-color: var(--dark-primary-pop-2-lighter);
@@ -1359,9 +1406,59 @@ footer i.fa-heart {
     margin: 0 0.25em; /* Add a little space around the heart */
 }
 /* LOADING SCREEN */
-#loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; transition: opacity 0.5s ease-out; }
-#loading-screen .logo-container { width: 120px; height: 120px; background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSIjMkE5RDhGIiBkPSJNNTAsMCBDNjAsMjAgODUsMjUgOTUsNTAgQzcwLDYwIDcwLDg1IDUwLDEwMCBDMzAsODUgMzAsNjAgNSw1MCBDMTUsMjUgNDAsMjAgNTAsMCBaIi8+PHBvbHlsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHBvaW50cz0iMzAsNTUgNDUsNzAgNzAsNDAiLz48L3N2Zz4='); background-size: contain; background-repeat: no-repeat; animation: pulse 1.5s infinite ease-in-out; }
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s ease-out;
+}
+#loading-screen .logo-container {
+    width: 120px;
+    height: 120px;
+    /* background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBmaWxsPSIjMkE5RDhGIiBkPSJNNTAsMCBDNjAsMjAgODUsMjUgOTUsNTAgQzcwLDYwIDcwLDg1IDUwLDEwMCBDMzAsODUgMzAsNjAgNSw1MCBDMTUsMjUgNDAsMjAgNTAsMCBaIi8+PHBvbHlsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHBvaW50cz0iMzAsNTUgNDUsNzAgNzAsNDAiLz48L3N2Zz4='); */
+    /* Replace with a rainbow loading indicator if desired, or keep existing */
+    border: 10px solid transparent;
+    border-top-color: var(--rainbow-red);
+    border-right-color: var(--rainbow-orange);
+    border-bottom-color: var(--rainbow-yellow);
+    border-left-color: var(--rainbow-green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite, pulse 1.5s infinite ease-in-out;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+#loading-screen p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--k-text-secondary);
+    animation: rainbow-text 3s linear infinite;
+}
+
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes rainbow-text {
+    0% { color: var(--rainbow-red); }
+    16% { color: var(--rainbow-orange); }
+    33% { color: var(--rainbow-yellow); }
+    50% { color: var(--rainbow-green); }
+    66% { color: var(--rainbow-blue); }
+    83% { color: var(--rainbow-indigo); }
+    100% { color: var(--rainbow-violet); }
+}
+@keyframes rainbow-bg {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
 
 /* RESPONSIVE DESIGN - Reviewed and Refined for VIBRANT THEME */
 @media (max-width: 1024px) { /* Adding a new breakpoint for larger tablets / smaller desktops */
