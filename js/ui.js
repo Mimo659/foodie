@@ -260,8 +260,9 @@ const ui = (() => {
                     });
 
                     const cardHtml = `
-                        <div class="shopping-list-item-card ${haveAtHomeClass}">
+                        <div class="shopping-list-item-card ${haveAtHomeClass}" data-ingredient-name="${ingredientGroup.displayName}">
                             <div class="item-card-header">
+                                <input type="checkbox" class="shopping-list-item-checkbox" aria-label="Artikel gesammelt ${ingredientGroup.displayName}">
                                 <h4>${ingredientGroup.displayName}${combinedIconHtml}</h4>
                                 ${atHomeIconHtml}
                             </div>

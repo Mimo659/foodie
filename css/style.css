@@ -183,6 +183,8 @@ a:hover { color: var(--k-primary-pop-1-darker); }
 i.fa-solid, i.fas, i.ti {
     display: inline-block;
     width: 20px; /* Slightly smaller icon width */
+    min-height: 1em; /* Ensure minimum height */
+    line-height: 1; /* Ensure line height doesn't collapse it */
     text-align: center;
     vertical-align: middle;
     margin-right: 0.5rem; /* Reduced icon margin */
@@ -1756,4 +1758,39 @@ body.dark-mode .shopping-list-item-card.have-at-home .total-quantity i {
     .shopping-list-item-card .source-list {
         font-size: 0.85rem;
     }
+}
+
+/* Checkbox styling for shopping list items */
+.shopping-list-item-checkbox {
+    margin-right: 0.75rem;
+    transform: scale(1.3); /* Make checkbox slightly larger */
+    accent-color: var(--k-primary-pop-1);
+    cursor: pointer;
+    align-self: center; /* Align checkbox with the text if header is flex and align-items start */
+}
+
+.item-card-header {
+    /* Ensure items are vertically centered if checkbox makes header taller */
+    align-items: center;
+}
+
+
+/* Styling for collected shopping list items */
+.shopping-list-item-card.collected {
+    opacity: 0.65;
+    background-color: var(--k-bg-light); /* Lighten background slightly or use a specific color */
+}
+body.dark-mode .shopping-list-item-card.collected {
+    background-color: var(--dark-bg-light); /* Adjust for dark mode */
+    opacity: 0.5;
+}
+
+.shopping-list-item-card.collected .item-card-header h4,
+.shopping-list-item-card.collected .item-card-body {
+    text-decoration: line-through;
+    text-decoration-color: var(--k-accent-red);
+}
+body.dark-mode .shopping-list-item-card.collected .item-card-header h4,
+body.dark-mode .shopping-list-item-card.collected .item-card-body {
+    text-decoration-color: var(--dark-accent-red);
 }

@@ -52,14 +52,17 @@ function initializeApp() {
             const findRecipesFromPantryBtn = document.getElementById('find-recipes-from-pantry-btn');
             const currentPantryDisplay = document.getElementById('current-pantry-display');
             const emptyPantryMessage = document.getElementById('empty-pantry-message');
+            const exportShoppingListBtn = document.getElementById('export-shopping-list-btn'); // New button
 
             const deleteInventoryRecipesBtn = document.getElementById('delete-inventory-recipes-btn');
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             const themeIconMoon = document.getElementById('theme-icon-moon');
             const themeIconSun = document.getElementById('theme-icon-sun');
+            const shoppingListContainer = document.getElementById('shopping-list-container'); // For event delegation
 
             let matchingRecipes = []; // To store inventory based recipe suggestions
             let selectedPantryItemForAdding = null; // To store the item selected from suggestions
+            let collectedShoppingListItems = new Set(); // To store names of collected items
 
             // Dark Mode Logic
             const applyTheme = (theme) => {
@@ -265,7 +268,7 @@ function initializeApp() {
                 pantryItemDetailsDiv.classList.add('hidden');
                 addItemToPantryBtn.classList.add('hidden');
                 pantryItemQuantityInput.value = '1';
-                pantryItemUnitInput.value = '';
+                pantryItemUnitInput.value = 'Stk.'; // Reset dropdown to default "Stk."
                 pantryItemExpirationInput.value = '';
                 pantryItemSearchInput.focus();
             });
@@ -358,6 +361,93 @@ function initializeApp() {
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
                 ui.showApp();
             }
+
+            // Event listener for the export button
+            if (exportShoppingListBtn) {
+                exportShoppingListBtn.addEventListener('click', () => {
+                    const currentShoppingList = generateShoppingList(weeklyPlan, userPantry, persons, PANTRY_CATEGORIES);
+                    if (!currentShoppingList || currentShoppingList.length === 0) {
+                        alert("Die Einkaufsliste ist leer. Es gibt nichts zu kopieren.");
+                        return;
+                    }
+
+                    let listAsText = "Meine Einkaufsliste:\n";
+                    currentShoppingList.forEach(item => {
+                        // Only include items not marked as 'haveAtHome' or handle as per user preference for export
+                        // For now, exporting all items from the generated list, indicating which are at home.
+                        // The request was "For the export I just need the ingredient and the total quantity values"
+                        // So, we'll iterate through unitEntries for each item.
+                        item.unitEntries.forEach(unitEntry => {
+                            const displayTotalQuantity = Number.isInteger(unitEntry.totalQuantity)
+                            ? unitEntry.totalQuantity
+                            : parseFloat(unitEntry.totalQuantity).toFixed(unitEntry.totalQuantity < 1 && unitEntry.totalQuantity > 0 ? 2 : (unitEntry.totalQuantity === 0 ? 0 : 1));
+
+                            listAsText += `- ${item.displayName}: ${displayTotalQuantity} ${unitEntry.unit}\n`;
+                        });
+                    });
+
+                    navigator.clipboard.writeText(listAsText)
+                        .then(() => {
+                            const originalButtonText = exportShoppingListBtn.innerHTML;
+                            exportShoppingListBtn.innerHTML = '<i class="ti ti-check"></i> Kopiert!';
+                            exportShoppingListBtn.disabled = true;
+                            setTimeout(() => {
+                                exportShoppingListBtn.innerHTML = originalButtonText;
+                                exportShoppingListBtn.disabled = false;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Fehler beim Kopieren in die Zwischenablage:', err);
+                            alert('Kopieren fehlgeschlagen. Bitte versuche es manuell oder prüfe die Browser-Berechtigungen.');
+                        });
+                });
+            }
+
+            // Event delegation for shopping list item checkboxes
+            if (shoppingListContainer) {
+                shoppingListContainer.addEventListener('change', (e) => {
+                    if (e.target.classList.contains('shopping-list-item-checkbox')) {
+                        const card = e.target.closest('.shopping-list-item-card');
+                        const itemName = card.dataset.ingredientName;
+                        if (e.target.checked) {
+                            card.classList.add('collected');
+                            collectedShoppingListItems.add(itemName);
+                        } else {
+                            card.classList.remove('collected');
+                            collectedShoppingListItems.delete(itemName);
+                        }
+                        // Note: This state is currently not persisted in localStorage,
+                        // so it will reset on page reload.
+                        // To persist, update localStorage here and read from it when rendering.
+                    }
+                });
+            }
+
+            // Modify the part where shopping list is rendered to check against collectedShoppingListItems
+            // This is typically when switching to the shopping-list-view or confirming a plan.
+            // The actual rendering logic is in ui.js, so we need to pass the `collectedShoppingListItems` set to it.
+            // Or, more simply, iterate over checkboxes after ui.renderShoppingList completes.
+
+            const originalRenderShoppingList = ui.renderShoppingList;
+            ui.renderShoppingList = (list) => {
+                originalRenderShoppingList(list); // Call original render
+                // After rendering, iterate through displayed items and set their checked state
+                if (list && list.length > 0) {
+                    document.querySelectorAll('#shopping-list-container .shopping-list-item-card').forEach(card => {
+                        const itemName = card.dataset.ingredientName;
+                        const checkbox = card.querySelector('.shopping-list-item-checkbox');
+                        if (checkbox && collectedShoppingListItems.has(itemName)) {
+                            checkbox.checked = true;
+                            card.classList.add('collected');
+                        } else if (checkbox) {
+                            checkbox.checked = false;
+                            card.classList.remove('collected');
+                        }
+                    });
+                }
+            };
+
+
             initUI();
         })
         .catch(error => {
