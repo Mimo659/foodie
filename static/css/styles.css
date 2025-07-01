@@ -40,13 +40,15 @@ html {
 body {
     font-family: var(--font-primary);
     line-height: 1.6;
-} /* Add the new rule after this body style block if it makes sense, or globally */
-
-body.no-scroll {
-    overflow: hidden;
     color: var(--text-dark);
     background-color: #FFF; /* Default white background for pages */
     font-size: 16px;
+}
+
+body.no-scroll {
+    overflow: hidden;
+    /* The color, background-color, and font-size were moved here by mistake. */
+    /* They should remain in the main body rule. */
 }
 
 h1, h2, h3, h4, h5, h6 {
