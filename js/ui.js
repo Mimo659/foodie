@@ -106,58 +106,79 @@ const ui = (() => {
     
     return {
         populateTagFilters, // Expose the new function
-        renderDashboard: (plan, onSelectRecipe, onInfoClick) => {
+        renderDashboard: (plan, onInfoClick) => { // Removed onSelectRecipe as it's not used here anymore
             const planDisplay = document.getElementById('plan-display');
             const noPlanDisplay = document.getElementById('no-plan-display');
             const weeklyPlanContainer = document.getElementById('weekly-plan-container');
-            if (plan && plan.length > 0) {
-                weeklyPlanContainer.innerHTML = ''; // Clear previous plan cards
-                weeklyPlanContainer.className = ''; // Reset class from weekly-plan-grid if it was set
+            const planInstructions = document.querySelector('#plan-display .plan-instructions');
 
+            if (plan && plan.some(day => day.selected)) { // Check if there's at least one selected recipe
+                weeklyPlanContainer.innerHTML = '';
+                // Use a more generic class for the container, or reuse 'recipe-options' if it styles a grid appropriately
+                weeklyPlanContainer.className = 'recipe-options'; // This class creates a responsive grid
+
+                let hasRenderedDay = false;
                 plan.forEach((dayObject, dayIndex) => {
-                    const dayContainer = document.createElement('div');
-                    dayContainer.className = 'day-container'; // Use the old class for rows
+                    if (dayObject.selected) {
+                        hasRenderedDay = true;
+                        const dayContainer = document.createElement('div');
+                        // For a single card per day, 'day-container' might be too much,
+                        // but let's keep it for structure if 'recipe-options' is a grid.
+                        // If 'recipe-options' is a flex container for cards, dayContainer isn't needed per card.
+                        // For now, let's assume 'recipe-options' will be a grid of all selected recipe cards.
+                        // We will add day title inside or above the card.
 
-                    const dayTitle = document.createElement('h3'); // Use h3 as it was before
-                    dayTitle.textContent = dayObject.day;
-                    dayContainer.appendChild(dayTitle);
+                        const recipeCard = createRecipeCardElement(dayObject.selected, onInfoClick);
 
-                    const optionsContainer = document.createElement('div');
-                    optionsContainer.className = 'recipe-options'; // Use the old class for 2-column recipe layout
+                        // Prepend Day Title to the card or a wrapper
+                        const titleElement = document.createElement('h4'); // Or h3 if it fits better
+                        titleElement.textContent = dayObject.day;
+                        titleElement.style.marginBottom = '0.5rem'; // Add some spacing
+                        titleElement.style.textAlign = 'center'; // Center the day title above the card
 
-                    if (dayObject.options && dayObject.options.length > 0) {
-                        dayObject.options.forEach(recipe => {
-                            const card = createRecipeCardElement(recipe, onInfoClick);
-                            card.dataset.dayIndex = dayIndex;
-                            card.dataset.recipeId = recipe.id;
-                            if (dayObject.selected && dayObject.selected.id === recipe.id) {
-                                card.classList.add('selected');
-                            }
-                            card.addEventListener('click', (e) => {
-                                // Remove 'selected' from sibling cards in the same day's optionsContainer
-                                optionsContainer.querySelectorAll('.recipe-card').forEach(c => c.classList.remove('selected'));
-                                // Add 'selected' to the clicked card
-                                e.currentTarget.classList.add('selected');
-                                onSelectRecipe(e.currentTarget.dataset.dayIndex, e.currentTarget.dataset.recipeId);
-                            });
-                            optionsContainer.appendChild(card);
-                        });
-                    } else {
-                        optionsContainer.innerHTML = '<p class="no-options-text">Keine Optionen für diesen Tag.</p>';
+                        const cardWrapper = document.createElement('div');
+                        cardWrapper.className = 'dashboard-recipe-wrapper'; // For potential styling
+                        cardWrapper.appendChild(titleElement);
+                        cardWrapper.appendChild(recipeCard);
+
+                        weeklyPlanContainer.appendChild(cardWrapper);
                     }
-                    dayContainer.appendChild(optionsContainer);
-                    weeklyPlanContainer.appendChild(dayContainer);
                 });
 
-                if (planDisplay) {
-                    planDisplay.classList.remove('hidden');
-                    planDisplay.style.display = '';
+                if (hasRenderedDay) {
+                    if (planDisplay) {
+                        planDisplay.classList.remove('hidden');
+                        planDisplay.style.display = '';
+                    }
+                    if (noPlanDisplay) {
+                        noPlanDisplay.classList.add('hidden');
+                        noPlanDisplay.style.display = 'none';
+                    }
+                    if (planInstructions) {
+                        // Update instructions text based on whether the plan is fully selected or not
+                        const allDaysSelected = plan.every(day => day.selected);
+                        if (allDaysSelected) {
+                            planInstructions.textContent = "Dein Plan ist fertig! Bestätige ihn, um die Einkaufsliste zu erstellen.";
+                        } else {
+                             // This case (some selected, some not) is now less likely if we only show selected.
+                             // But if the plan structure still has unselected days, this is relevant.
+                            planInstructions.textContent = "Hier sind deine ausgewählten Rezepte. Gehe zu 'Plan erstellen', um weitere Tage zu planen oder Änderungen vorzunehmen.";
+                        }
+                    }
+                } else {
+                    // This case means a plan structure exists, but nothing is selected.
+                    // Or, after filtering, no days with selected items remain.
+                    if (planDisplay) {
+                        planDisplay.classList.add('hidden');
+                        planDisplay.style.display = 'none';
+                    }
+                    if (noPlanDisplay) {
+                        noPlanDisplay.classList.remove('hidden');
+                        noPlanDisplay.style.display = 'block';
+                    }
                 }
-                if (noPlanDisplay) {
-                    noPlanDisplay.classList.add('hidden');
-                    noPlanDisplay.style.display = 'none';
-                }
-            } else {
+
+            } else { // No plan, or plan exists but no recipes selected
                 if (planDisplay) {
                     planDisplay.classList.add('hidden');
                     planDisplay.style.display = 'none';
@@ -168,7 +189,7 @@ const ui = (() => {
                 }
                 if (weeklyPlanContainer) {
                     weeklyPlanContainer.innerHTML = '';
-                    weeklyPlanContainer.className = ''; // Reset class
+                    weeklyPlanContainer.className = '';
                 }
             }
         },
