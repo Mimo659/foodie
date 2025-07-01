@@ -430,7 +430,10 @@ function initializeApp() {
                 const generatorNav = document.querySelector('.nav-item[data-view="generator"]');
                 if(generatorNav) generatorNav.classList.add('active');
 
-                const suggested = ALL_RECIPES.slice(0, 3);
+                // Shuffle ALL_RECIPES before slicing for suggestions
+                const shuffledRecipes = [...ALL_RECIPES].sort(() => 0.5 - Math.random());
+                const suggested = shuffledRecipes.slice(0, 3); // Take the first 3 from the shuffled list
+
                 ui.renderSuggestedRecipes(suggested, handleSuggestedRecipeSelect, handleInfoClick);
                 if (createSingleRecipePlanBtn) createSingleRecipePlanBtn.disabled = true;
                 currentlySelectedSingleRecipe = null;

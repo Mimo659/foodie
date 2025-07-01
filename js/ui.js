@@ -259,7 +259,7 @@ const ui = (() => {
             document.getElementById('app-content').classList.remove('content-hidden');
         },
         setButtonLoadingState: (button, isLoading) => {
-            const originalHtml = `<i class="fa-solid fa-paper-plane"></i> Plan generieren`;
+            const originalHtml = `<i class="ti ti-rocket"></i> Plan generieren`; // Changed icon and ensured text is "Plan generieren"
             if (isLoading) { button.disabled = true; button.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generiere...`; } 
             else { button.disabled = false; button.innerHTML = originalHtml; }
         },
