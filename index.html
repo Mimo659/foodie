@@ -64,7 +64,7 @@
 
                 <section id="generator-view" class="view hidden">
                     <div class="card">
-                        <h2><i class="ti ti-settings"></i> Plane deine Woche</h2>
+                        <h2><i class="ti ti-settings"></i> Plane deine Woche (Option 1: Ganze Woche)</h2>
                         <form id="generator-form">
                             <div class="form-group-inline">
                                 <div class="form-group">
@@ -94,8 +94,22 @@
                                      The closing div for generator-filter-grid will be removed later if this is the only child,
                                      or adjusted if we change to a horizontal layout directly on the form. -->
                             </div> <!-- This closes generator-filter-grid -->
-                            <button type="submit" class="btn-primary generator-submit-btn"><i class="ti ti-rocket"></i> Plan generieren</button>
+                            <button type="submit" class="btn-primary generator-submit-btn"><i class="ti ti-rocket"></i> Ganze Woche generieren</button>
                         </form>
+                    </div>
+
+                    <hr class="section-divider"> <!-- Visual separator -->
+
+                    <!-- New section for suggested recipes -->
+                    <div class="card">
+                        <h2><i class="ti ti-chef-hat"></i> Wähle ein einzelnes Rezept (Option 2)</h2>
+                        <p>Oder wähle ein Rezept aus unseren Vorschlägen für heute:</p>
+                        <div id="suggested-recipes-container" class="recipe-options">
+                            <!-- Suggested recipe cards will be injected here by JavaScript -->
+                        </div>
+                        <button id="create-single-recipe-plan-btn" class="btn-primary" style="margin-top: 1rem;" disabled>
+                            <i class="ti ti-calendar-plus"></i> Dieses Rezept für heute einplanen
+                        </button>
                     </div>
                 </section>
 
@@ -200,6 +214,17 @@
         <div class="modal-content">
             <button class="modal-close-btn">×</button>
             <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="confirm-new-plan-modal" class="modal-overlay hidden">
+        <div class="modal-content confirm-dialog">
+            <h3>Bestätigung</h3>
+            <p>Du hast bereits einen aktiven Plan. Bist du sicher, dass du einen neuen Plan erstellen und den alten überschreiben möchtest?</p>
+            <div class="confirm-dialog-actions">
+                <button id="confirm-new-plan-yes" class="btn-confirm"><i class="ti ti-check"></i> Ja, neuen Plan erstellen</button>
+                <button id="confirm-new-plan-no" class="btn-danger"><i class="ti ti-x"></i> Abbrechen</button>
+            </div>
         </div>
     </div>
     
