@@ -61,6 +61,9 @@ function initializeApp() {
             const shoppingListContainer = document.getElementById('shopping-list-container'); // For event delegation
             const weeklyPlanContainerElement = document.getElementById('weekly-plan-container'); // For event delegation for recipe selection
             const createSingleRecipePlanBtn = document.getElementById('create-single-recipe-plan-btn');
+            const dailyOptionsDisplayContainer = document.getElementById('daily-options-display-container');
+            const confirmGeneratedPlanBtn = document.getElementById('confirm-generated-plan-btn');
+
 
             // Confirmation Modal Elements
             const confirmNewPlanModal = document.getElementById('confirm-new-plan-modal');
@@ -127,8 +130,62 @@ function initializeApp() {
                         if (dayCard) {
                             const dayIndex = parseInt(dayCard.dataset.dayIndex, 10);
                             const selectedRecipeId = e.target.value; // The value of the radio is the recipe ID
-                            handleRecipeSelect(dayIndex, selectedRecipeId);
+                            handleRecipeSelect(dayIndex, selectedRecipeId); // This is for dashboard selections
                         }
+                    }
+                });
+            }
+
+            // Handler for recipe selection within the generator view
+            const handleRecipeSelectionInGenerator = (dayIndex, selectedRecipeId) => {
+                if (!weeklyPlan || !weeklyPlan[dayIndex]) return;
+                const day = weeklyPlan[dayIndex];
+                const selectedRecipe = day.options.find(option => option.id === selectedRecipeId);
+
+                if (selectedRecipe) {
+                    day.selected = selectedRecipe;
+                    store.setItem('weeklyPlan', weeklyPlan); // Save changes
+                    // Re-render options in generator view to reflect the selection / allow change
+                    ui.renderDailyOptionsInGeneratorView(weeklyPlan, handleInfoClick, handleRecipeSelectionInGenerator);
+                    ui.updateGeneratorConfirmButtonState(weeklyPlan);
+                } else {
+                    console.error(`Generator: Recipe with ID ${selectedRecipeId} not found for day ${dayIndex}`);
+                }
+            };
+
+            // Event delegation for recipe selection radio buttons within the generator view
+            if (dailyOptionsDisplayContainer) {
+                dailyOptionsDisplayContainer.addEventListener('change', (e) => {
+                    if (e.target.classList.contains('recipe-select-radio-generator') && e.target.checked) {
+                        const dayCard = e.target.closest('.day-selection-card');
+                        if (dayCard) {
+                            const dayIndex = parseInt(dayCard.dataset.dayIndex, 10);
+                            const selectedRecipeId = e.target.value;
+                            handleRecipeSelectionInGenerator(dayIndex, selectedRecipeId);
+                        }
+                    }
+                });
+            }
+
+            // Event listener for the new "confirm selections on generator page" button
+            if (confirmGeneratedPlanBtn) {
+                confirmGeneratedPlanBtn.addEventListener('click', () => {
+                    // weeklyPlan should already be up-to-date and stored by handleRecipeSelectionInGenerator
+                    if (weeklyPlan && weeklyPlan.every(day => day.selected)) {
+                        ui.switchView('dashboard-view');
+                        navLinks.forEach(n => n.classList.remove('active'));
+                        const dashboardNav = document.querySelector('.nav-item[data-view="dashboard"]');
+                        if (dashboardNav) dashboardNav.classList.add('active');
+
+                        ui.renderDashboard(weeklyPlan, handleInfoClick); // Dashboard now just displays
+                        ui.updateConfirmButtonState(weeklyPlan); // For the main confirm button on dashboard
+
+                        // Hide generator options stuff again
+                        if (dailyOptionsDisplayContainer) dailyOptionsDisplayContainer.classList.add('hidden');
+                        if (confirmGeneratedPlanBtn) confirmGeneratedPlanBtn.classList.add('hidden');
+
+                    } else {
+                        alert("Bitte wähle für jeden Tag ein Rezept aus.");
                     }
                 });
             }
@@ -181,13 +238,14 @@ function initializeApp() {
                         store.setItem('weeklyPlan', weeklyPlan);
                         store.setItem('persons', prefs.persons.toString()); // Ensure 'persons' is stored as string
 
-                        ui.renderDashboard(weeklyPlan, handleInfoClick, handleRecipeSelect);
-                        ui.updateConfirmButtonState(weeklyPlan);
-                        ui.switchView('dashboard-view');
-                        navLinks.forEach(n => n.classList.remove('active'));
-                        const dashboardNav = document.querySelector('.nav-item[data-view="dashboard"]');
-                        if (dashboardNav) dashboardNav.classList.add('active');
-                        ensureNavItemsVisibility(); // Ensure nav items are visible
+                        // Instead of switching to dashboard, render options in the generator view
+                        ui.renderDailyOptionsInGeneratorView(weeklyPlan, handleInfoClick, handleRecipeSelectionInGenerator);
+                        if (dailyOptionsDisplayContainer) dailyOptionsDisplayContainer.classList.remove('hidden');
+                        if (confirmGeneratedPlanBtn) {
+                            confirmGeneratedPlanBtn.classList.remove('hidden');
+                            ui.updateGeneratorConfirmButtonState(weeklyPlan); // Disable it initially
+                        }
+                        // DO NOT switch view here. User stays on generator-view.
 
                     } catch (error) {
                         console.error("Fehler bei der Plangenerierung:", error);
@@ -210,8 +268,11 @@ function initializeApp() {
             });
 
             confirmPlanBtn.addEventListener('click', () => {
-                // Ensure generateShoppingList is updated to use userPantry
-                const list = generateShoppingList(weeklyPlan, userPantry, persons, PANTRY_CATEGORIES);
+                // Get the 'persons' value associated with the current weeklyPlan
+                const planPortionsSetting = store.getItem('persons') || '2'; // Default to '2' if not set
+                const currentPersonsForPlan = parseInt(planPortionsSetting, 10);
+
+                const list = generateShoppingList(weeklyPlan, userPantry, currentPersonsForPlan, PANTRY_CATEGORIES);
                 ui.renderShoppingList(list);
                 ui.switchView('shopping-list-view');
                 navLinks.forEach(n => n.classList.remove('active'));
@@ -414,7 +475,7 @@ function initializeApp() {
                     store.setItem('persons', null); // Clear stored persons related to the plan
 
                     // Potentially also clear dashboard and confirm button state
-                    ui.renderDashboard(null, handleInfoClick, handleRecipeSelect);
+                    ui.renderDashboard(null, handleInfoClick);
                     ui.updateConfirmButtonState(null);
 
                     hideConfirmNewPlanModal();
@@ -487,7 +548,7 @@ function initializeApp() {
                     store.setItem('weeklyPlan', singleDayPlan);
                     store.setItem('persons', portions); // Store portions setting
 
-                    ui.renderDashboard(singleDayPlan, handleInfoClick, handleRecipeSelect);
+                    ui.renderDashboard(singleDayPlan, handleInfoClick);
                     ui.updateConfirmButtonState(singleDayPlan); // This might disable confirm if only one day
                     ui.switchView('dashboard-view');
                     navLinks.forEach(n => n.classList.remove('active'));
@@ -511,7 +572,7 @@ function initializeApp() {
 
                 // inventoryInput.value = inventory.join(', '); // Old inventory input, remove
                 renderCurrentPantry(); // Initialize pantry display
-                ui.renderDashboard(weeklyPlan, handleInfoClick, handleRecipeSelect);
+                ui.renderDashboard(weeklyPlan, handleInfoClick);
                 ui.updateConfirmButtonState(weeklyPlan);
                 ui.switchView('dashboard-view'); // Default view
                 document.querySelector('.nav-item[data-view="dashboard"]').classList.add('active');
